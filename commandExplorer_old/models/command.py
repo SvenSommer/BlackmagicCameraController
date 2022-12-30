@@ -5,7 +5,7 @@ class Command:
         self.camera = None
         self.groupId = None
         self.groupName = None
-        self.parameter = Parameter()
+        self.parameter = None
 
         
     def setCamera(self, camera:int):
@@ -15,13 +15,13 @@ class Command:
         self.groupId = groupId
         self.groupName = groupName
         
-    def setParameter(self, id:int,name: str, type: str, index: any):
+    def setParameter(self, id:int,name: str, type: str, index:object):
         self.parameter = Parameter(id, name, type, index)
     
-    def setValue(self, value):
+    def setValue(self, value:object):
         self.parameter.setValue(value)
         
-    def addValue(self,value):
+    def addValue(self,value:object):
         self.parameter.addValue(value)
         
     def resetGroup(self):

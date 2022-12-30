@@ -4,13 +4,12 @@ import time
 from models.connectionresult import ConnectionResult
 import serial
 from models.connection import Connection
-from models.command import Command
 
 class SerialController:
     def __init__(self) -> None:
         self.connection = None
     
-    def getSerialPorts(self):
+    def getSerialPorts(self) -> list[str]:
         """ Lists serial port names
 
             :raises EnvironmentError:
@@ -39,22 +38,26 @@ class SerialController:
                 pass
         return result_ports
     
-    def tryconnect(self, portid = 0):
-        print("[INFO] SerialController: Scanning for Devices connected to this PC....")
+    def try_connect(self, portid: int = 0):
+        print("INFO:\tSerialController.try_connect: Scanning for Devices connected to this PC....")
         result = ConnectionResult(self.getSerialPorts())
-        print ("[INFO] SerialController: Found {0} open ports".format(len(result.ports)))
+        print ("INFO:\tSerialController.try_connect: Found {0} open ports".format(len(result.ports)))
         if len(result.ports) == 0:
             result.set_failure("No connected devices found. Please connect the arduino with appended the blackmagic sdk board to this pc.")       
         elif (portid+1) > len(result.ports) or portid < 0:
             result.set_failure("ERROR: Device not available. Found {0} open ports".format(len(result.ports)))
         else:
-            print ("[INFO] SerialController: Connecting to portid {0}".format(portid))
+            print ("INFO:\tSerialController.try_connect: Connecting to portid {0}".format(portid))
             connection = self.connect(result.ports[portid])
             result.set_connection(connection)
             
         return result
 
-        
+    def disconnect(self):
+        print("INFO:\tSerialController.disconnect: Disconnecting....")
+        self.connection.active_connection.close()
+        self.connection = None
+        return {"connection":"disconnected"}
             
     def get_ports(self):
         result = ConnectionResult(self.getSerialPorts())
@@ -62,10 +65,10 @@ class SerialController:
             result.set_connection(self.connection)
         return result
         
-    def connect(self, port):
+    def connect(self, port:list[str]):
         conncection = Connection(port)
         conncection.setActiveConnection(serial.Serial(port, 9600, timeout=1))
-        time.sleep(10) 
+        #time.sleep(10) 
         conncection.message = self.read()
         self.connection = conncection
         
@@ -73,7 +76,7 @@ class SerialController:
     
     def sendCommand(self, command:str):
         out = str(command).encode()
-        print()
+        print("INFO:\tSerialController.sendCommand: Sending:{0}".format(out))
         if(self.connection is not None):
             self.connection.active_connection.write(out)
             return self.read()
@@ -84,9 +87,9 @@ class SerialController:
         if(self.connection is not None):
             return self.read_all(self.connection.active_connection,5)
         
-    def read_all(self, port, chunk_size=200):
+    def read_all(self, connection, chunk_size=200) -> str:
         """Read all characters on the serial port and return them."""
-        if not port.timeout:
+        if not connection.timeout:
             raise TypeError('Port needs to have a timeout set!')
 
         read_buffer = b''
@@ -94,7 +97,7 @@ class SerialController:
         while True:
             # Read in chunks. Each chunk will wait as long as specified by
             # timeout. Increase chunk_size to fail quicker
-            byte_chunk = port.read(size=chunk_size)
+            byte_chunk = connection.read(size=chunk_size)
             read_buffer += byte_chunk
             if not len(byte_chunk) == chunk_size:
                 break

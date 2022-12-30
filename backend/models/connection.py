@@ -1,5 +1,5 @@
 class Connection:
-    def __init__(self, port) -> None:
+    def __init__(self, port:list[str]) -> None:
         self.port = port
         self.active_connection = None
         self.message = None

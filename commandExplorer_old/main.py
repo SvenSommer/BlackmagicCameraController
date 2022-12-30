@@ -106,26 +106,6 @@ def renderCommandMenue():
 display = Display()
 serialController = SerialController()
 if __name__ == '__main__':
+
     display.showHeader()
-    ports = []
-    ports = serialController.getSerialPorts()
-    while len(ports) == 0:
-        print("Scanning for Devices connected to this PC....")
-        ports = serialController.getSerialPorts()
-        input("No connected devices found. Please connect the arduino with appended the blackmagic sdk board to this pc. Hit 'Ctrl' + 'c' to exit.")
-    
-    
-    portid = 0
-    if len(ports) > 1:
-        print("Found {0} devices connected to this pc:".format(len(ports)))
-        i = 1
-        for port in ports:
-            print("{0}: {1}".format(i, port ))
-            i=i+1
-        portid = int(input("Please choose a device you want to connect to:")) - 1
-        if portid > len(ports) or portid < 0:
-            print("ERROR: Device not available")
-    
-    connection = serialController.connect(portid)
-    display.showHeader(connection=connection)
     renderCommandMenue()
