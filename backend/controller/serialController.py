@@ -79,9 +79,6 @@ class SerialController:
         print("INFO:\tSerialController.sendCommand: Sending:{0}".format(out))
         if(self.connection is not None):
             self.connection.active_connection.write(out)
-            return self.read()
-        else:
-            return self.get_ports()
         
     def read(self):
         if(self.connection is not None):
