@@ -1,0 +1,7 @@
+.mat-mdc-slider {
+    max-width: 300px;
+    width: 100%;
+  }
+  .mat-mdc-card + .mat-mdc-card {
+    margin-top: 8px;
+  }

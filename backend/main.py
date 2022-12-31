@@ -1,14 +1,29 @@
 #export PATH="/home/robert/.local/bin"
+#C:\Users\robho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts\uvicorn.exe main:app --reload
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from controller.configurationController import ConfigurationController
 from controller.protokolController import ProtokollController
+from controller.serialController import SerialController
+from models.camera import CameraCollection
 from models.command_tally import CommandTally, TallyFormatter
 from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
-from controller.serialController import SerialController
-from fastapi import FastAPI
+import json
 
 app = FastAPI(title="CameraController Backend", description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 serial = SerialController()
 protocol = ProtokollController('res/PROTOCOL.json')
+configuration = ConfigurationController('res/config.yaml')
 connection = None
 connectionresult = serial.try_connect(0)
 connection = connectionresult.getConnection()
@@ -16,6 +31,15 @@ connection = connectionresult.getConnection()
 @app.get("/protocol")    
 async def get_protocol():
     return{"protocol": protocol.get_protocol()}
+
+@app.post("/config")    
+async def set_config():
+    data = configuration.write_initial_configfile()
+    return{"config":data}
+
+@app.get("/config")    
+async def get_config():
+    return{"config": configuration.read_configfile()}
 
 @app.get("/ports")
 async def get_ports():
