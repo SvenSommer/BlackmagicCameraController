@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DiscreteParameter } from './models/discreteParameter-model';
 import { Parameter } from './models/parameter-model';
 import { ConfigService } from './services/config.services';
 import { ProtocolService } from './services/protocol.services';
-import {MatSliderModule} from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -19,8 +21,16 @@ export class AppComponent implements OnInit {
   public groupsData: any;
   public camerasData: any;
   public currentCamera: any;
+  public currentGroup: number;
   public currentParameter: Parameter;
-  public allowed_for_slider = ['int64','int32','int16','int8']
+  public currentSteps: number;
+  public discreteParameterChoosen: DiscreteParameter;
+  public allowed_for_slider = ['int64','int32','int16','int8','fixed16']
+  public allowed_for_switches = ['boolean']
+
+  onChange($event: MatSlideToggleChange) {
+    console.log($event);
+}
 
   ngOnInit() {      
       this.bindData();
@@ -31,9 +41,19 @@ export class AppComponent implements OnInit {
     this.currentCamera = id
   }
 
+  changecurrentGroup(id: number){
+    this.currentGroup = id
+  }
+
   changeCurrentParameter(parameter: Parameter){
     console.log(parameter)
     this.currentParameter = parameter
+    this.calculateCurrentSteps(parameter);
+  }
+
+  private calculateCurrentSteps(parameter: Parameter) {
+    this.currentSteps = (parameter.maximum - parameter.minimum) / 100;
+    console.log("steps:" + this.currentSteps);
   }
 
   bindData() {

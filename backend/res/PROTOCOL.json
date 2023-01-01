@@ -42,7 +42,7 @@
 					"index": [],
 					"minimum": -1,
 					"maximum": 16,
-					"interpretation": "Aperture Value (where fnumber\n= sqrt(2^AV))"
+					"interpretation": "Aperture Value (where fnumber= sqrt(2^AV))"
 				},
 				{
 					"id": 3,
@@ -65,8 +65,8 @@
 					"type": "int16",
 					"index": [],
 					"minimum": 0,
-					"maximum": 256,
-					"interpretation": "Steps through available aperture values from minimum (0) to maximum (n)"
+					"maximum": 1000,
+					"interpretation": "Steps through available aperture values from minimum (0) to maximum (n). Set n accordingly!"
 				},
 				{
 					"id": 5,
@@ -98,7 +98,7 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 4000,
-					"interpretation": "Move to specified focal length in mm, from minimum (0) to maximum (max)"
+					"interpretation": "Move to specified focal length in mm, from minimum (0) to maximum (max). Set max accordingly!"
 				},
 				{
 					"id": 8,
@@ -110,7 +110,7 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 1,
-					"interpretation": "Move to specified focal length:\n0.0 = wide, 1.0 = tele"
+					"interpretation": "Move to specified focal length: 0.0 = wide, 1.0 = tele"
 				},
 				{
 					"id": 9,
@@ -122,7 +122,7 @@
 					"index": [],
 					"minimum": -1,
 					"maximum": 1,
-					"interpretation": "Start/stop zooming at specified rate: -1.0 = zoom wider fast, 0.0\n= stop,\n+1 = zoom tele fast"
+					"interpretation": "Start/stop zooming at specified rate: -1.0 = zoom wider fast, 0.0 = stop, +1 = zoom tele fast"
 				}
 			]
 		},
@@ -137,15 +137,111 @@
 					"group_id": 1,
 					"parameter": "Video mode",
 					"normalized_parameter": "video_mode",
-					"type": "int8",
 					"index": [
-						"frame rate",
-						"M-rate",
-						"dimensions",
-						"interlaced",
-						"Color space"
-					],
-					"interpretation": "0 = YUV"
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "frame rate",
+							"discrete": [
+								{
+									"value": 24,
+									"interpretation": "24"
+								},
+								{
+									"value": 25,
+									"interpretation": "25"
+								},
+								{
+									"value": 30,
+									"interpretation": "30"
+								},
+								{
+									"value": 50,
+									"interpretation": "50"
+								},
+								{
+									"value": 60,
+									"interpretation": "60"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8", 
+							"name": "M-rate",
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "regular"
+								},
+								{
+									"value": 1,
+									"interpretation": "M-rate"
+								}
+							]
+						},
+						{	
+							"position": 2,
+							"type": "int8", 
+							"name": "dimensions",
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "NTSC"
+								},
+								{
+									"value": 1,
+									"interpretation": "PAL"
+								},
+								{
+									"value": 2,
+									"interpretation": "720"
+								},
+								{
+									"value": 3,
+									"interpretation": "1080"
+								},
+								{
+									"value": 4,
+									"interpretation": "2k"
+								},
+								{
+									"value": 5,
+									"interpretation": "2k DCI"
+								},
+								{
+									"value": 6,
+									"interpretation": "UHD"
+								}
+							]
+						},
+						{	
+							"position": 3,
+							"type": "int8", 
+							"name": "interlaced",
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "progressive"
+								},
+								{
+									"value": 1,
+									"interpretation": "interlaced"
+								}
+							]
+						},
+						{	
+							"position": 4,
+							"type": "int8", 
+							"name": "Color space",
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "YUV"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -157,7 +253,40 @@
 					"index": [],
 					"minimum": 1,
 					"maximum": 128,
-					"interpretation": "1x, 2x, 4x, 8x, 16x, 32x, 64x, 128x\ngain"
+					"discrete": [
+						{
+							"value": 1,
+							"interpretation": "100 ISO"
+						},
+						{
+							"value": 2,
+							"interpretation": "200 ISO"
+						},
+						{
+							"value": 4,
+							"interpretation": "400 ISO"
+						},
+						{
+							"value": 8,
+							"interpretation": "800 ISO"
+						},
+						{
+							"value": 16,
+							"interpretation": "1600 ISO"
+						},
+						{
+							"value": 32,
+							"interpretation": "3200 ISO"
+						},
+						{
+							"value": 64,
+							"interpretation": "6400 ISO"
+						},
+						{
+							"value": 128,
+							"interpretation": "12800 ISO"
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -165,11 +294,23 @@
 					"group_id": 1,
 					"parameter": "Manual White Balance",
 					"normalized_parameter": "manual_white_balance",
-					"type": "int16",
-					"index": ["color temp", "tint"],
-					"minimum": -50,
-					"maximum": 50,
-					"interpretation": "tint"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int16",
+							"name": "color temp",
+							"minimum": 2500,
+							"maximum": 10000,
+							"interpretation": "Color temperaruture in K"
+						},
+						{	
+							"position": 1,
+							"type": "int16", 
+							"name": "tint",
+							"minimum": -50,
+							"maximum": 50,
+							"interpretation": "tint"
+						}]
 				},
 				{
 					"id": 3,
@@ -195,13 +336,13 @@
 					"id": 5,
 					"group": "Video",
 					"group_id": 1,
-					"parameter": "Exposure (us)",
+					"parameter": "Exposure (μs)",
 					"normalized_parameter": "exposure_us",
 					"type": "int32",
 					"index": [],
 					"minimum": 1,
 					"maximum": 42000,
-					"interpretation": "time in us"
+					"interpretation": "time in μs"
 				},
 				{
 					"id": 6,
@@ -212,8 +353,8 @@
 					"type": "int16",
 					"index": [],
 					"minimum": 0,
-					"maximum": null,
-					"interpretation": "Steps through available exposure values from minimum\n(0) to maximum (n)"
+					"maximum": 1,
+					"interpretation": "Steps through available exposure values from minimum\n(0) to maximum (n). Set n accordingly!"
 				},
 				{
 					"id": 7,
@@ -225,7 +366,20 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 2,
-					"interpretation": "0 = film, 1 = video,  2 = extended video"
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "film"
+						},
+						{
+							"value": 1,
+							"interpretation": "video"
+						},
+						{
+							"value": 2,
+							"interpretation": "extended video"
+						}
+					]
 				},
 				{
 					"id": 8,
@@ -237,7 +391,24 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 3,
-					"interpretation": "0 = off, 1 = low, 2 = medium,\n3 = high"
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "off"
+						},
+						{
+							"value": 1,
+							"interpretation": "low"
+						},
+						{
+							"value": 2,
+							"interpretation": "medium"
+						},
+						{
+							"value": 3,
+							"interpretation": "high"
+						}
+					]
 				},
 				{
 					"id": 9,
@@ -245,15 +416,124 @@
 					"group_id": 1,
 					"parameter": "Recording format",
 					"normalized_parameter": "recording_format",
-					"type": "int16",
 					"index": [
-						"file frame rate",
-						"sensor frame rate",
-						"frame width",
-						"frame height",
-						"flags"
-					],
-					"interpretation": "[4] = windowed mode"
+						{	
+							"position": 0,
+							"type": "int16",
+							"name": "file frame rate",
+							"discrete": [
+								{
+									"value": 24,
+									"interpretation": "24 fps"
+								},
+								{
+									"value": 25,
+									"interpretation": "25 fps"
+								},
+								{
+									"value": 30,
+									"interpretation": "30 fps"
+								},
+								{
+									"value": 50,
+									"interpretation": "50 fps"
+								},
+								{
+									"value": 60,
+									"interpretation": "60 fps"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int16", 
+							"name": "sensor frame rate",
+							"minimum": 0,
+							"maximum": 120,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "No changes"
+								},
+								{
+									"value": 24,
+									"interpretation": "24 fps"
+								},
+								{
+									"value": 25,
+									"interpretation": "25 fps"
+								},
+								{
+									"value": 30,
+									"interpretation": "30 fps"
+								},
+								{
+									"value": 33,
+									"interpretation": "33 fps"
+								},
+								{
+									"value": 48,
+									"interpretation": "48 fps"
+								},
+								{
+									"value": 50,
+									"interpretation": "50 fps"
+								},
+								{
+									"value": 60,
+									"interpretation": "60 fps"
+								},
+								{
+									"value": 120,
+									"interpretation": "120 fps"
+								}
+							]
+						},
+						{	
+							"position": 2,
+							"type": "int16", 
+							"name": "frame width",
+							"interpretation": "in pixels"
+						},
+						{	
+							"position": 3,
+							"type": "int16", 
+							"name": "frame height",
+							"interpretation": "in pixels"
+						},
+						{	
+							"position": 4,
+							"type": "int16", 
+							"name": "flags",
+							"minimum": 1,
+							"maximum": 4,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "file-M-rate"
+								},
+								{
+									"value": 1,
+									"interpretation": "sensor-M-rate, valid when sensor-off-speed-set"
+								},
+								{
+									"value": 2,
+									"interpretation": "sensor-off-speed"
+								},
+								{
+									"value": 3,
+									"interpretation": "interlaced"
+								},
+								{
+									"value": 4,
+									"interpretation": "windowed mode"
+								}
+							]
+						}
+					]
+
+
+					
 				},
 				{
 					"id": 10,
@@ -265,7 +545,28 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 4,
-					"interpretation": "0 = Manual Trigger, 1 = Iris,\n2 = Shutter, 3 = Iris + Shutter, 4 = Shutter + Iris"
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "Manual Trigger"
+						},
+						{
+							"value": 1,
+							"interpretation": "Iris"
+						},
+						{
+							"value": 2,
+							"interpretation": "Shutter"
+						},
+						{
+							"value": 3,
+							"interpretation": "Iris + Shutter"
+						},
+						{
+							"value": 4,
+							"interpretation": "Shutter + Iris"
+						}
+					]
 				},
 				{
 					"id": 11,
@@ -314,28 +615,6 @@
 					"minimum": 0,
 					"maximum": 2147483647,
 					"interpretation": "ISO value"
-				},
-				{
-					"id": 15,
-					"group": "Video",
-					"group_id": 1,
-					"parameter": "Display LUT",
-					"normalized_parameter": "display_lut",
-					"type": "int8",
-					"index": ["selected LUT", "enabled or not"],
-					"interpretation": "0 = Not enabled, 1 = Enabled"
-				},
-				{
-					"id": 16,
-					"group": "Video",
-					"group_id": 1,
-					"parameter": "ND Filter",
-					"normalized_parameter": "nd_filter",
-					"type": "fixed16",
-					"index": ["stops"],
-					"minimum": 0,
-					"maximum": 16,
-					"interpretation": "f-stop of ND filter to use"
 				}
 			]
 		},
@@ -402,6 +681,24 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 3,
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "internal mic"
+						},
+						{
+							"value": 1,
+							"interpretation": "line level input"
+						},
+						{
+							"value": 2,
+							"interpretation": "low mic level input"
+						},
+						{
+							"value": 3,
+							"interpretation": "high mic level input"
+						}
+					],
 					"interpretation": "0 = internal mic,\n1 = line level input,\n2 = low mic level input, 3 = high mic level input"
 				},
 				{
@@ -410,11 +707,24 @@
 					"group_id": 2,
 					"parameter": "Input levels",
 					"normalized_parameter": "input_levels",
-					"type": "fixed16",
-					"index": ["ch0", "ch1"],
-					"minimum": 0,
-					"maximum": 1,
-					"interpretation": "0.0 = minimum, 1.0 = maximum"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "ch0",
+							"minimum": 0,
+							"maximum": 1,
+							"interpretation": "0.0 = minimum, 1.0 = maximum"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16", 
+							"name": "ch1",
+							"minimum": 0,
+							"maximum": 1,
+							"interpretation": "0.0 = minimum, 1.0 = maximum"
+						}
+					]
 				},
 				{
 					"id": 6,
@@ -443,7 +753,17 @@
 					"minimum": 0,
 					"maximum": 1,
 					"index": [],
-					"interpretation": "bit flags:\n[0] = display status,\n[1] = display frame guides\nSome cameras don't allow separate control of frame guides and status overlays."
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "display status"
+						},
+						{
+							"value": 1,
+							"interpretation": "display frame guides"
+						}
+					],
+					"interpretation": "Some cameras don't allow separate control of frame guides and status overlays."
 				},
 				{
 					"id": 1,
@@ -455,7 +775,36 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 8,
-					"interpretation": "0 = HDTV, 1 = 4:3, 2 = 2.4:1,\n3 = 2.39:1, 4 = 2.35:1,\n5 = 1.85:1, 6 = thirds"
+					"discrete": [
+						{
+							"value": 0,
+							"interpretation": "HDTV"
+						},
+						{
+							"value": 1,
+							"interpretation": "4:3"
+						},
+						{
+							"value": 2,
+							"interpretation": "2.4:1"
+						},
+						{
+							"value": 3,
+							"interpretation": "2.39:1"
+						},
+						{
+							"value": 4,
+							"interpretation": "2.35:1"
+						},
+						{
+							"value": 5,
+							"interpretation": "1.85:1"
+						},
+						{
+							"value": 6,
+							"interpretation": "thirds"
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -475,16 +824,94 @@
 					"group_id": 3,
 					"parameter": "Overlays (replaces .1 and .2 above from Cameras 4.0)",
 					"normalized_parameter": "overlays_replaces_1_and_2_above_from_cameras_4_0",
-					"type": "int8",
 					"index": [
-						"frame guides style",
-						"frame guide opacity",
-						"safe area percentage",
-						"grid style"
-					],
-					"interpretation": "bit flags:\n[0] = display thirds,\n[1] = display cross hairs,\n[2] = display center dot,\n[3] = display horizon",
-					"minimum": 0,
-					"maximum": 100
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "frame guides style",
+							"minimum": 0,
+							"maximum": 8,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "off"
+								},
+								{
+									"value": 1,
+									"interpretation": "2.4:1"
+								},
+								{
+									"value": 2,
+									"interpretation": "2.39:1"
+								},
+								{
+									"value": 3,
+									"interpretation": "2.35:1"
+								},
+								{
+									"value": 4,
+									"interpretation": "1.85:1"
+								},
+								{
+									"value": 5,
+									"interpretation": "16:9"
+								},
+								{
+									"value": 6,
+									"interpretation": "14:9"
+								},
+								{
+									"value": 7,
+									"interpretation": "4:3"
+								},
+								{
+									"value": 8,
+									"interpretation": "2:1"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8", 
+							"name": "frame guide opacity",
+							"minimum": 0,
+							"maximum": 100,
+							"interpretation": "0 = transparent, 100 = opaque"
+						},	
+						{	
+							"position": 2,
+							"type": "int8", 
+							"name": "safe area percentage",
+							"minimum": 0,
+							"maximum": 100,
+							"interpretation": "percentage of full frame used by safe area guide (0 means off)"
+						},
+						{	
+							"position": 3,
+							"type": "int8", 
+							"name": "grid style",
+							"minimum": 0,
+							"maximum": 3,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "display thirds"
+								},
+								{
+									"value": 1,
+									"interpretation": "display cross hairs"
+								},
+								{
+									"value": 2,
+									"interpretation": "display center dot"
+								},
+								{
+									"value": 3,
+									"interpretation": "display horizon"
+								}
+							]
+						}
+					]
 				}
 			]
 		},
@@ -511,11 +938,59 @@
 					"group_id": 4,
 					"parameter": "Exposure and focus tools",
 					"normalized_parameter": "exposure_and_focus_tools",
-					"type": "int16_bit_field",
 					"index": [
-						"0x1 = zebra,\n0x2 = focus assist, 0x4 = false color"
-					],
-					"interpretation": "0 = disable, 1 = enable"
+						{	
+							"position": 0,
+							"type": "int16",
+							"name": "zebra",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "disable"
+								},
+								{
+									"value": 1,
+									"interpretation": "enable"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int16", 
+							"name": "focus assist",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "disable"
+								},
+								{
+									"value": 1,
+									"interpretation": "enable"
+								}
+							]
+						},	
+						{	
+							"position": 2,
+							"type": "int16", 
+							"name": "false color",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "disable"
+								},
+								{
+									"value": 1,
+									"interpretation": "enable"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -551,7 +1026,7 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 30,
-					"interpretation": "0 = disable bars,\n1-30 = enable bars with timeout (seconds)"
+					"interpretation": "0 = disable bars, 1-30 = enable bars with timeout (seconds)"
 				},
 				{
 					"id": 5,
@@ -559,9 +1034,54 @@
 					"group_id": 4,
 					"parameter": "Focus Assist",
 					"normalized_parameter": "focus_assist",
-					"type": "int8",
-					"index": ["focus assist method", "focus line color"],
-					"interpretation": "0 = Red,\n1 = Green,\n2 = Blue,\n3 = White,\n4 = Black"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "focus assist method",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Peak"
+								},
+								{
+									"value": 1,
+									"interpretation": "Colored lines"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8", 
+							"name": "focus line color",
+							"minimum": 0,
+							"maximum": 4,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Red"
+								},
+								{
+									"value": 1,
+									"interpretation": "Green"
+								},
+								{
+									"value": 2,
+									"interpretation": "Blue"
+								},
+								{
+									"value": 3,
+									"interpretation": "White"
+								},
+								{
+									"value": 4,
+									"interpretation": "Black"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 6,
@@ -635,6 +1155,20 @@
 					"index": [],
 					"minimum": 0,
 					"maximum": 2,
+					"discrete": [
+						{
+						"value": 0,
+						"interpretation": "internal"
+						},
+						{
+							"value": 1,
+							"interpretation": "program"
+						},
+						{
+							"value": 2,
+							"interpretation": "external"
+						}
+					],
 					"interpretation": "0 = internal,\n1 = program,\n2 = external"
 				},
 				{
@@ -660,9 +1194,20 @@
 					"group_id": 7,
 					"parameter": "Real Time Clock",
 					"normalized_parameter": "real_time_clock",
-					"type": "int32",
-					"index": ["time", "date"],
-					"interpretation": "BCD - YYYYMMDD"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int32",
+							"name": "time",
+							"interpretation": "BCD - HHMMSSFF (UTC)"
+						},
+						{	
+							"position": 1,
+							"type": "int32", 
+							"name": "date",
+							"interpretation": "BCD - YYYYMMDD"
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -671,7 +1216,7 @@
 					"parameter": "System language",
 					"normalized_parameter": "system_language",
 					"type": "string",
-					"index": ["[0-1]"],
+					"index": [],
 					"interpretation": "ISO-639-1 two character language code"
 				},
 				{
@@ -690,9 +1235,20 @@
 					"group_id": 7,
 					"parameter": "Location",
 					"normalized_parameter": "location",
-					"type": "int64",
-					"index": ["latitude", "longitude"],
-					"interpretation": "BCD - sDDDdddddddddddd where s is the sign: 0 = west (-), 1 = east (+); DDD degrees, dddddddddddd decimal degrees"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int64",
+							"name": "latitude",
+							"interpretation": "BCD - sDDDdddddddddddd where s is the sign: 0 = north (+), 1 = south (-); DDD degrees, dddddddddddd decimal degrees"
+						},
+						{	
+							"position": 1,
+							"type": "int64", 
+							"name": "longitude",
+							"interpretation": "BCD - sDDDdddddddddddd where s is the sign: 0 = west (-), 1 = east (+); DDD degrees, dddddddddddd decimal degrees"
+						}
+					]
 				}
 			]
 		},
@@ -707,12 +1263,44 @@
 					"group_id": 8,
 					"parameter": "Lift Adjust",
 					"normalized_parameter": "lift_adjust",
-					"type": "fixed16",
-					"index": ["red", "green", "blue", "luma"],
-					"minimum": -2,
-					"maximum": 2,
-					"default": 0.0,
-					"interpretation": "default 0.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "red",
+							"minimum": -2,
+							"maximum": 2,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "green",
+							"minimum": -2,
+							"maximum": 2,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 2,
+							"type": "fixed16",
+							"name": "blue",
+							"minimum": -2,
+							"maximum": 2,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 3,
+							"type": "fixed16",
+							"name": "luma",
+							"minimum": -2,
+							"maximum": 2,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -720,12 +1308,44 @@
 					"group_id": 8,
 					"parameter": "Gamma Adjust",
 					"normalized_parameter": "gamma_adjust",
-					"type": "fixed16",
-					"index": ["red", "green", "blue", "luma"],
-					"minimum": -4,
-					"maximum": 4,
-					"default": 0.0,
-					"interpretation": "default 0.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "red",
+							"minimum": -4,
+							"maximum": 4,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "green",
+							"minimum": -4,
+							"maximum": 4,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 2,
+							"type": "fixed16",
+							"name": "blue",
+							"minimum": -4,
+							"maximum": 4,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 3,
+							"type": "fixed16",
+							"name": "luma",
+							"minimum": -4,
+							"maximum": 4,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -733,12 +1353,44 @@
 					"group_id": 8,
 					"parameter": "Gain Adjust",
 					"normalized_parameter": "gain_adjust",
-					"type": "fixed16",
-					"index": ["red", "green", "blue", "luma"],
-					"minimum": 0,
-					"maximum": 16,
-					"default": 1.0,
-					"interpretation": "default 1.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "red",
+							"minimum": 0,
+							"maximum": 16,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "green",
+							"minimum": 0,
+							"maximum": 16,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						},
+						{	
+							"position": 2,
+							"type": "fixed16",
+							"name": "blue",
+							"minimum": 0,
+							"maximum": 16,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						},
+						{	
+							"position": 3,
+							"type": "fixed16",
+							"name": "luma",
+							"minimum": 0,
+							"maximum": 16,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						}
+					]
 				},
 				{
 					"id": 3,
@@ -746,12 +1398,44 @@
 					"group_id": 8,
 					"parameter": "Offset Adjust",
 					"normalized_parameter": "offset_adjust",
-					"type": "fixed16",
-					"index": ["red", "green", "blue", "luma"],
-					"minimum": -8,
-					"maximum": 8,
-					"default": 0.0,
-					"interpretation": "default 0.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "red",
+							"minimum": -8,
+							"maximum": 8,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "green",
+							"minimum": -8,
+							"maximum": 8,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 2,
+							"type": "fixed16",
+							"name": "blue",
+							"minimum": -8,
+							"maximum": 8,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 3,
+							"type": "fixed16",
+							"name": "luma",
+							"minimum": -8,
+							"maximum": 8,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						}
+					]
 				},
 				{
 					"id": 4,
@@ -759,12 +1443,26 @@
 					"group_id": 8,
 					"parameter": "Contrast Adjust",
 					"normalized_parameter": "contrast_adjust",
-					"type": "fixed16",
-					"index": ["pivot", "adj"],
-					"minimum": 0,
-					"maximum": 2,
-					"default": 1.0,
-					"interpretation": "default 1.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "pivot",
+							"minimum": 0,
+							"maximum": 1,
+							"default": 0.5,
+							"interpretation": "default 0.5"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "adj",
+							"minimum": 0,
+							"maximum": 2,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						}
+					]
 				},
 				{
 					"id": 5,
@@ -786,11 +1484,26 @@
 					"parameter": "Color Adjust",
 					"normalized_parameter": "color_adjust",
 					"type": "fixed16",
-					"index": ["hue", "sat"],
-					"minimum": 0,
-					"maximum": 2,
-					"default": 1.0,
-					"interpretation": "default 1.0"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "hue",
+							"minimum": -1,
+							"maximum": 1,
+							"default": 0.0,
+							"interpretation": "default 0.0"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "sat",
+							"minimum": 0,
+							"maximum": 2,
+							"default": 1.0,
+							"interpretation": "default 1.0"
+						}
+					]
 				},
 				{
 					"id": 7,
@@ -815,9 +1528,120 @@
 					"group_id": 10,
 					"parameter": "Codec",
 					"normalized_parameter": "codec",
-					"type": "int8",
-					"index": ["basic codec", "code variant"],
-					"interpretation": "Blackmagic RAW: 0 = Q0,\n1 = Q5,\n2 = 3:1,\n3 = 5:1,\n4 = 8:1,\n5 = 12:1"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "basic codec",
+							"minimum": 0,
+							"maximum": 3,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "RAW",
+									"dependency" : {	
+										"position": 1,
+										"type": "int8",
+										"name": "code variant",
+										"minimum": 0,
+										"maximum": 2,
+										"discrete": [
+											{
+												"value": 0,
+												"interpretation": "Uncompressed"
+											},
+											{
+												"value": 1,
+												"interpretation": "lossy 3:1"
+											},
+											{
+												"value": 2,
+												"interpretation": "lossy 4:1"
+											}
+										]
+									}
+								},
+								{
+									"value": 1,
+									"interpretation": "DNxHD"
+								},
+								{
+									"value": 2,
+									"interpretation": "ProRes",
+									"dependency" : {	
+										"position": 1,
+										"type": "int8",
+										"name": "code variant",
+										"minimum": 0,
+										"maximum": 5,
+										"discrete": [
+											{
+												"value": 0,
+												"interpretation": "HQ"
+											},
+											{
+												"value": 1,
+												"interpretation": "422"
+											},
+											{
+												"value": 2,
+												"interpretation": "LT"
+											},
+											{
+												"value": 3,
+												"interpretation": "Proxy"
+											},
+											{
+												"value": 4,
+												"interpretation": "444"
+											},
+											{
+												"value": 5,
+												"interpretation": "444XQ"
+											}
+										]
+									}
+								},
+								{
+									"value": 3,
+									"interpretation": "Blackmagic RAW",
+									"dependency" : {	
+										"position": 1,
+										"type": "int8",
+										"name": "code variant",
+										"minimum": 0,
+										"maximum": 5,
+										"discrete": [
+											{
+												"value": 0,
+												"interpretation": "Q0"
+											},
+											{
+												"value": 1,
+												"interpretation": "Q5"
+											},
+											{
+												"value": 2,
+												"interpretation": "3:1"
+											},
+											{
+												"value": 3,
+												"interpretation": "5:1"
+											},
+											{
+												"value": 4,
+												"interpretation": "8:1"
+											},
+											{
+												"value": 5,
+												"interpretation": "12:1"
+											}
+										]
+									}
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -825,15 +1649,91 @@
 					"group_id": 10,
 					"parameter": "Transport mode",
 					"normalized_parameter": "transport_mode",
-					"type": "int8",
 					"index": [
-						"mode",
-						"speed",
-						"flags",
-						"slot 1 storage medium",
-						"slot 2 storage medium"
-					],
-					"interpretation": "0 = CFast card, 1 = SD Card,\n2 = SSD Recorder,\n3 = USB"
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "mode",
+							"minimum": 0,
+							"maximum": 2,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Preview"
+								},
+								{
+									"value": 1,
+									"interpretation": "Play"
+								},
+								{
+									"value": 2,
+									"interpretation": "Record"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8",
+							"name": "speed",
+							"interpretation": "-ve Multiple speeds backwards, 0 = pause, +ve = multiple speeds forwards"
+						},
+						{	
+							"position": 2,
+							"type": "int8",
+							"name": "flags",
+							"interpretation": "1<<0 = loop, 1<<1 play all, 1<<5 disk1 active, 1<<6 disk2 active, 1<<7 time-lapse recording"
+						},
+						{	
+							"position": 3,
+							"type": "int8",
+							"name": "slot 1 storage medium",
+							"minimum": 0,
+							"maximum": 3,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "CFast card"
+								},
+								{
+									"value": 1,
+									"interpretation": "SD Card"
+								},
+								{
+									"value": 2,
+									"interpretation": "SSD Recorder"
+								},
+								{
+									"value": 3,
+									"interpretation": "USB"
+								}
+							]
+						},
+						{	
+							"position": 3,
+							"type": "int8",
+							"name": "slot 2 storage medium",
+							"minimum": 0,
+							"maximum": 3,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "CFast card"
+								},
+								{
+									"value": 1,
+									"interpretation": "SD Card"
+								},
+								{
+									"value": 2,
+									"interpretation": "SSD Recorder"
+								},
+								{
+									"value": 3,
+									"interpretation": "USB"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -841,9 +1741,25 @@
 					"group_id": 10,
 					"parameter": "Playback Control",
 					"normalized_parameter": "playback_control",
-					"type": "int8",
-					"index": ["clip"],
-					"interpretation": "0 = Previous,\n1 = Next"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "clip",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Previous"
+								},
+								{
+									"value": 1,
+									"interpretation": "Next"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 3,
@@ -868,11 +1784,24 @@
 					"group_id": 11,
 					"parameter": "Pan/Tilt Velocity",
 					"normalized_parameter": "pan_tilt_velocity",
-					"type": "fixed16",
-					"index": ["pan velocity", "tilt velocity"],
-					"minimum": -1,
-					"maximum": 1,
-					"interpretation": "-1.0 = full speed down,\n1.0 = full speed up"
+					"index": [
+						{	
+							"position": 0,
+							"type": "fixed16",
+							"name": "pan velocity",
+							"minimum": -1.0,
+							"maximum": 1.0,
+							"interpretation": "-1.0 = full speed left, 1.0 = full speed right"
+						},
+						{	
+							"position": 1,
+							"type": "fixed16",
+							"name": "tilt velocity",
+							"minimum": -1.0,
+							"maximum": 1.0,
+							"interpretation": "-1.0 = full speed down, 1.0 = full speed up"
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -881,10 +1810,36 @@
 					"parameter": "Memory Preset",
 					"normalized_parameter": "memory_preset",
 					"type": "int8",
-					"index": ["preset command", "=\npreset slot"],
-					"interpretation": "0 = reset,\n1 = store location, 2 = recall location",
-					"minimum": 0,
-					"maximum": 5
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "preset command",
+							"minimum": 0,
+							"maximum": 2,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "reset"
+								},
+								{
+									"value": 1,
+									"interpretation": "store location"
+								},
+								{
+									"value": 2,
+									"interpretation": "recall location"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8",
+							"name": "preset slot",
+							"minimum": 0.0,
+							"maximum": 5.0
+						}
+					]
 				}
 			]
 		},
@@ -899,10 +1854,15 @@
 					"group_id": 12,
 					"parameter": "Reel",
 					"normalized_parameter": "reel",
-					"type": "int16",
-					"index": ["reel"],
-					"minimum": 0,
-					"maximum": 999
+					"index": [
+						{	
+							"position": 0,
+							"type": "int16",
+							"name": "scene tags",
+							"minimum": 0,
+							"maximum": 999
+						}
+					]
 				},
 				{
 					"id": 1,
@@ -912,11 +1872,78 @@
 					"normalized_parameter": "scene_tags",
 					"type": "int8",
 					"index": [
-						"scene tags",
-						"interior / exterior",
-						"day / night"
-					],
-					"interpretation": "0 = Night\n1 = Day"
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "scene tags",
+							"minimum": -1,
+							"maximum": 5,
+							"discrete": [
+								{
+									"value": -1,
+									"interpretation": "None"
+								},
+								{
+									"value": 0,
+									"interpretation": "WS"
+								},
+								{
+									"value": 1,
+									"interpretation": "CU"
+								},
+								{
+									"value": 2,
+									"interpretation": "MS"
+								},
+								{
+									"value": 3,
+									"interpretation": "BCU"
+								},
+								{
+									"value": 4,
+									"interpretation": "MCU"
+								},
+								{
+									"value": 5,
+									"interpretation": "ECU"
+								}
+							]
+						},
+						{	
+							"position": 1,
+							"type": "int8",
+							"name": "interior / exterior",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Exterior"
+								},
+								{
+									"value": 1,
+									"interpretation": "Interior"
+								}
+							]
+						},
+						{	
+							"position": 2,
+							"type": "int8",
+							"name": "day / night",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Night"
+								},
+								{
+									"value": 1,
+									"interpretation": "Day"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -925,7 +1952,8 @@
 					"parameter": "Scene",
 					"normalized_parameter": "scene",
 					"type": "string",
-					"index": ["[0-4] = scene"]
+					"max_characters":4,
+					"index": []
 				},
 				{
 					"id": 3,
@@ -933,11 +1961,40 @@
 					"group_id": 12,
 					"parameter": "Take",
 					"normalized_parameter": "take",
-					"type": "int8",
-					"index": ["take number", "take tags"],
-					"minimum": 1,
-					"maximum": 99,
-					"interpretation": "1 = None\n0 = PU\n1 = VFX\n2 = SER"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "take number",
+							"minimum": 1,
+							"maximum": 99
+						},
+						{	
+							"position": 1,
+							"type": "int8",
+							"name": "take tags",
+							"minimum": -1,
+							"maximum": 2,
+							"discrete": [
+								{
+									"value": -1,
+									"interpretation": "None"
+								},
+								{
+									"value": 0,
+									"interpretation": "PU"
+								},
+								{
+									"value": 1,
+									"interpretation": "VFX"
+								},
+								{
+									"value": 2,
+									"interpretation": "SER"
+								}
+							]
+						}
+					]
 				},
 				{
 					"id": 4,
@@ -946,7 +2003,7 @@
 					"parameter": "Good Take",
 					"normalized_parameter": "good_take",
 					"type": "void",
-					"index": ["good take"]
+					"index": []
 				},
 				{
 					"id": 5,
@@ -955,7 +2012,8 @@
 					"parameter": "Camera ID",
 					"normalized_parameter": "camera_id",
 					"type": "string",
-					"index": ["[0-28] = ID"]
+					"max_characters":28,
+					"index": []
 				},
 				{
 					"id": 6,
@@ -964,7 +2022,8 @@
 					"parameter": "Camera Operator",
 					"normalized_parameter": "camera_operator",
 					"type": "string",
-					"index": ["[0-28] = operator"]
+					"max_characters":28,
+					"index": []
 				},
 				{
 					"id": 7,
@@ -973,7 +2032,8 @@
 					"parameter": "Director",
 					"normalized_parameter": "director",
 					"type": "string",
-					"index": ["[0-27] = director"]
+					"max_characters":27,
+					"index": []
 				},
 				{
 					"id": 8,
@@ -982,7 +2042,8 @@
 					"parameter": "Project Name",
 					"normalized_parameter": "project_name",
 					"type": "string",
-					"index": ["[0-28] = project"]
+					"max_characters":28,
+					"index": []
 				},
 				{
 					"id": 9,
@@ -991,7 +2052,8 @@
 					"parameter": "Lens Type",
 					"normalized_parameter": "lens_type",
 					"type": "string",
-					"index": ["[0-55] = type"]
+					"max_characters":55,
+					"index": []
 				},
 				{
 					"id": 10,
@@ -1000,7 +2062,8 @@
 					"parameter": "Lens Iris",
 					"normalized_parameter": "lens_iris",
 					"type": "string",
-					"index": ["[0-19] = iris"]
+					"max_characters":19,
+					"index": []
 				},
 				{
 					"id": 11,
@@ -1009,7 +2072,8 @@
 					"parameter": "Lens Focal Length",
 					"normalized_parameter": "lens_focal_length",
 					"type": "string",
-					"index": ["[0-29] = focal length"]
+					"max_characters":29,
+					"index": []
 				},
 				{
 					"id": 12,
@@ -1018,7 +2082,8 @@
 					"parameter": "Lens Distance",
 					"normalized_parameter": "lens_distance",
 					"type": "string",
-					"index": ["[0-49] = distance"]
+					"max_characters":49,
+					"index": []
 				},
 				{
 					"id": 13,
@@ -1027,7 +2092,8 @@
 					"parameter": "Lens Filter",
 					"normalized_parameter": "lens_filter",
 					"type": "string",
-					"index": ["[0-29] = filter"]
+					"max_characters":29,
+					"index": []
 				},
 				{
 					"id": 14,
@@ -1035,9 +2101,35 @@
 					"group_id": 12,
 					"parameter": "Slate Mode",
 					"normalized_parameter": "slate_mode",
-					"type": "int8",
-					"index": ["type"],
-					"interpretation": "0 = Recording\n1 = Playback"
+					"index": [
+						{	
+							"position": 0,
+							"type": "int8",
+							"name": "type",
+							"minimum": 0,
+							"maximum": 1,
+							"discrete": [
+								{
+									"value": 0,
+									"interpretation": "Recording"
+								},
+								{
+									"value": 1,
+									"interpretation": "Playback"
+								}
+							]
+						}
+					]
+				},
+				{
+					"id": 15,
+					"group": "Metadata",
+					"group_id": 12,
+					"parameter": "Slate Target",
+					"normalized_parameter": "slate_target",
+					"type": "string",
+					"max_characters":31,
+					"index": []
 				}
 			]
 		}

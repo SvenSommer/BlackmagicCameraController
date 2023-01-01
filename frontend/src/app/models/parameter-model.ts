@@ -9,6 +9,7 @@ export class Parameter {
     public maximum: number;
     public interpretation : string;
     public type: string
+    public discrete: any
 
     constructor(data: any) {
         if (data) {
@@ -22,6 +23,7 @@ export class Parameter {
             this.maximum = data.maximum;
             this.interpretation = data.interpretation;
             this.type = data.type;
+            this.discrete = data.discrete;
         }
     }
 }

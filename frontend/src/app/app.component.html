@@ -1,60 +1,112 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  </head>
-  <body>
-    <ul class="nav nav-tabs">
-      <ng-container *ngFor='let camera of camerasData.cameras'>
-        <li  *ngIf="currentCamera == camera.id" class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Kamera {{camera.id}}<br>{{camera.name}}</a>
-        </li>
-        <li  *ngIf="currentCamera != camera.id" class="nav-item">
-          <a class="nav-link " aria-current="page" href="#"  (click)="changeCurrentCamera(camera.id)">Kamera {{camera.id}}<br>{{camera.name}}</a>
-        </li>
-      </ng-container>
-    </ul>
-    <div class="container text-left">
-      <div class="row">
-        <div class="col">
+  <!--Main Navigation-->
+  <header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
           <ng-container *ngFor='let group of groupsData'>
-            <nav class="nav flex-column">
-              <a class="nav-link active" aria-current="page" >{{group.name}}</a>
+            <ng-container *ngIf="group.id == currentGroup">
+              <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
+                <span>{{group.name}}</span>
+              </a>
               <ng-container *ngFor='let parameter of group.parameters'>
-                <a class="nav-link active" aria-current="page" href="#" (click)="changeCurrentParameter(parameter)" >-> {{parameter.parameter}}</a>
+                <ng-container *ngIf="parameter == currentParameter">
+                  <a href="#" class="list-group-item list-group-item-action py-2 ripple active" (click)="changeCurrentParameter(parameter)" aria-current="true" >
+                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="parameter != currentParameter">
+                  <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changeCurrentParameter(parameter)" aria-current="true"  style="background-color:rgb(0 0 0 / 5%)">  
+                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                  </a>
+                </ng-container>
               </ng-container>
-            </nav>
+            </ng-container>
+            <ng-container *ngIf="group.id != currentGroup">
+              <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
+                <span>{{group.name}}</span>
+              </a>
+            </ng-container>
           </ng-container>
         </div>
-        <div class="col">
-          <div class="col-sm-12" *ngIf="currentParameter">
-            <div class="card-body">
-              <h1>{{currentParameter.parameter}}</h1>
-              <div class="container text-left">
-                <div *ngIf="currentParameter.minimum">
-                  Minimum:   {{currentParameter.minimum}}<br>
-                </div>
-                <div *ngIf="currentParameter.maximum">
-                  Maximum:   {{currentParameter.maximum}}<br>
-                </div>
+      </div>
+    </nav>
+    <!-- Sidebar -->
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+      <!-- Container wrapper -->
+      <div *ngIf="camerasData" class="container-fluid">
+        <!-- Search form -->
+        <ul class="nav nav-tabs">
+          <ng-container *ngFor='let camera of camerasData.cameras'>
+            <li  *ngIf="currentCamera == camera.id" class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Kamera {{camera.id}}<br>{{camera.name}}</a>
+            </li>
+            <li  *ngIf="currentCamera != camera.id" class="nav-item">
+              <a class="nav-link" aria-current="page" href="#"  (click)="changeCurrentCamera(camera.id)">Kamera {{camera.id}}<br>{{camera.name}}</a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main style="margin-top: 85px;">
+    <div class="container" style="left: auto;">
+      <div  *ngIf="currentParameter">
+        <div class="card-body">
+          <h1>{{currentParameter.parameter}}</h1>
+          <div class="container text-left">
+            <div *ngIf="currentParameter.minimum">
+              Minimum:   {{currentParameter.minimum}}<br>
+            </div>
+            <div *ngIf="currentParameter.maximum">
+              Maximum:   {{currentParameter.maximum}}<br>
+            </div>
               Interpretation:   {{currentParameter.interpretation}}<br>
               Type:   {{currentParameter.type}}<br>
-                <div *ngIf="currentParameter.type != 'void'">
-                  <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum step="1" value="1.5" showTickMarks discrete>
-                    <input matSliderThumb >
-                  </mat-slider>
-                </div>
+            <div *ngIf="allowed_for_slider.includes(currentParameter.type) && !currentParameter.discrete && currentParameter.index.length < 1">
+              <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=currentSteps value="1.5" showTickMarks discrete>
+                <input matSliderThumb >
+              </mat-slider>
+            </div>
+            <div *ngIf="allowed_for_slider.includes(currentParameter.type) && !currentParameter.discrete && currentParameter.index.length > 0">
+              <div *ngFor="let i of currentParameter.index">
+                {{i}}
+                <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=currentSteps value="1.5" showTickMarks discrete>
+                  <input matSliderThumb >
+                </mat-slider>
               </div>
+            </div>
+            <div *ngIf="allowed_for_switches.includes(currentParameter.type)">
+              <mat-slide-toggle
+                (change)="onChange($event)">
+              </mat-slide-toggle>
+            </div>
+            <div *ngIf="currentParameter.discrete">
+              <mat-radio-group
+                aria-labelledby="radio-group-label"
+                class="radio-group"
+                [(ngModel)]="discreteParameterChoosen">
+                <mat-radio-button class="radio-button" *ngFor="let value of currentParameter.discrete" [value]="value">
+                  {{value.interpretation}}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </main>
+  <!--Main layout-->
 </html>
 
 
 <router-outlet></router-outlet>
+  

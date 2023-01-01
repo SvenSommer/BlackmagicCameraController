@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { CameraComponent } from './camera/camera.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule} from '@angular/material/slide-toggle'
+import { MatRadioModule} from '@angular/material/radio'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     AppRoutingModule,
     MatSliderModule,
-    BrowserAnimationsModule
+    MatRadioModule,
+    MatSlideToggleModule,
+    BrowserAnimationsModule,
+    FormsModule      
   ],
   providers: [],
   bootstrap: [AppComponent]
