@@ -1,16 +1,20 @@
+import { DiscreteParameter } from "./discreteParameter-model";
+import { Index } from "./index-model";
+type Nullable<T> = T | null;
 export class Parameter {
     public id: number;
     public group: string;
     public group_id : number;
     public parameter : string;
     public normalized_parameter : string;
-    public index : any;
-    public minimum: number;
-    public maximum: number;
+    public index : [Index];
+    public minimum: Nullable<number>;
+    public maximum: Nullable<number>;
     public interpretation : string;
     public type: string
-    public discrete: any
-
+    public discrete: [DiscreteParameter]
+    public value: any
+    
     constructor(data: any) {
         if (data) {
             this.id = data.id;

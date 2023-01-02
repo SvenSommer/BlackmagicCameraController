@@ -37,10 +37,10 @@
     <!-- Navbar -->
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
       <!-- Container wrapper -->
-      <div *ngIf="camerasData" class="container-fluid">
+      <div *ngIf="configData" class="container-fluid">
         <!-- Search form -->
         <ul class="nav nav-tabs">
-          <ng-container *ngFor='let camera of camerasData.cameras'>
+          <ng-container *ngFor='let camera of configData.cameras'>
             <li  *ngIf="currentCamera == camera.id" class="nav-item">
               <a class="nav-link active" aria-current="page" href="#">Kamera {{camera.id}}<br>{{camera.name}}</a>
             </li>
@@ -58,47 +58,71 @@
 
   <!--Main layout-->
   <main style="margin-top: 85px;">
-    <div class="container" style="left: auto;">
-      <div  *ngIf="currentParameter">
+    <div class="container">
+      <div  class="card" style="width: 40rem;"*ngIf="currentParameter">
+      <h2 class="card-header  text-left">{{currentParameter.parameter}}</h2>
         <div class="card-body">
-          <h1>{{currentParameter.parameter}}</h1>
-          <div class="container text-left">
-            <div *ngIf="currentParameter.minimum">
-              Minimum:   {{currentParameter.minimum}}<br>
+          <div *ngIf="param_is_single(currentParameter)">
+            <label class="label" *ngIf="currentParameter.interpretation">
+              Interpretation: {{currentParameter.interpretation}}
+            </label>
+            <div  *ngIf="param_is_void(currentParameter)">
+              <button  type="button" (click)="onSend(currentParameter)" class="btn btn-primary" >Send</button>
             </div>
-            <div *ngIf="currentParameter.maximum">
-              Maximum:   {{currentParameter.maximum}}<br>
+            <div *ngIf="param_is_input(currentParameter)">
+              <input type="text" class="form-control" [value]=currentParameter.value>
+              <button type="button" (click)="onSend(currentParameter)" class="btn btn-primary">Send</button>
             </div>
-              Interpretation:   {{currentParameter.interpretation}}<br>
-              Type:   {{currentParameter.type}}<br>
-            <div *ngIf="allowed_for_slider.includes(currentParameter.type) && !currentParameter.discrete && currentParameter.index.length < 1">
-              <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=currentSteps value="1.5" showTickMarks discrete>
-                <input matSliderThumb >
+            <div  *ngIf="param_is_slider(currentParameter)">
+              <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=calculateCurrentSteps(currentParameter.minimum,currentParameter.maximum)  discrete >
+                <input matSliderThumb [(ngModel)]="currentParameter.value">
               </mat-slider>
+              <button  type="button" (click)="onSend(currentParameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(currentParameter)">Send</button>
             </div>
-            <div *ngIf="allowed_for_slider.includes(currentParameter.type) && !currentParameter.discrete && currentParameter.index.length > 0">
-              <div *ngFor="let i of currentParameter.index">
-                {{i}}
-                <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=currentSteps value="1.5" showTickMarks discrete>
-                  <input matSliderThumb >
-                </mat-slider>
-              </div>
-            </div>
-            <div *ngIf="allowed_for_switches.includes(currentParameter.type)">
+            <div  *ngIf="param_is_switch(currentParameter)">
               <mat-slide-toggle
                 (change)="onChange($event)">
               </mat-slide-toggle>
             </div>
-            <div *ngIf="currentParameter.discrete">
+            <div  *ngIf="param_is_radiogroup(currentParameter)">
               <mat-radio-group
                 aria-labelledby="radio-group-label"
                 class="radio-group"
                 [(ngModel)]="discreteParameterChoosen">
-                <mat-radio-button class="radio-button" *ngFor="let value of currentParameter.discrete" [value]="value">
+                <mat-radio-button (change)="onChange_radioGroup($event)" class="radio-button" *ngFor="let value of currentParameter.discrete" [value]="value.value">
                   {{value.interpretation}}
                 </mat-radio-button>
               </mat-radio-group>
             </div>
+          </div>
+          <div *ngIf="!param_is_single(currentParameter)">
+            <ul class="list-group list-group-flush">
+              <div *ngFor="let i of currentParameter.index">
+                <li class="list-group-item">
+                  <h3 >{{i.name}}</h3>
+                  <label class="label" *ngIf="i.interpretation">
+                    Interpretation: {{i.interpretation}}
+                  </label>
+                  <div *ngIf="index_is_input(i)">
+                    <input type="text" class="form-control">
+                  </div>
+                  <div *ngIf="index_is_slider(i)">
+                      <mat-slider [min]=i.minimum [max]=i.maximum [step]=calculateCurrentSteps(i.minimum,i.maximum) value="1" showTickMarks discrete>
+                        <input matSliderThumb >
+                      </mat-slider>
+                  </div>
+                  <div  *ngIf="index_is_radiogroup(i)">
+                    <mat-radio-group
+                    aria-labelledby="radio-group-label"
+                    class="radio-group">
+                      <mat-radio-button class="radio-button" *ngFor="let discreteParam of i.discrete" [value]="discreteParam">
+                        {{discreteParam.interpretation}}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </li>
+              </div>
+            </ul>
           </div>
         </div>
       </div>
