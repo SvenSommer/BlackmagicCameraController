@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "06b8fa04-e9a4-478e-9f08-dd255839c40d",
+		"name": "CameraController",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Folder",
+			"item": [
+				{
+					"name": "Write config",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"config\": {\r\n        \"camera\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"Torkamera\",\r\n                \"no\": 1\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"Mittelline\",\r\n                \"no\": 2\r\n            },\r\n            {\r\n                \"id\": 3,\r\n                \"name\": \"Eckkamera Nordkurve\",\r\n                \"no\": 3\r\n            },\r\n            {\r\n                \"id\": 4,\r\n                \"name\": \"Eckkamera Ostkurve\",\r\n                \"no\": 4\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_ip}}:8000/config",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "8000",
+							"path": [
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read config",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{server_ip}}:8000/config",
+							"protocol": "http",
+							"host": [
+								"{{server_ip}}"
+							],
+							"port": "8000",
+							"path": [
+								"config"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Connect",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{server_ip}}:8000/connect/0",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"connect",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disconnect",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{server_ip}}:8000/connect/0",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"connect",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ports",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{server_ip}}:8000/ports",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"ports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Command Tally",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"camera\": 4,\r\n    \"active\": true,\r\n    \"preview\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server_ip}}:8000/command/tally",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"command",
+						"tally"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Command Value",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"camera\": 1,\r\n    \"groupId\": 0,\r\n    \"parameterId\": 6,\r\n    \"parameterType\": \"boolean\",\r\n    \"parameterValue\": \"True\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server_ip}}:8000/command/value",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"command",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Command Values",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"camera\": 1,\r\n    \"groupId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server_ip}}:8000/command/value",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"command",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{server_ip}}:8000/read",
+					"protocol": "http",
+					"host": [
+						"{{server_ip}}"
+					],
+					"port": "8000",
+					"path": [
+						"read"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "protcol",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server_ip",
+			"value": "192.168.178.175"
+		}
+	]
+}
