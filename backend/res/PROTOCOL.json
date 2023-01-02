@@ -698,8 +698,7 @@
 							"value": 3,
 							"interpretation": "high mic level input"
 						}
-					],
-					"interpretation": "0 = internal mic,\n1 = line level input,\n2 = low mic level input, 3 = high mic level input"
+					]
 				},
 				{
 					"id": 5,
