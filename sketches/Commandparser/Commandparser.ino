@@ -43,7 +43,7 @@ float values[64] = {};
 boolean newData = false;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   sdiTallyControl.begin();
   sdiCameraControl.begin();
 
@@ -120,7 +120,7 @@ void parseData() {      // split the data into its parts
       strtokIndx = strtok(NULL,","); 
       tallyPreview = atoi(strtokIndx);   
 
-      showTallyCommand();
+      //showTallyCommand();
       sendTallyCommmand();
 
     }
@@ -163,7 +163,7 @@ void parseData() {      // split the data into its parts
           } 
         }
       }
-    showGeneralCommand();
+    //showGeneralCommand();
     sendGeneralCommmand();
     }
 }

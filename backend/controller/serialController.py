@@ -67,7 +67,7 @@ class SerialController:
         
     def connect(self, port:list[str]):
         conncection = Connection(port)
-        conncection.setActiveConnection(serial.Serial(port, 9600, timeout=1))
+        conncection.setActiveConnection(serial.Serial(port, 115200, timeout=1))
         #time.sleep(10) 
         conncection.message = self.read()
         self.connection = conncection
