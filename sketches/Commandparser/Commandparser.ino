@@ -48,7 +48,7 @@ void setup() {
   sdiCameraControl.begin();
 
   Wire.setClock(400000);
-  sentShieldInfo();
+  //sentShieldInfo();
 
     // Enable both tally and control overrides
   sdiTallyControl.setOverride(true);
@@ -140,14 +140,11 @@ void parseData() {      // split the data into its parts
       strtokIndx = strtok(NULL, ","); 
       valuesLength = atoi(strtokIndx);  
 
-      if(strcmp(paramType,"string") == 0) {
-        Serial.println("Found String");
-        
+      if(strcmp(paramType,"string") == 0) {        
         strtokIndx = strtok(NULL, ""); 
         strcpy(stringValues, strtokIndx);     
  
       }else {
-         Serial.println("NOOOOO! String");
           if (valuesLength == 0) {
           strtokIndx = strtok(NULL,",");   
           value = atof(strtokIndx);   

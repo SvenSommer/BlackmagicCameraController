@@ -5,6 +5,7 @@ export class Parameter {
     public id: number;
     public group: string;
     public group_id : number;
+    public unique_id: string;
     public parameter : string;
     public normalized_parameter : string;
     public index : [Index];
@@ -14,11 +15,13 @@ export class Parameter {
     public type: string
     public discrete: [DiscreteParameter]
     public value: any
+    public visible: boolean;
     
     constructor(data: any) {
         if (data) {
             this.id = data.id;
             this.group = data.group;
+            this.unique_id = `${this.group_id}_${this.id}`; // Combine id and group_id to create unique identifier
             this.group_id = data.group_id;
             this.parameter = data.parameter;
             this.normalized_parameter = data.normalized_parameter;
@@ -28,6 +31,7 @@ export class Parameter {
             this.interpretation = data.interpretation;
             this.type = data.type;
             this.discrete = data.discrete;
+            this.visible = true;
         }
     }
 }

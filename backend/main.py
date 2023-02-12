@@ -1,5 +1,6 @@
 #export PATH="/home/robert/.local/bin"
 #C:\Users\robho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts\uvicorn.exe main:app --reload
+# python3.exe -m  uvicorn main:app --reload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from controller.configurationController import ConfigurationController

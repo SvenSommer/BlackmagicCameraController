@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
     ) { }
 
 
+  public userParameterConfig : any;
+  public configMode: boolean;
   public groupsData: any;
   public configData: ConfigFile;
   public currentCamera: any;
@@ -59,6 +61,21 @@ export class AppComponent implements OnInit {
   ngOnInit() {      
     this.bindData();
     this.changeCurrentCamera(1)
+  }
+
+  saveCameraName(camera: any) {
+    // Call your API or perform any other logic to save the updated camera name
+    console.log(`Saving camera name "${camera.name}" for camera ID ${camera.id}`);
+  }
+
+  toggleParameterVisibility(parameter: any) {
+    parameter.visible = !parameter.visible;
+    console.log( parameter.visible)
+  }
+
+  shouldDisplayGroup(group: any): boolean {
+    let hasParameters =  group.parameters.some((p: { visible: boolean; }) => p.visible);
+    return hasParameters || this.configMode
   }
 
   changeCurrentCamera(id: number){

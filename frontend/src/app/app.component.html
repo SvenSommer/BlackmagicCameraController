@@ -7,27 +7,40 @@
       <div class="position-sticky">
         <div class="list-group list-group-flush mx-3 mt-4">
           <ng-container *ngFor='let group of groupsData'>
-            <ng-container *ngIf="group.id == currentGroup">
-              <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
-                <span>{{group.name}}</span>
-              </a>
-              <ng-container *ngFor='let parameter of group.parameters'>
-                <ng-container *ngIf="parameter == currentParameter">
-                  <a href="#" class="list-group-item list-group-item-action py-2 ripple active" (click)="changeCurrentParameter(parameter)" aria-current="true" >
-                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="parameter != currentParameter">
-                  <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changeCurrentParameter(parameter)" aria-current="true"  style="background-color:rgb(0 0 0 / 5%)">  
-                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
-                  </a>
+            <ng-container *ngIf="shouldDisplayGroup(group)">
+              <ng-container *ngIf="group.id == currentGroup">
+                <ng-container *ngIf="group.id == currentGroup"></ng-container>
+                <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
+                  <span>{{group.name}}</span>
+                </a>
+                <ng-container *ngFor='let parameter of group.parameters'>
+                  <ng-container *ngIf="configMode">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="hideParam{{parameter.id}}" [checked]="parameter.visible" (change)="toggleParameterVisibility(parameter)">
+                      <a href="#"  (click)="changeCurrentParameter(parameter)">
+                        <label class="form-check-label">{{parameter.parameter}}</label>
+                      </a>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="!configMode">
+                    <ng-container *ngIf="parameter == currentParameter && parameter.visible">
+                      <a href="#" class="list-group-item list-group-item-action py-2 ripple active" (click)="changeCurrentParameter(parameter)" aria-current="true" >
+                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                      </a>
+                    </ng-container>
+                    <ng-container *ngIf="parameter != currentParameter  && parameter.visible">
+                      <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changeCurrentParameter(parameter)" aria-current="true"  style="background-color:rgb(0 0 0 / 5%)">  
+                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                      </a>
+                    </ng-container>
+                  </ng-container>
                 </ng-container>
               </ng-container>
-            </ng-container>
-            <ng-container *ngIf="group.id != currentGroup">
-              <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
-                <span>{{group.name}}</span>
-              </a>
+              <ng-container *ngIf="group.id != currentGroup">
+                <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
+                  <span>{{group.name}}</span>
+                </a>
+              </ng-container>
             </ng-container>
           </ng-container>
         </div>
@@ -42,12 +55,27 @@
         <ul class="nav nav-tabs">
           <ng-container *ngFor='let camera of configData.cameras'>
             <li  *ngIf="currentCamera == camera.id" class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Kamera {{camera.id}}<br>{{camera.name}}</a>
+              <a class="nav-link active" aria-current="page" href="#">
+                <ng-container *ngIf="!configMode; else editMode">
+                  Kamera {{camera.id}}<br>{{camera.name}}
+                </ng-container>
+                <ng-template #editMode>
+                  <input [(ngModel)]="camera.name" (keydown.enter)="saveCameraName(camera)">
+                </ng-template>
+              </a>
             </li>
             <li  *ngIf="currentCamera != camera.id" class="nav-item">
-              <a class="nav-link" aria-current="page" href="#"  (click)="changeCurrentCamera(camera.id)">Kamera {{camera.id}}<br>{{camera.name}}</a>
+              <a class="nav-link" aria-current="page" href="#"  (click)="changeCurrentCamera(camera.id)">
+                Kamera {{camera.id}}<br>{{camera.name}}
+              </a>
             </li>
           </ng-container>
+    
+          <li class="nav-item ml-auto">
+            ConfigMode<br>
+            <mat-slide-toggle [(ngModel)]="configMode">
+            </mat-slide-toggle>
+          </li>
         </ul>
       </div>
       <!-- Container wrapper -->
