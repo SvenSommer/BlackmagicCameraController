@@ -63,14 +63,31 @@ export class AppComponent implements OnInit {
     this.changeCurrentCamera(1)
   }
 
-  saveCameraName(camera: any) {
-    // Call your API or perform any other logic to save the updated camera name
-    console.log(`Saving camera name "${camera.name}" for camera ID ${camera.id}`);
+ 
+
+  onChangeConfigMode($event: MatSlideToggleChange){
+    if(!$event.checked){
+      this.protocolService.saveGroups(this.groupsData).subscribe(
+        (response) => {
+          // Handle the response from the server here
+        },
+        (error) => {
+          console.error(error);
+          // Handle any errors that occur here
+        });
+        this.configService.saveConfig(this.configData).subscribe(
+          (response) => {
+            // Handle the response from the server here
+          },
+          (error) => {
+            console.error(error);
+            // Handle any errors that occur here
+          });
+    }
   }
 
   toggleParameterVisibility(parameter: any) {
     parameter.visible = !parameter.visible;
-    console.log( parameter.visible)
   }
 
   shouldDisplayGroup(group: any): boolean {
@@ -135,12 +152,11 @@ export class AppComponent implements OnInit {
 
 
   bindData() {
-    this.protocolService.getProtocol().subscribe(
+    this.protocolService.getGroups().subscribe(
       (data) => {
         if (data) {
           if (data.body && data.status == 200) {
-            this.groupsData = data.body.protocol.groups;
-            console.log(  this.groupsData )
+            this.groupsData = data.body.groups;
           }
         }
       },

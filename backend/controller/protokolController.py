@@ -9,5 +9,10 @@ class ProtokollController:
         with open(filename, encoding="utf8") as json_file:
             return json.loads(json_file.read())    
         
-    def get_protocol(self) -> str:
-        return self.protocoll
+    def get_groups(self) -> str:
+        return self.protocoll['groups']
+    
+    def save_groups(self, groups_data: dict) -> None:
+        self.protocoll = groups_data
+        with open(self.file, 'w', encoding="utf8") as json_file:
+            json.dump(groups_data, json_file, ensure_ascii=False, indent=4)

@@ -1,13 +1,13 @@
 cameras:
 - id: 1
-  name: Torkamera
+  name: Name 1
   'no': 1
 - id: 2
-  name: Mittelline
+  name: Name 2
   'no': 2
 - id: 3
-  name: Eckkamera Nordkurve
+  name: Name 3
   'no': 3
 - id: 4
-  name: Eckkamera Ostkurve
+  name: Name 4
   'no': 4

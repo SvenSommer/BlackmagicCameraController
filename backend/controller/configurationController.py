@@ -33,9 +33,9 @@ class ConfigurationController:
         
     def write_initial_configfile(self):
         json_file = json.loads(self.text)
-        return self.write_configfile(json_file)
+        return self.save_config(json_file)
                 
-    def write_configfile(self, config_content):
+    def save_config(self, config_content):
         with open(self.configfile, 'w') as yamlfile:
             data = yaml.dump(config_content, yamlfile)
             return data

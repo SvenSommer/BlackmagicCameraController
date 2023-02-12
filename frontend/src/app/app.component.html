@@ -60,7 +60,7 @@
                   Kamera {{camera.id}}<br>{{camera.name}}
                 </ng-container>
                 <ng-template #editMode>
-                  <input [(ngModel)]="camera.name" (keydown.enter)="saveCameraName(camera)">
+                  <input [(ngModel)]="camera.name">
                 </ng-template>
               </a>
             </li>
@@ -73,7 +73,7 @@
     
           <li class="nav-item ml-auto">
             ConfigMode<br>
-            <mat-slide-toggle [(ngModel)]="configMode">
+            <mat-slide-toggle [(ngModel)]="configMode" (change)="onChangeConfigMode($event)">
             </mat-slide-toggle>
           </li>
         </ul>

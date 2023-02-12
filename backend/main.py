@@ -29,14 +29,19 @@ connection = None
 connectionresult = serial.try_connect(0)
 connection = connectionresult.getConnection()
 
-@app.get("/protocol")    
+@app.get("/groups")    
 async def get_protocol():
-    return{"protocol": protocol.get_protocol()}
+    return{"groups": protocol.get_groups()}
+
+@app.post("/groups")    
+async def save_groups(groups_data: dict):
+    protocol.save_groups(groups_data)
+    return {"message": "Groups data saved successfully"}
 
 @app.post("/config")    
-async def set_config():
-    data = configuration.write_initial_configfile()
-    return{"config":data}
+async def set_config(config_data: dict):
+    data = configuration.save_config(config_data)
+    return {"message": "Config data saved successfully"}
 
 @app.get("/config")    
 async def get_config():
