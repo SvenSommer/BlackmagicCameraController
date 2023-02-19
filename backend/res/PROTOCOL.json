@@ -16,7 +16,8 @@
                     "minimum": 0,
                     "maximum": 1,
                     "interpretation": "0.0 = near, 1.0 = far",
-                    "visible": false
+                    "visible": false,
+                    "presentationMode": "basic"
                 },
                 {
                     "id": 1,
@@ -27,7 +28,12 @@
                     "type": "void",
                     "index": [],
                     "interpretation": "trigger instantaneous autofocus",
-                    "visible": false
+                    "visible": true,
+                    "presentationMode": "basic",
+                    "caption": "Autofocus",
+                    "row": 1,
+                    "col": 1,
+                    "value": 32323
                 },
                 {
                     "id": 2,
@@ -53,7 +59,21 @@
                     "minimum": 0,
                     "maximum": 1,
                     "interpretation": "0.0 = smallest, 1.0 = largest",
-                    "visible": false
+                    "visible": true,
+                    "presentationMode": "basic",
+                    "caption": "Blende",
+                    "row": 3,
+                    "col": 1,
+                    "discrete": [
+                        {
+                            "value": 0,
+                            "interpretation": "F3,5"
+                        },
+                        {
+                            "value": 0.03,
+                            "interpretation": "F3,7"
+                        }
+                    ]
                 },
                 {
                     "id": 4,
@@ -76,7 +96,12 @@
                     "normalized_parameter": "instantaneous_auto_aperture",
                     "type": "void",
                     "index": [],
-                    "interpretation": "trigger instantaneous auto aperture"
+                    "interpretation": "trigger instantaneous auto aperture",
+                    "visible": true,
+                    "caption": "Autoblende",
+                    "row": 1,
+                    "presentationMode": "basic",
+                    "col": 2
                 },
                 {
                     "id": 6,
@@ -86,7 +111,13 @@
                     "normalized_parameter": "optical_image_stabilisation",
                     "type": "boolean",
                     "index": [],
-                    "interpretation": "true = enabled, false = disabled"
+                    "interpretation": "true = enabled, false = disabled",
+                    "visible": false,
+                    "row": 2,
+                    "caption": "image stabilisation",
+                    "presentationMode": "basic",
+                    "value": false,
+                    "col": 1
                 },
                 {
                     "id": 7,
@@ -98,7 +129,8 @@
                     "index": [],
                     "minimum": 0,
                     "maximum": 4000,
-                    "interpretation": "Move to specified focal length in mm, from minimum (0) to maximum (max). Set max accordingly!"
+                    "interpretation": "Move to specified focal length in mm, from minimum (0) to maximum (max). Set max accordingly!",
+                    "visible": false
                 },
                 {
                     "id": 8,
@@ -110,7 +142,37 @@
                     "index": [],
                     "minimum": 0,
                     "maximum": 1,
-                    "interpretation": "Move to specified focal length: 0.0 = wide, 1.0 = tele"
+                    "interpretation": "Move to specified focal length: 0.0 = wide, 1.0 = tele",
+                    "discrete": [
+                        {
+                            "value": 0,
+                            "interpretation": "1"
+                        },
+                        {
+                            "value": 0.22,
+                            "interpretation": "2"
+                        },
+                        {
+                            "value": 0.44,
+                            "interpretation": "2"
+                        }
+                    ],
+                    "visible": true,
+                    "value": 32,
+                    "selectedValue": [
+                        {
+                            "value": 0,
+                            "interpretation": "1"
+                        },
+                        {
+                            "value": 0.22,
+                            "interpretation": "2"
+                        },
+                        {
+                            "value": 0.44,
+                            "interpretation": "2"
+                        }
+                    ]
                 },
                 {
                     "id": 9,
@@ -241,7 +303,12 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "visible": false,
+                    "caption": "Video mode",
+                    "presentationMode": "basic",
+                    "row": 4,
+                    "col": 2
                 },
                 {
                     "id": 1,
@@ -255,38 +322,27 @@
                     "maximum": 128,
                     "discrete": [
                         {
-                            "value": 1,
-                            "interpretation": "100 ISO"
+                            "value": 200,
+                            "interpretation": "0 dB"
                         },
                         {
-                            "value": 2,
-                            "interpretation": "200 ISO"
+                            "value": 400,
+                            "interpretation": "6 dB"
                         },
                         {
-                            "value": 4,
-                            "interpretation": "400 ISO"
+                            "value": 800,
+                            "interpretation": "12 dB"
                         },
                         {
-                            "value": 8,
-                            "interpretation": "800 ISO"
-                        },
-                        {
-                            "value": 16,
-                            "interpretation": "1600 ISO"
-                        },
-                        {
-                            "value": 32,
-                            "interpretation": "3200 ISO"
-                        },
-                        {
-                            "value": 64,
-                            "interpretation": "6400 ISO"
-                        },
-                        {
-                            "value": 128,
-                            "interpretation": "12800 ISO"
+                            "value": 1600,
+                            "interpretation": "18 dB"
                         }
-                    ]
+                    ],
+                    "visible": true,
+                    "caption": "Gain",
+                    "row": 2,
+                    "col": 1,
+                    "presentationMode": "advanced"
                 },
                 {
                     "id": 2,
@@ -311,7 +367,8 @@
                             "maximum": 50,
                             "interpretation": "tint"
                         }
-                    ]
+                    ],
+                    "visible": false
                 },
                 {
                     "id": 3,
@@ -321,7 +378,8 @@
                     "normalized_parameter": "set_auto_wb",
                     "type": "void",
                     "index": [],
-                    "interpretation": "Calculate and set auto white balance"
+                    "interpretation": "Calculate and set auto white balance",
+                    "visible": false
                 },
                 {
                     "id": 4,
@@ -331,7 +389,8 @@
                     "normalized_parameter": "restore_auto_wb",
                     "type": "void",
                     "index": [],
-                    "interpretation": "Use latest auto white balance setting"
+                    "interpretation": "Use latest auto white balance setting",
+                    "visible": false
                 },
                 {
                     "id": 5,
@@ -343,7 +402,18 @@
                     "index": [],
                     "minimum": 1,
                     "maximum": 42000,
-                    "interpretation": "time in μs"
+                    "interpretation": "time in μs",
+                    "visible": true,
+                    "caption": "Belichtungszeit",
+                    "row": 7,
+                    "presentationMode": "basic",
+                    "col": 1,
+                    "discrete": [
+                        {
+                            "value": 18481,
+                            "interpretation": "1/50"
+                        }
+                    ]
                 },
                 {
                     "id": 6,
@@ -600,7 +670,13 @@
                     "index": [],
                     "minimum": -128,
                     "maximum": 127,
-                    "interpretation": "Gain in decibel (dB)"
+                    "interpretation": "Gain in decibel (dB)",
+                    "visible": false,
+                    "caption": "Gain",
+                    "row": 12,
+                    "presentationMode": "basic",
+                    "value": -71.9,
+                    "col": 1
                 },
                 {
                     "id": 14,
@@ -631,7 +707,8 @@
                     "index": [],
                     "minimum": 0,
                     "maximum": 1,
-                    "interpretation": "0.0 = minimum, 1.0 = maximum"
+                    "interpretation": "0.0 = minimum, 1.0 = maximum",
+                    "visible": false
                 },
                 {
                     "id": 1,
@@ -643,7 +720,8 @@
                     "index": [],
                     "minimum": 0.1,
                     "maximum": 1,
-                    "interpretation": "0.0 = minimum, 1.0 = maximum"
+                    "interpretation": "0.0 = minimum, 1.0 = maximum",
+                    "visible": false
                 },
                 {
                     "id": 2,
@@ -655,7 +733,8 @@
                     "index": [],
                     "minimum": 0.1,
                     "maximum": 1,
-                    "interpretation": "0.0 = minimum, 1.0 = maximum"
+                    "interpretation": "0.0 = minimum, 1.0 = maximum",
+                    "visible": false
                 },
                 {
                     "id": 3,
@@ -667,7 +746,8 @@
                     "index": [],
                     "minimum": 0.1,
                     "maximum": 1,
-                    "interpretation": "0.0 = minimum, 1.0 = maximum"
+                    "interpretation": "0.0 = minimum, 1.0 = maximum",
+                    "visible": false
                 },
                 {
                     "id": 4,
@@ -696,7 +776,8 @@
                             "value": 3,
                             "interpretation": "high mic level input"
                         }
-                    ]
+                    ],
+                    "visible": false
                 },
                 {
                     "id": 5,
@@ -721,7 +802,8 @@
                             "maximum": 1,
                             "interpretation": "0.0 = minimum, 1.0 = maximum"
                         }
-                    ]
+                    ],
+                    "visible": false
                 },
                 {
                     "id": 6,
@@ -731,7 +813,8 @@
                     "normalized_parameter": "phantom_power",
                     "type": "boolean",
                     "index": [],
-                    "interpretation": "true = powered, false = not powered"
+                    "interpretation": "true = powered, false = not powered",
+                    "visible": false
                 }
             ]
         },
