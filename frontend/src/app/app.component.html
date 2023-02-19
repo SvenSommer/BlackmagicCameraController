@@ -3,49 +3,51 @@
   <!--Main Navigation-->
   <header>
     <!-- Sidebar -->
-    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-      <div class="position-sticky">
-        <div class="list-group list-group-flush mx-3 mt-4">
-          <ng-container *ngFor='let group of groupsData'>
-            <ng-container *ngIf="shouldDisplayGroup(group)">
-              <ng-container *ngIf="group.id == currentGroup">
-                <ng-container *ngIf="group.id == currentGroup"></ng-container>
-                <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
-                  <span>{{group.name}}</span>
-                </a>
-                <ng-container *ngFor='let parameter of group.parameters'>
-                  <ng-container *ngIf="configMode">
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="hideParam{{parameter.id}}" [checked]="parameter.visible" (change)="toggleParameterVisibility(parameter)">
-                      <a href="#"  (click)="changeCurrentParameter(parameter)">
-                        <label class="form-check-label">{{parameter.parameter}}</label>
-                      </a>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="!configMode">
-                    <ng-container *ngIf="parameter == currentParameter && parameter.visible">
-                      <a href="#" class="list-group-item list-group-item-action py-2 ripple active" (click)="changeCurrentParameter(parameter)" aria-current="true" >
-                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
-                      </a>
+    <ng-container *ngIf="configMode">
+      <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+          <div class="list-group list-group-flush mx-3 mt-4">
+            <ng-container *ngFor='let group of groupsData'>
+              <ng-container *ngIf="shouldDisplayGroup(group)">
+                <ng-container *ngIf="group.id == currentGroup">
+                  <ng-container *ngIf="group.id == currentGroup"></ng-container>
+                  <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
+                    <span>{{group.name}}</span>
+                  </a>
+                  <ng-container *ngFor='let parameter of group.parameters'>
+                    <ng-container *ngIf="configMode">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="hideParam{{parameter.id}}" [checked]="parameter.visible" (change)="toggleParameterVisibility(parameter)">
+                        <a href="#"  (click)="changeCurrentParameter(parameter)">
+                          <label class="form-check-label">{{parameter.parameter}}</label>
+                        </a>
+                      </div>
                     </ng-container>
-                    <ng-container *ngIf="parameter != currentParameter  && parameter.visible">
-                      <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changeCurrentParameter(parameter)" aria-current="true"  style="background-color:rgb(0 0 0 / 5%)">  
-                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
-                      </a>
+                    <ng-container *ngIf="!configMode">
+                      <ng-container *ngIf="parameter == currentParameter && parameter.visible">
+                        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" (click)="changeCurrentParameter(parameter)" aria-current="true" >
+                          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                        </a>
+                      </ng-container>
+                      <ng-container *ngIf="parameter != currentParameter  && parameter.visible">
+                        <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changeCurrentParameter(parameter)" aria-current="true"  style="background-color:rgb(0 0 0 / 5%)">  
+                          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>{{parameter.parameter}}</span>
+                        </a>
+                      </ng-container>
                     </ng-container>
                   </ng-container>
                 </ng-container>
-              </ng-container>
-              <ng-container *ngIf="group.id != currentGroup">
-                <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
-                  <span>{{group.name}}</span>
-                </a>
+                <ng-container *ngIf="group.id != currentGroup">
+                  <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
+                    <span>{{group.name}}</span>
+                  </a>
+                </ng-container>
               </ng-container>
             </ng-container>
-          </ng-container>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </ng-container>
     <!-- Sidebar -->
     <!-- Navbar -->
     <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
@@ -87,74 +89,104 @@
   <!--Main layout-->
   <main style="margin-top: 85px;">
     <div class="container">
-      <div  class="card" style="width: 40rem;"*ngIf="currentParameter">
-      <h2 class="card-header  text-left">{{currentParameter.parameter}}</h2>
-        <div class="card-body">
-          <div *ngIf="param_is_single(currentParameter)">
-            <label class="label" *ngIf="currentParameter.interpretation">
-              Interpretation: {{currentParameter.interpretation}}
-            </label>
-            <div  *ngIf="param_is_void(currentParameter)">
-              <button  type="button" (click)="onSend(currentParameter)" class="btn btn-primary" >Send</button>
-            </div>
-            <div *ngIf="param_is_input(currentParameter)">
-              <input type="text" class="form-control" [value]=currentParameter.value>
-              <button type="button" (click)="onSend(currentParameter)" class="btn btn-primary">Send</button>
-            </div>
-            <div  *ngIf="param_is_slider(currentParameter)">
-              <mat-slider [min]=currentParameter.minimum [max]=currentParameter.maximum [step]=calculateCurrentSteps(currentParameter.minimum,currentParameter.maximum)  discrete >
-                <input matSliderThumb [(ngModel)]="currentParameter.value">
-              </mat-slider>
-              <button  type="button" (click)="onSend(currentParameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(currentParameter)">Send</button>
-            </div>
-            <div  *ngIf="param_is_switch(currentParameter)">
-              <mat-slide-toggle
-                (change)="onChange($event)">
-              </mat-slide-toggle>
-            </div>
-            <div  *ngIf="param_is_radiogroup(currentParameter)">
-              <mat-radio-group
-                aria-labelledby="radio-group-label"
-                class="radio-group"
-                [(ngModel)]="discreteParameterChoosen">
-                <mat-radio-button (change)="onChange_radioGroup($event)" class="radio-button" *ngFor="let value of currentParameter.discrete" [value]="value.value">
-                  {{value.interpretation}}
-                </mat-radio-button>
-              </mat-radio-group>
-            </div>
-          </div>
-          <div *ngIf="!param_is_single(currentParameter)">
-            <ul class="list-group list-group-flush">
-              <div *ngFor="let i of currentParameter.index">
-                <li class="list-group-item">
-                  <h3 >{{i.name}}</h3>
-                  <label class="label" *ngIf="i.interpretation">
-                    Interpretation: {{i.interpretation}}
-                  </label>
-                  <div *ngIf="index_is_input(i)">
-                    <input type="text" class="form-control">
-                  </div>
-                  <div *ngIf="index_is_slider(i)">
-                      <mat-slider [min]=i.minimum [max]=i.maximum [step]=calculateCurrentSteps(i.minimum,i.maximum) value="1" showTickMarks discrete>
-                        <input matSliderThumb >
-                      </mat-slider>
-                  </div>
-                  <div  *ngIf="index_is_radiogroup(i)">
-                    <mat-radio-group
-                    aria-labelledby="radio-group-label"
-                    class="radio-group">
-                      <mat-radio-button class="radio-button" *ngFor="let discreteParam of i.discrete" [value]="discreteParam">
-                        {{discreteParam.interpretation}}
-                      </mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </li>
+
+            <ng-container *ngIf="configMode">
+              <div  class="card" style="width: 40rem;"*ngIf="currentParameter">
+
+                <div class="card-body">
+              <h2 class="card-header  text-left">{{currentParameter.parameter}}</h2>
+              <label class="label" *ngIf="currentParameter.interpretation">
+                Interpretation: {{currentParameter.interpretation}}
+              </label>
+              <div class="form-group">
+                <label for="presentationMode">Presentation Mode:</label>
+                <select id="presentationMode" class="form-control" [(ngModel)]="currentParameter.presentationMode" (change)="setPresentationMode($event)">
+                  <option value="basic">Basic</option>
+                  <option value="advanced">Advanced</option>
+                </select>
               </div>
-            </ul>
+              <div class="form-group">
+                <label for="caption">Caption:</label>
+                <input id="caption" class="form-control" type="text" [(ngModel)]="currentParameter.caption" (change)="onCaptionChange($event)">
+              </div>
+              <div class="form-group">
+                <label for="row">Row:</label>
+                <input id="row" class="form-control" type="number" [(ngModel)]="currentParameter.row" (change)="onRowChange($event)">
+              </div>
+              <div class="form-group">
+                <label for="col">Col:</label>
+                <input id="col" class="form-control" type="number" [(ngModel)]="currentParameter.col" (change)="onColChange($event)">
+              </div>
+              <label *ngIf="isDiscreteParameter(currentParameter)">Edit Discrete Values</label>
+              <ul *ngIf="isDiscreteParameter(currentParameter)">
+
+                <li *ngFor="let value of currentParameter.discrete; let i = index;">
+                  <div class="form-group">
+                    <label for="value{{i}}">{{i+1}}. Value:</label>
+                    <input id="value{{i}}" class="form-control" type="number" [(ngModel)]="value.value" (change)="onDiscreteValueChange(currentParameter)">
+                  </div>
+                  <div class="form-group">
+                    <label for="interpretation{{i}}">Interpretation:</label>
+                    <input id="interpretation{{i}}" class="form-control" type="text" [(ngModel)]="value.interpretation" (change)="onDiscreteValueChange(currentParameter)">
+                  </div>
+                  <button type="button" class="btn btn-danger" (click)="onDeleteDiscreteValue(currentParameter, i)">Delete</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-primary" (click)="addDiscreteValue(currentParameter)">Add Discrete Value</button>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+            </ng-container>
+            <ng-container *ngIf="!configMode">
+              <div class="parameter-grid-container">
+                <div class="parameter-grid-row" *ngFor="let parameter of getParemetersbyRows()">
+                    <div class="parameter-grid-item" *ngIf="param_is_single(parameter)" [style.gridColumn]="parameter.col">
+                      <div *ngIf="param_is_void(parameter)">
+                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary">{{parameter.caption}}</button>
+                      </div>
+                      <div *ngIf="param_is_input(parameter)">
+                        <div class="form-group">
+                          <label for="presetValue">Preset Value:</label>
+                          <input id="presetValue" type="text" class="form-control" formControlName="presetValue">
+                        </div>
+                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary">Send</button>
+                      </div>
+                      <div *ngIf="param_is_slider(parameter)">
+                        <mat-slider [min]=parameter.minimum [max]=parameter.maximum [step]=calculateCurrentSteps(parameter.minimum,parameter.maximum) discrete>
+                          <input matSliderThumb [(ngModel)]="parameter.value">
+                        </mat-slider>
+                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(parameter)">Send</button>
+                      </div>
+                      <div *ngIf="param_is_switch(parameter)">
+                        <mat-slide-toggle (change)="onChange($event)">
+                        </mat-slide-toggle>
+                      </div>
+
+                        <ng-container *ngIf="param_is_radiogroup(parameter)">
+                          <div class="card">
+                            <h2 class="card-header text-left">{{parameter.parameter}}</h2>
+                            <div class="card-body">
+                              <div class="btn-group" role="group">
+                                <button *ngFor="let value of parameter.discrete"
+                                        [ngClass]="{'btn-primary': value.value === parameter.selectedValue, 'btn-secondary': value.value !== parameter.selectedValue}"
+                                        class="btn"
+                                        (click)="onDiscreteValueSelect(value)">
+                                  {{ value.interpretation }}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                    </div>
+
+                </div>
+              </div>
+              
+
+            </ng-container>
+          </div>
+
   </main>
   <!--Main layout-->
 </html>
