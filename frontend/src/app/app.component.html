@@ -165,7 +165,7 @@
 
                         <ng-container *ngIf="param_is_radiogroup(parameter)">
                           <div class="card">
-                            <h2 class="card-header text-left">{{parameter.parameter}}</h2>
+                            <h2 class="card-header text-left">{{parameter.caption}}</h2>
                             <div class="card-body">
                               <div class="btn-group" role="group">
                                 <button *ngFor="let value of parameter.discrete"
