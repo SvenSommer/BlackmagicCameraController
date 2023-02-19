@@ -9,6 +9,7 @@ import { Parameter } from './models/parameter-model';
 import { CommandService } from './services/command.services';
 import { ConfigService } from './services/config.services';
 import { ProtocolService } from './services/protocol.services';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 
 type Nullable<T> = T | null;
@@ -23,11 +24,12 @@ export class AppComponent implements OnInit {
   constructor(
     private protocolService: ProtocolService, 
     private configService: ConfigService,
-    private commandService: CommandService
+    private commandService: CommandService,
+    private fb: FormBuilder
     ) { }
 
-
   public userParameterConfig : any;
+  public maxRows: number;
   public configMode: boolean;
   public groupsData: any;
   public configData: ConfigFile;
@@ -60,8 +62,61 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {      
     this.bindData();
-    this.changeCurrentCamera(1)
+    this.changeCurrentCamera(1);
+    this.maxRows = Math.max(...this.groupsData.map((group: { parameters: any[]; }) => Math.max(...group.parameters.map(p => p.row))));
   }
+
+  getParemetersbyRows(): Parameter[] {
+    const flattened = this.groupsData
+      .flatMap((group: { parameters: any }) => group.parameters)
+      .filter((parameter: { visible: boolean }) => parameter.visible)
+      .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
+  
+  
+    console.log('flattened:', flattened);
+  
+    return flattened
+  
+
+  }
+  
+
+newDiscreteValue: DiscreteParameter = new DiscreteParameter({});
+
+isDiscreteParameter(parameter: Parameter): boolean {
+  return parameter.discrete !== undefined;
+}
+
+onDiscreteValueSelect(value: DiscreteParameter) {
+  // Set the selected value as the new value of the current parameter
+  this.currentParameter.value = value.value;
+
+  // Find the index of the selected value in the current parameter's discrete array
+  const index = this.currentParameter.discrete.findIndex((v) => v.value === value.value);
+
+  // Update the discrete array so that the selected value has a different color
+  this.currentParameter.selectedValue = this.currentParameter.discrete.map((v) => {
+    if (v.value === value.value) {
+      this.currentParameter.selectedValue = true; // set the selected property to true
+    } else {
+      this.currentParameter.selectedValue = false; // set the selected property to false
+    }
+    return v;
+  });
+}
+
+addDiscreteValue(parameter: Parameter): void {
+  this.currentParameter.discrete.push(new DiscreteParameter(this.newDiscreteValue));
+  this.newDiscreteValue = new DiscreteParameter({});
+}
+
+onDeleteDiscreteValue(parameter: Parameter, index: number): void {
+  parameter.discrete.splice(index, 1);
+}
+
+onDiscreteValueChange(parameter: Parameter): void {
+  // do something when a discrete value is changed
+}
 
  
 
@@ -103,9 +158,48 @@ export class AppComponent implements OnInit {
     this.currentGroup = id
   }
 
+  setPresentationMode(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const mode = target.value;
+    if (mode) {
+      this.currentParameter.presentationMode = mode;
+      console.log(mode);
+    }
+  }
+
+  onCaptionChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const caption = target.value;
+    if (caption) {
+      this.currentParameter.caption = caption;
+      console.log(caption);
+    }
+  }
+  
+  onRowChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const row = parseInt(target.value);
+    if (!isNaN(row)) {
+      this.currentParameter.row = row;
+      console.log(row);
+    }
+  }
+
+  onColChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const col = parseInt(target.value);
+    if (!isNaN(col)) {
+      this.currentParameter.col = col;
+      console.log(col);
+    }
+  }
+
+ 
   changeCurrentParameter(parameter: Parameter){
     this.currentParameter = parameter
   }
+
+  
 
   public calculateCurrentSteps(minimum: Nullable<number>, maximum: Nullable<number>) {
     if (minimum != null && maximum != null)

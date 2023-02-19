@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,7 +10,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle'
 import { MatRadioModule} from '@angular/material/radio'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     MatRadioModule,
     MatSlideToggleModule,
     BrowserAnimationsModule,
-    FormsModule      
+    FormsModule,
+    ReactiveFormsModule // Add ReactiveFormsModule to imports
   ],
   providers: [],
   bootstrap: [AppComponent]
