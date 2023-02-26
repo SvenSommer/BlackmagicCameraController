@@ -54,29 +54,27 @@
       <!-- Container wrapper -->
       <div *ngIf="configData" class="container-fluid">
         <!-- Search form -->
-        <ul class="nav nav-tabs">
-          <ng-container *ngFor='let camera of configData.cameras'>
-            <li  *ngIf="currentCamera == camera.id" class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">
-                <ng-container *ngIf="!configMode; else editMode">
-                  Kamera {{camera.id}}<br>{{camera.name}}
-                </ng-container>
-                <ng-template #editMode>
-                  <input [(ngModel)]="camera.name">
-                </ng-template>
-              </a>
-            </li>
-            <li  *ngIf="currentCamera != camera.id" class="nav-item">
-              <a class="nav-link" aria-current="page" href="#"  (click)="changeCurrentCamera(camera.id)">
-                Kamera {{camera.id}}<br>{{camera.name}}
-              </a>
-            </li>
-          </ng-container>
-    
-          <li class="nav-item ml-auto">
-            ConfigMode<br>
-            <mat-slide-toggle [(ngModel)]="configMode" (change)="onChangeConfigMode($event)">
-            </mat-slide-toggle>
+        <ul class="nav nav-tabs ms-auto">
+          <div class="presentation-modes">
+            <button type="button" class="btn btn-primary" [class.active]="currentPresentationMode === 'basic'" (click)="currentPresentationMode = 'basic'">Basic</button>
+            <button type="button" class="btn btn-primary" [class.active]="currentPresentationMode === 'advanced'" (click)="currentPresentationMode = 'advanced'">Advanced</button>
+          </div>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-gear"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li class="dropdown-item">
+                <mat-slide-toggle [(ngModel)]="configMode" (change)="onChangeConfigMode($event)">
+                  ConfigMode
+                </mat-slide-toggle>
+              </li>
+              <li class="dropdown-item">
+                <a class="nav-link" routerLink="/camera-settings">
+                  Camera Settings
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -88,105 +86,165 @@
 
   <!--Main layout-->
   <main style="margin-top: 85px;">
-    <div class="container">
+    <div class="container-fluid">
+      <ng-container *ngIf="configMode" >
+        <div class="card" style="width: 40rem;padding-left: 280px;"*ngIf="currentParameter">
+          <div class="card-body">
+            <h2 class="card-header  text-left">{{currentParameter.parameter}}</h2>
+            <label class="label" *ngIf="currentParameter.interpretation">
+              Interpretation: {{currentParameter.interpretation}}
+            </label>
+            <div class="form-group">
+              <label for="caption">Caption:</label>
+              <input id="caption" class="form-control" type="text" [(ngModel)]="currentParameter.caption" (change)="onCaptionChange($event)">
+            </div>
+           
+            <div class="form-group">
+              <label for="presentationMode">Presentation Mode:</label>
+              <select id="presentationMode" class="form-control" [(ngModel)]="currentParameter.presentationMode" (change)="setPresentationMode($event)">
+                <option value="basic">Basic</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cameraSpecific">Camera Specific:</label>
+              <select id="cameraSpecific" class="form-control" [(ngModel)]="currentParameter.cameraSpecific">
+                <option [value]="true">Yes</option>
+                <option [value]="false">No</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="row">Row:</label>
+              <input id="row" class="form-control" type="number" [(ngModel)]="currentParameter.row" (change)="onRowChange($event)">
+            </div>
+            <div class="form-group">
+              <label for="col">Col:</label>
+              <input id="col" class="form-control" type="number" [(ngModel)]="currentParameter.col" (change)="onColChange($event)">
+            </div>
+            <label *ngIf="isDiscreteParameter(currentParameter)">Edit Discrete Values</label>
+            <ul *ngIf="isDiscreteParameter(currentParameter)">
 
-            <ng-container *ngIf="configMode">
-              <div  class="card" style="width: 40rem;"*ngIf="currentParameter">
-
-                <div class="card-body">
-              <h2 class="card-header  text-left">{{currentParameter.parameter}}</h2>
-              <label class="label" *ngIf="currentParameter.interpretation">
-                Interpretation: {{currentParameter.interpretation}}
-              </label>
-              <div class="form-group">
-                <label for="presentationMode">Presentation Mode:</label>
-                <select id="presentationMode" class="form-control" [(ngModel)]="currentParameter.presentationMode" (change)="setPresentationMode($event)">
-                  <option value="basic">Basic</option>
-                  <option value="advanced">Advanced</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="caption">Caption:</label>
-                <input id="caption" class="form-control" type="text" [(ngModel)]="currentParameter.caption" (change)="onCaptionChange($event)">
-              </div>
-              <div class="form-group">
-                <label for="row">Row:</label>
-                <input id="row" class="form-control" type="number" [(ngModel)]="currentParameter.row" (change)="onRowChange($event)">
-              </div>
-              <div class="form-group">
-                <label for="col">Col:</label>
-                <input id="col" class="form-control" type="number" [(ngModel)]="currentParameter.col" (change)="onColChange($event)">
-              </div>
-              <label *ngIf="isDiscreteParameter(currentParameter)">Edit Discrete Values</label>
-              <ul *ngIf="isDiscreteParameter(currentParameter)">
-
-                <li *ngFor="let value of currentParameter.discrete; let i = index;">
-                  <div class="form-group">
-                    <label for="value{{i}}">{{i+1}}. Value:</label>
-                    <input id="value{{i}}" class="form-control" type="number" [(ngModel)]="value.value" (change)="onDiscreteValueChange(currentParameter)">
+              <li *ngFor="let value of currentParameter.discrete; let i = index;">
+                <div class="form-group">
+                  <label for="value{{i}}">{{i+1}}. Value:</label>
+                  <input id="value{{i}}" class="form-control" type="number" [(ngModel)]="value.value" >
+                </div>
+                <div class="form-group">
+                  <label for="interpretation{{i}}">Interpretation:</label>
+                  <input id="interpretation{{i}}" class="form-control" type="text" [(ngModel)]="value.interpretation">
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="defaultRadioDay{{currentParameter.unique_id}}" id="defaultRadioDay{{i}}"
+                    [value]="i" [checked]="value.value === currentParameter.presetValueDay" (change)="onDefaultDiscreteValueChangeDay(value.value, currentParameter)">
+                  <label class="form-check-label" for="defaultRadioDay{{i}}">
+                    Preset Value Day
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="defaultRadioNight{{currentParameter.unique_id}}" id="defaultRadioNight{{i}}"
+                    [value]="i" [checked]="value.value === currentParameter.presetValueNight" (change)="onDefaultDiscreteValueChangeNight(value.value, currentParameter)">
+                  <label class="form-check-label" for="defaultRadioNight{{i}}">
+                    Preset Value Night
+                  </label>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="onDeleteDiscreteValue(currentParameter, i)">Delete</button>
+              </li>
+              <li>
+                <button type="button" class="btn btn-primary" (click)="addDiscreteValue(currentParameter)">Add Discrete Value</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!configMode">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Grouping of buttons for all cameras -->
+            <div class="card">
+              <div class="card-body">
+                <div class="parameter-grid-row" *ngFor="let row of getParemetersbyRows('false') | groupBy:'row'">
+                  <div class="parameter-grid-item" *ngFor="let parameter of row.value" [style.gridColumn]="parameter.col">
+                    <div *ngIf="param_is_void(parameter)">
+                      <button type="button" (click)="onSendAllCameras(parameter)" class="btn btn-primary">{{parameter.caption}}</button>
+                    </div>
+                    <ng-container *ngIf="param_is_radiogroup(parameter)">
+                      <div class="card">
+                        <h2 class="card-header text-left">{{parameter.caption}}</h2>
+                        <div class="card-body">
+                          <div class="btn-group" role="group">
+                            <button *ngFor="let value of parameter.discrete"
+                                    [ngClass]="{'btn-primary': value.value === parameter.selectedValue, 'btn-secondary': value.value !== parameter.selectedValue}"
+                                    class="btn"
+                                    (click)="onDiscreteValueSelectAllCameras(parameter, value)">
+                              {{ value.interpretation }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
                   </div>
-                  <div class="form-group">
-                    <label for="interpretation{{i}}">Interpretation:</label>
-                    <input id="interpretation{{i}}" class="form-control" type="text" [(ngModel)]="value.interpretation" (change)="onDiscreteValueChange(currentParameter)">
-                  </div>
-                  <button type="button" class="btn btn-danger" (click)="onDeleteDiscreteValue(currentParameter, i)">Delete</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary" (click)="addDiscreteValue(currentParameter)">Add Discrete Value</button>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           </div>
-            </ng-container>
-            <ng-container *ngIf="!configMode">
-              <div class="parameter-grid-container">
-                <div class="parameter-grid-row" *ngFor="let parameter of getParemetersbyRows()">
-                    <div class="parameter-grid-item" *ngIf="param_is_single(parameter)" [style.gridColumn]="parameter.col">
-                      <div *ngIf="param_is_void(parameter)">
-                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary">{{parameter.caption}}</button>
-                      </div>
-                      <div *ngIf="param_is_input(parameter)">
-                        <div class="form-group">
-                          <label for="presetValue">Preset Value:</label>
-                          <input id="presetValue" type="text" class="form-control" formControlName="presetValue">
+        </div>
+        <div class="row">
+          <ng-container *ngFor="let camera of configData.cameras" >
+            <div class="col-md-3">
+              <div *ngIf="camera" class="card">
+                <div class="card-header">
+                  <h5>{{ camera.name }}</h5>
+                </div>
+                <div class="card-body">
+                  <div class="parameter-grid-row" *ngFor="let row of getParemetersbyRows('true') | groupBy:'row'">
+                    <div class="parameter-grid-item" *ngFor="let parameter of row.value" [style.gridColumn]="parameter.col">
+                      <ng-container *ngIf="param_is_single(parameter)">
+                        <div *ngIf="param_is_void(parameter)">
+                          <button type="button" (click)="onSend(camera,parameter)" class="btn btn-primary">{{parameter.caption}}</button>
                         </div>
-                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary">Send</button>
-                      </div>
-                      <div *ngIf="param_is_slider(parameter)">
-                        <mat-slider [min]=parameter.minimum [max]=parameter.maximum [step]=calculateCurrentSteps(parameter.minimum,parameter.maximum) discrete>
-                          <input matSliderThumb [(ngModel)]="parameter.value">
-                        </mat-slider>
-                        <button type="button" (click)="onSend(parameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(parameter)">Send</button>
-                      </div>
-                      <div *ngIf="param_is_switch(parameter)">
-                        <mat-slide-toggle (change)="onChange($event)">
-                        </mat-slide-toggle>
-                      </div>
-
+                        <div *ngIf="param_is_input(parameter)">
+                          <div class="form-group">
+                            <label for="presetValue">Preset Value:</label>
+                            <input id="presetValue" type="text" class="form-control" formControlName="presetValue">
+                          </div>
+                          <button type="button" (click)="onSend(camera,parameter)" class="btn btn-primary">Send</button>
+                        </div>
+                        <div *ngIf="param_is_slider(parameter)">
+                          <mat-slider [min]=parameter.minimum [max]=parameter.maximum [step]=calculateCurrentSteps(parameter.minimum,parameter.maximum) discrete>
+                            <input matSliderThumb [(ngModel)]="parameter.value">
+                          </mat-slider>
+                          <button type="button" (click)="onSend(camera, parameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(parameter)">Send</button>
+                        </div>
+                        <div *ngIf="param_is_switch(parameter)">
+                          <mat-slide-toggle (change)="onChange($event)">
+                          </mat-slide-toggle>
+                        </div>
                         <ng-container *ngIf="param_is_radiogroup(parameter)">
                           <div class="card">
                             <h2 class="card-header text-left">{{parameter.caption}}</h2>
-                            <div class="card-body">
-                              <div class="btn-group" role="group">
-                                <button *ngFor="let value of parameter.discrete"
-                                        [ngClass]="{'btn-primary': value.value === parameter.selectedValue, 'btn-secondary': value.value !== parameter.selectedValue}"
-                                        class="btn"
-                                        (click)="onDiscreteValueSelect(value)">
-                                  {{ value.interpretation }}
-                                </button>
-                              </div>
+                            <div class="card-body" style="display: flex; flex-wrap: wrap;">
+                              <button *ngFor="let value of parameter.discrete"
+                              [ngClass]="{'btn-primary': (value.value === parameter.value), 'btn-secondary': (value.value !== parameter.value) }"
+
+                                      class="btn m-1"
+                                      (click)="onDiscreteValueSelect(camera, parameter, value)">
+                                {{ value.interpretation }}
+                              </button>
                             </div>
                           </div>
                         </ng-container>
+                      </ng-container>
                     </div>
-
+                  </div>
                 </div>
               </div>
-              
+            </div>
 
-            </ng-container>
-          </div>
-
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
   </main>
   <!--Main layout-->
 </html>

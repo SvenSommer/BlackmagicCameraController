@@ -31,9 +31,10 @@
                     "visible": true,
                     "presentationMode": "basic",
                     "caption": "Autofocus",
-                    "row": 1,
+                    "row": 10,
                     "col": 1,
-                    "value": 32323
+                    "value": 32323,
+                    "cameraSpecific": "true"
                 },
                 {
                     "id": 2,
@@ -62,7 +63,7 @@
                     "visible": true,
                     "presentationMode": "basic",
                     "caption": "Blende",
-                    "row": 3,
+                    "row": 20,
                     "col": 1,
                     "discrete": [
                         {
@@ -72,8 +73,101 @@
                         {
                             "value": 0.03,
                             "interpretation": "F3,7"
+                        },
+                        {
+                            "value": 0.06,
+                            "interpretation": "F4"
+                        },
+                        {
+                            "value": 0.11,
+                            "interpretation": "F4,5"
+                        },
+                        {
+                            "value": 0.16,
+                            "interpretation": "F4,8"
+                        },
+                        {
+                            "value": 0.2,
+                            "interpretation": "F5"
+                        },
+                        {
+                            "value": 0.23,
+                            "interpretation": "F5,2"
+                        },
+                        {
+                            "value": 0.25,
+                            "interpretation": "F5,6"
+                        },
+                        {
+                            "value": 0.29,
+                            "interpretation": "F6,2"
+                        },
+                        {
+                            "value": 0.34,
+                            "interpretation": "F6,7"
+                        },
+                        {
+                            "value": 0.38,
+                            "interpretation": "F7,3"
+                        },
+                        {
+                            "value": 0.43,
+                            "interpretation": "F8"
+                        },
+                        {
+                            "value": 0.48,
+                            "interpretation": "F8,7"
+                        },
+                        {
+                            "value": 0.53,
+                            "interpretation": "F9,5"
+                        },
+                        {
+                            "value": 0.56,
+                            "interpretation": "F10"
+                        },
+                        {
+                            "value": 0.6,
+                            "interpretation": "F11"
+                        },
+                        {
+                            "value": 0.65,
+                            "interpretation": "F12"
+                        },
+                        {
+                            "value": 0.72,
+                            "interpretation": "F14"
+                        },
+                        {
+                            "value": 0.78,
+                            "interpretation": "F15"
+                        },
+                        {
+                            "value": 0.81,
+                            "interpretation": "F16"
+                        },
+                        {
+                            "value": 0.85,
+                            "interpretation": "F17"
+                        },
+                        {
+                            "value": 0.9,
+                            "interpretation": "F19"
+                        },
+                        {
+                            "value": 0.95,
+                            "interpretation": "F21"
+                        },
+                        {
+                            "value": 1,
+                            "interpretation": "F22"
                         }
-                    ]
+                    ],
+                    "value": 0.78,
+                    "cameraSpecific": "true",
+                    "presetValue": 0,
+                    "presetValueNight": 0.06,
+                    "presetValueDay": 0.03
                 },
                 {
                     "id": 4,
@@ -99,9 +193,10 @@
                     "interpretation": "trigger instantaneous auto aperture",
                     "visible": true,
                     "caption": "Autoblende",
-                    "row": 1,
+                    "row": 10,
                     "presentationMode": "basic",
-                    "col": 2
+                    "col": 2,
+                    "cameraSpecific": "true"
                 },
                 {
                     "id": 6,
@@ -154,11 +249,39 @@
                         },
                         {
                             "value": 0.44,
-                            "interpretation": "2"
+                            "interpretation": "3"
+                        },
+                        {
+                            "value": 0.66,
+                            "interpretation": "4"
+                        },
+                        {
+                            "value": 0.88,
+                            "interpretation": "5"
+                        },
+                        {
+                            "value": 1.1,
+                            "interpretation": "6"
+                        },
+                        {
+                            "value": 1.32,
+                            "interpretation": "7"
+                        },
+                        {
+                            "value": 1.54,
+                            "interpretation": "8"
+                        },
+                        {
+                            "value": 1.76,
+                            "interpretation": "9"
+                        },
+                        {
+                            "value": 2,
+                            "interpretation": "10"
                         }
                     ],
                     "visible": true,
-                    "value": 32,
+                    "value": 0.44,
                     "selectedValue": [
                         {
                             "value": 0,
@@ -172,7 +295,13 @@
                             "value": 0.44,
                             "interpretation": "2"
                         }
-                    ]
+                    ],
+                    "row": 30,
+                    "presentationMode": "basic",
+                    "col": 1,
+                    "caption": "Zoom",
+                    "cameraSpecific": "true",
+                    "presetValue": 0.44
                 },
                 {
                     "id": 9,
@@ -340,9 +469,11 @@
                     ],
                     "visible": true,
                     "caption": "Gain",
-                    "row": 2,
+                    "row": 10,
                     "col": 1,
-                    "presentationMode": "advanced"
+                    "presentationMode": "advanced",
+                    "cameraSpecific": "false",
+                    "value": 200
                 },
                 {
                     "id": 2,
@@ -405,15 +536,17 @@
                     "interpretation": "time in μs",
                     "visible": true,
                     "caption": "Belichtungszeit",
-                    "row": 7,
-                    "presentationMode": "basic",
+                    "row": 40,
+                    "presentationMode": "advanced",
                     "col": 1,
                     "discrete": [
                         {
                             "value": 18481,
                             "interpretation": "1/50"
                         }
-                    ]
+                    ],
+                    "value": 18481,
+                    "cameraSpecific": "false"
                 },
                 {
                     "id": 6,

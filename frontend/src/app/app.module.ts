@@ -10,11 +10,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle'
 import { MatRadioModule} from '@angular/material/radio'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GroupByPipe } from './pipes/group-by.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CameraComponent
+    CameraComponent,
+    GroupByPipe
   ],
   imports: [
     BrowserModule,

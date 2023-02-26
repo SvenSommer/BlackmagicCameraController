@@ -15,12 +15,14 @@ export class Parameter {
     public type: string
     public discrete: [DiscreteParameter]
     public value: any
+    public presetValueDay: any
+    public presetValueNight: any
     public visible: boolean;
     public presentationMode: string;
+    public cameraSpecific: boolean;
     public caption: string;
     public row: number;
     public col: number;
-    public selectedValue: any;
     
     constructor(data: any) {
         if (data) {
@@ -41,7 +43,10 @@ export class Parameter {
             this.caption = data.caption || data.parameter; // Use data.parameter if data.caption is empty
             this.row = data.row || 1;
             this.col = data.col || 1;
-            this.selectedValue = data.selectedValue;
+            this.presetValueDay = data.presetValueDay
+            this.presetValueNight = data.presetValueNight
+            this.cameraSpecific = data.cameraSpecific;
+           
         }
     }
 }

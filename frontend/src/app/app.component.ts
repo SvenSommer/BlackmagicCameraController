@@ -9,7 +9,7 @@ import { Parameter } from './models/parameter-model';
 import { CommandService } from './services/command.services';
 import { ConfigService } from './services/config.services';
 import { ProtocolService } from './services/protocol.services';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Camera } from './models/camera-model';
 
 
 type Nullable<T> = T | null;
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     private protocolService: ProtocolService, 
     private configService: ConfigService,
     private commandService: CommandService,
-    private fb: FormBuilder
+    
     ) { }
 
   public userParameterConfig : any;
@@ -35,17 +35,20 @@ export class AppComponent implements OnInit {
   public configData: ConfigFile;
   public currentCamera: any;
   public currentGroup: number;
+  public currentPresentationMode: string = "basic";
   public currentParameter: Parameter;
   public currentSteps: number;
   public discreteParameterChoosen: DiscreteParameter;
   public allowed_for_slider = ['int64','int32','int16','int8','fixed16']
   public allowed_for_switches = ['boolean']
+  public columnWidth: string;
 
   onChange($event: MatSlideToggleChange) {
     this.currentParameter.value = $event.checked
     var command = new Command(this.currentCamera, this.currentParameter);
     this.commandService.sendCommand_for_value(command);
   }
+
   onChange_radioGroup($event: any) {
     console.log($event)
     this.currentParameter.value = $event.value
@@ -53,72 +56,95 @@ export class AppComponent implements OnInit {
     this.commandService.sendCommand_for_value(command);
   }
 
-  onSend(parameter: Parameter) {
+  onSend(camera: Camera, parameter: Parameter) {
+    this.changeCurrentCamera(camera.id);
     if(parameter.value != undefined || parameter.type == "void") {
       var command = new Command(this.currentCamera, parameter);
       this.commandService.sendCommand_for_value(command);
     }
+  }
+  onSendAllCameras(parameter: Parameter) {
+    this.configData.cameras.forEach(camera => {
+      this.changeCurrentCamera(camera.id);
+      if(parameter.value != undefined || parameter.type == "void") {
+        var command = new Command(this.currentCamera, parameter);
+        this.commandService.sendCommand_for_value(command);
+      }
+    });
+   
   }
 
   ngOnInit() {      
     this.bindData();
     this.changeCurrentCamera(1);
     this.maxRows = Math.max(...this.groupsData.map((group: { parameters: any[]; }) => Math.max(...group.parameters.map(p => p.row))));
+    const numCameras = this.configData?.cameras?.length ?? 0;
+    this.columnWidth = numCameras > 0 ? `col-md-${12 / numCameras}` : '';
   }
 
-  getParemetersbyRows(): Parameter[] {
+  getParemetersbyRows(isCameraSpecific: string): Parameter[] {
     const flattened = this.groupsData
       .flatMap((group: { parameters: any }) => group.parameters)
       .filter((parameter: { visible: boolean }) => parameter.visible)
+      .filter((p: { cameraSpecific: string }) => p.cameraSpecific === isCameraSpecific)
+      .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
       .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
-  
-  
     console.log('flattened:', flattened);
   
     return flattened
-  
-
   }
-  
 
-newDiscreteValue: DiscreteParameter = new DiscreteParameter({});
 
-isDiscreteParameter(parameter: Parameter): boolean {
-  return parameter.discrete !== undefined;
-}
 
-onDiscreteValueSelect(value: DiscreteParameter) {
-  // Set the selected value as the new value of the current parameter
-  this.currentParameter.value = value.value;
+  newDiscreteValue: DiscreteParameter = new DiscreteParameter({});
 
-  // Find the index of the selected value in the current parameter's discrete array
-  const index = this.currentParameter.discrete.findIndex((v) => v.value === value.value);
+  isDiscreteParameter(parameter: Parameter): boolean {
+    return parameter.discrete !== undefined;
+  }
 
-  // Update the discrete array so that the selected value has a different color
-  this.currentParameter.selectedValue = this.currentParameter.discrete.map((v) => {
-    if (v.value === value.value) {
-      this.currentParameter.selectedValue = true; // set the selected property to true
-    } else {
-      this.currentParameter.selectedValue = false; // set the selected property to false
+  onDiscreteValueSelect(camera: Camera, parameter: Parameter, value: DiscreteParameter) {
+    this.changeCurrentCamera(camera.id);
+    // Set the selected value as the new value of the current parameter
+    parameter.value = value.value;
+
+    if(value != undefined) {
+      var command = new Command(camera.id, parameter);
+      this.commandService.sendCommand_for_value(command);
     }
-    return v;
-  });
-}
+    
+  }
 
-addDiscreteValue(parameter: Parameter): void {
-  this.currentParameter.discrete.push(new DiscreteParameter(this.newDiscreteValue));
-  this.newDiscreteValue = new DiscreteParameter({});
-}
+  onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
+    this.configData.cameras.forEach(camera => {
+      this.changeCurrentCamera(camera.id);
+      // Set the selected value as the new value of the current parameter
+      parameter.value = value.value;
 
-onDeleteDiscreteValue(parameter: Parameter, index: number): void {
-  parameter.discrete.splice(index, 1);
-}
+      if(value != undefined) {
+        var command = new Command(camera.id, parameter);
+        this.commandService.sendCommand_for_value(command);
+      }
+    });
+  }
 
-onDiscreteValueChange(parameter: Parameter): void {
-  // do something when a discrete value is changed
-}
+  onDefaultDiscreteValueChangeDay(valueIndex: number, parameter: Parameter): void {
+    parameter.presetValueDay = valueIndex;
+  }
 
- 
+  onDefaultDiscreteValueChangeNight(valueIndex: number, parameter: Parameter): void {
+    parameter.presetValueNight = valueIndex;
+  }
+
+  addDiscreteValue(parameter: Parameter): void {
+    parameter.discrete.push(new DiscreteParameter(this.newDiscreteValue));
+    this.newDiscreteValue = new DiscreteParameter({});
+  }
+
+  onDeleteDiscreteValue(parameter: Parameter, index: number): void {
+    parameter.discrete.splice(index, 1);
+  }
+
+
 
   onChangeConfigMode($event: MatSlideToggleChange){
     if(!$event.checked){
@@ -198,8 +224,6 @@ onDiscreteValueChange(parameter: Parameter): void {
   changeCurrentParameter(parameter: Parameter){
     this.currentParameter = parameter
   }
-
-  
 
   public calculateCurrentSteps(minimum: Nullable<number>, maximum: Nullable<number>) {
     if (minimum != null && maximum != null)
