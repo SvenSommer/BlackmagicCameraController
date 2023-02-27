@@ -1,4 +1,3 @@
-import { Camera } from "./camera-model";
 import { Parameter } from "./parameter-model";
 
 export class Command {

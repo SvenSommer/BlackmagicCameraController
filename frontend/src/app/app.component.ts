@@ -10,6 +10,7 @@ import { CommandService } from './services/command.services';
 import { ConfigService } from './services/config.services';
 import { ProtocolService } from './services/protocol.services';
 import { Camera } from './models/camera-model';
+import { CameraState } from './models/cameraState-model';
 
 
 type Nullable<T> = T | null;
@@ -33,7 +34,6 @@ export class AppComponent implements OnInit {
   public configMode: boolean;
   public groupsData: any;
   public configData: ConfigFile;
-  public currentCamera: any;
   public currentGroup: number;
   public currentPresentationMode: string = "basic";
   public currentParameter: Parameter;
@@ -42,41 +42,10 @@ export class AppComponent implements OnInit {
   public allowed_for_slider = ['int64','int32','int16','int8','fixed16']
   public allowed_for_switches = ['boolean']
   public columnWidth: string;
-
-  onChange($event: MatSlideToggleChange) {
-    this.currentParameter.value = $event.checked
-    var command = new Command(this.currentCamera, this.currentParameter);
-    this.commandService.sendCommand_for_value(command);
-  }
-
-  onChange_radioGroup($event: any) {
-    console.log($event)
-    this.currentParameter.value = $event.value
-    var command = new Command(this.currentCamera, this.currentParameter);
-    this.commandService.sendCommand_for_value(command);
-  }
-
-  onSend(camera: Camera, parameter: Parameter) {
-    this.changeCurrentCamera(camera.id);
-    if(parameter.value != undefined || parameter.type == "void") {
-      var command = new Command(this.currentCamera, parameter);
-      this.commandService.sendCommand_for_value(command);
-    }
-  }
-  onSendAllCameras(parameter: Parameter) {
-    this.configData.cameras.forEach(camera => {
-      this.changeCurrentCamera(camera.id);
-      if(parameter.value != undefined || parameter.type == "void") {
-        var command = new Command(this.currentCamera, parameter);
-        this.commandService.sendCommand_for_value(command);
-      }
-    });
-   
-  }
+  public cameraStates: { [key: string]: CameraState } = {};
 
   ngOnInit() {      
     this.bindData();
-    this.changeCurrentCamera(1);
     this.maxRows = Math.max(...this.groupsData.map((group: { parameters: any[]; }) => Math.max(...group.parameters.map(p => p.row))));
     const numCameras = this.configData?.cameras?.length ?? 0;
     this.columnWidth = numCameras > 0 ? `col-md-${12 / numCameras}` : '';
@@ -89,7 +58,7 @@ export class AppComponent implements OnInit {
       .filter((p: { cameraSpecific: string }) => p.cameraSpecific === isCameraSpecific)
       .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
       .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
-    console.log('flattened:', flattened);
+    //console.log('flattened:', flattened);
   
     return flattened
   }
@@ -102,30 +71,72 @@ export class AppComponent implements OnInit {
     return parameter.discrete !== undefined;
   }
 
-  onDiscreteValueSelect(camera: Camera, parameter: Parameter, value: DiscreteParameter) {
-    this.changeCurrentCamera(camera.id);
-    // Set the selected value as the new value of the current parameter
-    parameter.value = value.value;
-
-    if(value != undefined) {
-      var command = new Command(camera.id, parameter);
-      this.commandService.sendCommand_for_value(command);
-    }
-    
+  defineUniqueCameraStateId(camera: Camera, parameter: Parameter){
+    return `${camera.id}_${parameter.group_id}_${parameter.id}`;
   }
 
-  onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
-    this.configData.cameras.forEach(camera => {
-      this.changeCurrentCamera(camera.id);
-      // Set the selected value as the new value of the current parameter
-      parameter.value = value.value;
-
-      if(value != undefined) {
-        var command = new Command(camera.id, parameter);
-        this.commandService.sendCommand_for_value(command);
+  setCameraState(camera: Camera, parameter: Parameter) {
+    const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
+    this.cameraStates[uniqueIdentifier] = new CameraState({ cameraId: camera.id, parameterUniqueID: uniqueIdentifier, value: parameter.value });
+  }
+  
+  getCameraState(camera: Camera, parameter: Parameter) {
+    const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
+    return this.cameraStates[uniqueIdentifier]?.value;
+  }
+  
+  onChange(camera: Camera, event: MatSlideToggleChange) {
+    this.sendCommand(camera, { ...this.currentParameter, value: event.checked });
+  }
+  
+  onChange_radioGroup(camera: Camera, event: any) {
+    this.sendCommand(camera, { ...this.currentParameter, value: event.value });
+  }
+  
+  onSend(camera: Camera, parameter: Parameter) {
+    if (this.isValidParameterValue(parameter)) {
+      this.sendCommand(camera, parameter);
+    }
+  }
+  
+  onSendAllCameras(parameter: Parameter) {
+    this.configData.cameras.forEach((camera) => {
+      if (this.isValidParameterValue(parameter)) {
+        this.sendCommand(camera, parameter);
       }
     });
   }
+  
+  onDiscreteValueSelect(camera: Camera, parameter: Parameter, value: DiscreteParameter) {
+    if (value) {
+      parameter.value = value.value;
+      this.sendCommand(camera, parameter);
+    }
+  }
+  
+  onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
+    if (value) {
+      this.configData.cameras.forEach((camera) => {
+        parameter.value = value.value;
+        this.sendCommand(camera, parameter);
+      });
+    }
+  }
+  
+
+  
+  private isValidParameterValue(parameter: Parameter) {
+    return parameter.value !== undefined || parameter.type === "void";
+  }
+  
+  private sendCommand(camera: Camera, parameter: Parameter) {
+    if (this.isValidParameterValue(parameter)) {
+      this.setCameraState(camera, parameter);
+      const command = new Command(camera.id, parameter);
+      this.commandService.sendCommand_for_value(command);
+    }
+  }
+  
 
   onDefaultDiscreteValueChangeDay(valueIndex: number, parameter: Parameter): void {
     parameter.presetValueDay = valueIndex;
@@ -143,8 +154,6 @@ export class AppComponent implements OnInit {
   onDeleteDiscreteValue(parameter: Parameter, index: number): void {
     parameter.discrete.splice(index, 1);
   }
-
-
 
   onChangeConfigMode($event: MatSlideToggleChange){
     if(!$event.checked){
@@ -174,10 +183,6 @@ export class AppComponent implements OnInit {
   shouldDisplayGroup(group: any): boolean {
     let hasParameters =  group.parameters.some((p: { visible: boolean; }) => p.visible);
     return hasParameters || this.configMode
-  }
-
-  changeCurrentCamera(id: number){
-    this.currentCamera = id
   }
 
   changecurrentGroup(id: number){

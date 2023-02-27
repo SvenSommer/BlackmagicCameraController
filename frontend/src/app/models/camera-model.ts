@@ -1,7 +1,7 @@
 export class Camera {
     public id: number;
     public name: string;
-    public no: number
+    public no: number;
    
     constructor(data: any) {
         if (data) {

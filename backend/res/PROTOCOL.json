@@ -163,7 +163,7 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.78,
+                    "value": 0.48,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.06,
@@ -543,10 +543,67 @@
                         {
                             "value": 18481,
                             "interpretation": "1/50"
+                        },
+                        {
+                            "value": 15221,
+                            "interpretation": "1/60"
+                        },
+                        {
+                            "value": 12601,
+                            "interpretation": "1/75"
+                        },
+                        {
+                            "value": 10921,
+                            "interpretation": "1/90"
+                        },
+                        {
+                            "value": 9241,
+                            "interpretation": "1/100"
+                        },
+                        {
+                            "value": 7981,
+                            "interpretation": "1/120"
+                        },
+                        {
+                            "value": 6301,
+                            "interpretation": "1/150"
+                        },
+                        {
+                            "value": 5041,
+                            "interpretation": "1/180"
+                        },
+                        {
+                            "value": 3781,
+                            "interpretation": "1/250"
+                        },
+                        {
+                            "value": 2521,
+                            "interpretation": "1/360"
+                        },
+                        {
+                            "value": 2101,
+                            "interpretation": "1/500"
+                        },
+                        {
+                            "value": 1261,
+                            "interpretation": "1/725"
+                        },
+                        {
+                            "value": 1000,
+                            "interpretation": "1"
+                        },
+                        {
+                            "value": 841,
+                            "interpretation": "1/1450"
+                        },
+                        {
+                            "value": 1,
+                            "interpretation": "1/2000"
                         }
                     ],
                     "value": 18481,
-                    "cameraSpecific": "false"
+                    "cameraSpecific": "false",
+                    "presetValueDay": 9241
                 },
                 {
                     "id": 6,

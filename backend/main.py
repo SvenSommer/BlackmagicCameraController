@@ -10,7 +10,6 @@ from models.camera import CameraCollection
 from models.command_tally import CommandTally, TallyFormatter
 from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
-import json
 
 app = FastAPI(title="CameraController Backend", description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
 origins = ["*"]

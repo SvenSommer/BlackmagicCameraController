@@ -217,7 +217,7 @@
                           <button type="button" (click)="onSend(camera, parameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(parameter)">Send</button>
                         </div>
                         <div *ngIf="param_is_switch(parameter)">
-                          <mat-slide-toggle (change)="onChange($event)">
+                          <mat-slide-toggle (change)="onChange(camera, $event)">
                           </mat-slide-toggle>
                         </div>
                         <ng-container *ngIf="param_is_radiogroup(parameter)">
@@ -225,7 +225,7 @@
                             <h2 class="card-header text-left">{{parameter.caption}}</h2>
                             <div class="card-body" style="display: flex; flex-wrap: wrap;">
                               <button *ngFor="let value of parameter.discrete"
-                              [ngClass]="{'btn-primary': (value.value === parameter.value), 'btn-secondary': (value.value !== parameter.value) }"
+                              [ngClass]="{'btn-primary': (value.value === getCameraState(camera, parameter)), 'btn-secondary': (value.value !== getCameraState(camera, parameter)) }"
 
                                       class="btn m-1"
                                       (click)="onDiscreteValueSelect(camera, parameter, value)">

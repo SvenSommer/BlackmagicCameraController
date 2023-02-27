@@ -28,7 +28,7 @@ export class Parameter {
         if (data) {
             this.id = data.id;
             this.group = data.group;
-            this.unique_id = `${this.group_id}_${this.id}`; // Combine id and group_id to create unique identifier
+            this.unique_id = `${data.group_id}_${data.id}`; // Combine id and group_id to create unique identifier
             this.group_id = data.group_id;
             this.parameter = data.parameter;
             this.normalized_parameter = data.normalized_parameter;
