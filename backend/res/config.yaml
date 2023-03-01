@@ -1,13 +1,13 @@
 cameras:
 - id: 1
-  name: Name 1
+  name: Kamera 1
   'no': 1
 - id: 2
-  name: Name 2
+  name: Kamera 2
   'no': 2
 - id: 3
-  name: Name 3
+  name: Kamera 3
   'no': 3
 - id: 4
-  name: Name 4
+  name: Kamera 4
   'no': 4

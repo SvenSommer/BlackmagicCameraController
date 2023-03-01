@@ -14,9 +14,10 @@ export class Parameter {
     public interpretation : string;
     public type: string
     public discrete: [DiscreteParameter]
-    public value: any
-    public presetValueDay: any
-    public presetValueNight: any
+    public value: any;
+    public presetActive: boolean;
+    public presetValueDay: any;
+    public presetValueNight: any;
     public visible: boolean;
     public presentationMode: string;
     public cameraSpecific: boolean;
@@ -43,6 +44,7 @@ export class Parameter {
             this.caption = data.caption || data.parameter; // Use data.parameter if data.caption is empty
             this.row = data.row || 1;
             this.col = data.col || 1;
+            this.presetActive = data.presetActive
             this.presetValueDay = data.presetValueDay
             this.presetValueNight = data.presetValueNight
             this.cameraSpecific = data.cameraSpecific;

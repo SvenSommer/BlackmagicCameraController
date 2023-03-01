@@ -51,6 +51,17 @@ export class AppComponent implements OnInit {
     this.columnWidth = numCameras > 0 ? `col-md-${12 / numCameras}` : '';
   }
 
+  getVoidParameters(){
+    const flattened = this.groupsData
+    .flatMap((group: { parameters: any }) => group.parameters)
+    .filter((parameter: { visible: boolean }) => parameter.visible)
+    .filter((p: { cameraSpecific: string }) => p.cameraSpecific === 'true')
+    .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
+    .filter((p: Parameter) => this.param_is_void(p))
+    .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
+    return flattened
+  }
+
   getParemetersbyRows(isCameraSpecific: string): Parameter[] {
     const flattened = this.groupsData
       .flatMap((group: { parameters: any }) => group.parameters)
@@ -272,6 +283,56 @@ export class AppComponent implements OnInit {
    index_is_radiogroup(index: Index): boolean {
     return index.discrete && index.discrete.length > 0;
    }
+
+   getPresetParameter(){
+    return this.groupsData
+    .flatMap((group: { parameters: any }) => group.parameters)
+    .filter((parameter: {presetActive: boolean; }) => parameter.presetActive);
+   }
+
+   checkAndSendPresetParameter(value: any, parameter: Parameter, camera: Camera){
+    if(value != undefined){
+      parameter.value = value;
+      this.sendCommand(camera, parameter);
+    }
+   }
+
+   onSendPresetDay(camera: Camera){
+    const presetParameters =  this.getPresetParameter();
+    presetParameters.forEach((parameter: Parameter) => {
+      this.checkAndSendPresetParameter(parameter.presetValueDay, parameter, camera)
+    });
+   }
+
+   onSendPresetNight(camera: Camera){
+    const presetParameters =  this.getPresetParameter();
+    presetParameters.forEach((parameter: Parameter) => {
+      this.checkAndSendPresetParameter(parameter.presetValueNight, parameter, camera)
+    });
+   }
+
+   isPresetDay(camera: Camera) : boolean{
+    for (const parameter of this.getPresetParameter()) {
+      const cameraStateId = this.defineUniqueCameraStateId(camera, parameter);
+      const cameraState = this.cameraStates[cameraStateId];
+      if (!cameraState || cameraState.value !== parameter.presetValueDay) {
+        return false;
+      }
+    }
+    return true;
+   }
+
+   isPresetNight(camera: Camera){
+    for (const parameter of this.getPresetParameter()) {
+      const cameraStateId = this.defineUniqueCameraStateId(camera, parameter);
+      const cameraState = this.cameraStates[cameraStateId];
+      if (!cameraState || cameraState.value !== parameter.presetValueNight) {
+        return false;
+      }
+    }
+    return true;
+   }
+
 
 
   bindData() {

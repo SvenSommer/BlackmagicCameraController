@@ -23,12 +23,28 @@ background-color: #fbfbfb;
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
+  min-width: 80px;
 }
 
 .btn-secondary {
   color: #fff;
   background-color: #6c757d;
   border-color: #6c757d;
+  min-width: 80px;
+}
+
+.btn-primary-large {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  min-width: 120px;
+}
+
+.btn-secondary-large {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  min-width: 120px;
 }
 
 .parameter-grid-container {
