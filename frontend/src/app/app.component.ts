@@ -333,6 +333,25 @@ export class AppComponent implements OnInit {
     return true;
    }
 
+   onShowCurrentDiscreteValueChange(camera: Camera, discreteParameter: DiscreteParameter) {
+    if (!discreteParameter.cameraIdInactive) {
+      discreteParameter.cameraIdInactive = []; // Initialize array if undefined
+    }
+
+    if (discreteParameter.cameraIdInactive?.includes(camera.id)) {
+      discreteParameter.cameraIdInactive = discreteParameter.cameraIdInactive.filter(id => id !== camera.id);
+    } else {
+      discreteParameter.cameraIdInactive.push(camera.id);
+    }
+  }
+  
+  isCurrentDiscreteValueShown(camera: Camera, discreteParameter: DiscreteParameter) {
+    if (discreteParameter.cameraIdInactive?.includes(camera.id)) {
+      return true
+    }
+    return false
+  }
+
 
 
   bindData() {

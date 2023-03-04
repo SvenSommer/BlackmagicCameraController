@@ -68,11 +68,21 @@
                     "discrete": [
                         {
                             "value": 0,
-                            "interpretation": "F3,5"
+                            "interpretation": "F3,5",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
                         },
                         {
                             "value": 0.03,
-                            "interpretation": "F3,7"
+                            "interpretation": "F3,7",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
                         },
                         {
                             "value": 0.06,
@@ -88,7 +98,12 @@
                         },
                         {
                             "value": 0.2,
-                            "interpretation": "F5"
+                            "interpretation": "F5",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
                         },
                         {
                             "value": 0.23,
@@ -163,7 +178,7 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.03,
+                    "value": 0.85,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.06,
