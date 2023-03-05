@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-12">
+      <!-- Grouping of buttons for all cameras -->
+      <div *ngIf="getParemetersbyRows('false').length > 0">
+          <div  class="parameter-grid-row" *ngFor="let row of getParemetersbyRows('false') | groupBy:'row'">
+            <div class="parameter-grid-item" *ngFor="let parameter of row.value" [style.gridColumn]="parameter.col">
+              <div *ngIf="param_is_void(parameter)">
+                <button type="button" (click)="onSendAllCameras(parameter)" class="btn btn-primary">{{parameter.caption}}</button>
+              </div>
+              <ng-container *ngIf="param_is_radiogroup(parameter)">
+                <div class="card">
+                  <h2 class="card-header text-left">{{parameter.caption}}</h2>
+                  <div class="card-body">
+                    <div class="btn-group" role="group">
+                      <button *ngFor="let value of parameter.discrete"
+                              [ngClass]="{'btn-primary': value.value === parameter.selectedValue, 'btn-secondary': value.value !== parameter.selectedValue}"
+                              class="btn"
+                              (click)="onDiscreteValueSelectAllCameras(parameter, value)"
+                            >
+                        {{ value.interpretation }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <ng-container *ngFor="let camera of configData.cameras" >
+      <div class="col-md-3">
+        <div *ngIf="camera" class="card">
+          <div class="card-header">
+            <h5>{{ camera.name }}</h5>
+          </div>
+          <div class="card-body">
+            <div class="card">
+              <h2 class="card-header text-left">
+                  Preset
+                </h2>
+                <div class="card-body" style="display: flex; flex-wrap: wrap;">
+                  <button (click)="onSendPresetDay(camera)" class="btn m-1"  [ngClass]="{'btn-primary-large': isPresetDay(camera), 'btn-secondary-large': !isPresetDay(camera) }">Tag</button>
+                  <button (click)="onSendPresetNight(camera)" class="btn m-1" [ngClass]="{'btn-primary-large': isPresetNight(camera), 'btn-secondary-large': !isPresetNight(camera) }">Nacht</button>
+                </div>
+            </div>
+            <div class="card">
+              <h2 class="card-header text-left">
+                  General
+                </h2>
+                <div class="card-body" style="display: flex; flex-wrap: wrap;">
+                  <button *ngFor="let parameter of getVoidParameters()" class="btn m-1 btn-secondary-large"
+                          (click)="onSend(camera,parameter)">
+                    {{ parameter.caption }}
+                  </button>
+                </div>
+            </div>
+            <div class="parameter-grid-row" *ngFor="let row of getParemetersbyRows('true') | groupBy:'row'">
+              <div class="parameter-grid-item" *ngFor="let parameter of row.value" [style.gridColumn]="parameter.col">
+                <ng-container *ngIf="param_is_single(parameter)">
+                 
+                  <div *ngIf="param_is_input(parameter)">
+                    <div class="form-group">
+                      <label for="presetValue">Preset Value:</label>
+                      <input id="presetValue" type="text" class="form-control" formControlName="presetValue">
+                    </div>
+                    <button type="button" (click)="onSend(camera,parameter)" class="btn btn-primary">Send</button>
+                  </div>
+                  <div *ngIf="param_is_slider(parameter)">
+                    <mat-slider [min]=parameter.minimum [max]=parameter.maximum [step]=calculateCurrentSteps(parameter.minimum,parameter.maximum) discrete>
+                      <input matSliderThumb [(ngModel)]="parameter.value">
+                    </mat-slider>
+                    <button type="button" (click)="onSend(camera, parameter)" class="btn btn-primary" [disabled]="!is_valid_parameter(parameter)">Send</button>
+                  </div>
+                  <div *ngIf="param_is_switch(parameter)">
+                    <mat-slide-toggle (change)="onChange(camera, $event)">
+                    </mat-slide-toggle>
+                  </div>
+                  <ng-container *ngIf="param_is_radiogroup(parameter)">
+                    <div class="card" style="display: flex;">
+                      <div >
+                      <h2 class="card-header text-left">
+                        {{parameter.caption}}</h2>
+                        <div class="card-body" style="display: flex; flex-wrap: wrap;" >
+                          <div *ngFor="let discreteParameter of parameter.discrete">
+
+                          <div *ngIf="!isCurrentDiscreteValueShown(camera, discreteParameter)">
+                            <button [ngClass]="{'btn-primary': (discreteParameter.value === getCameraState(camera, parameter)), 'btn-secondary': (discreteParameter.value !== getCameraState(camera, parameter)) }"
+                                    class="btn m-1"
+                                    (click)="onDiscreteValueSelect(camera, parameter, discreteParameter)">
+                              {{ discreteParameter.interpretation }}
+                            </button>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="!param_is_single(parameter)">
+                  <ul class="list-group list-group-flush">
+                    <div *ngFor="let i of currentParameter.index">
+                      <li class="list-group-item">
+                        <h3 >{{i.name}}</h3>
+                        <label class="label" *ngIf="i.interpretation">
+                        Interpretation: {{i.interpretation}}
+                        </label>
+                        <div  *ngIf="index_is_radiogroup(i)">
+                          <mat-radio-group
+                          aria-labelledby="radio-group-label"
+                          class="radio-group">
+                            <mat-radio-button class="radio-button" *ngFor="let discreteParam of i.discrete" [value]="discreteParam">
+                              {{discreteParam.interpretation}}
+                            </mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                      </li>
+                    </div>
+                  </ul>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>

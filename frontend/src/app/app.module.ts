@@ -12,13 +12,15 @@ import { MatRadioModule} from '@angular/material/radio'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { ParameterSettingsComponent } from './parameter-settings/parameter-settings.component';
+import { ControlpanelComponent } from './controlpanel/controlpanel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CameraComponent,
     GroupByPipe,
-    ParameterSettingsComponent
+    ParameterSettingsComponent,
+    ControlpanelComponent
   ],
   imports: [
     BrowserModule,
