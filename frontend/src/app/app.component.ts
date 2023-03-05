@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ConfigFile } from './models/config-model';
 import { DiscreteParameter } from './models/discreteParameter-model';
 import { Parameter } from './models/parameter-model';
@@ -17,10 +16,11 @@ import { CameraState } from './models/cameraState-model';
 })
 export class AppComponent implements OnInit {
 
+
   title = "CamerControler"
   constructor(
-    private protocolService: ProtocolService, 
-    private configService: ConfigService,
+    public protocolService: ProtocolService, 
+    public configService: ConfigService,
 
     
     ) { }
@@ -46,27 +46,13 @@ export class AppComponent implements OnInit {
     this.columnWidth = numCameras > 0 ? `col-md-${12 / numCameras}` : '';
   }
 
-
-  onChangeConfigMode($event: MatSlideToggleChange){
-    if(!$event.checked){
-      this.protocolService.saveGroups(this.groupsData).subscribe(
-        (response) => {
-          // Handle the response from the server here
-        },
-        (error) => {
-          console.error(error);
-          // Handle any errors that occur here
-        });
-        this.configService.saveConfig(this.configData).subscribe(
-          (response) => {
-            // Handle the response from the server here
-          },
-          (error) => {
-            console.error(error);
-            // Handle any errors that occur here
-          });
+  changeConfigMode($event: boolean) {
+    this.configMode = ($event);
     }
-  }
+
+    onPresentationModeChange(mode: string) {
+      this.currentPresentationMode = mode;
+    }
 
   toggleParameterVisibility(parameter: any) {
     parameter.visible = !parameter.visible;

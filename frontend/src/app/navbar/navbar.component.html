@@ -1,0 +1,27 @@
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <div *ngIf="configData" class="container-fluid">
+      <ul class="nav nav-tabs ms-auto">
+        <div class="presentation-modes">
+          <button type="button" class="btn btn-primary" [class.active]="currentPresentationMode === 'basic'" (click)="onChangePresentationMode('basic')">Basic</button>
+          <button type="button" class="btn btn-primary" [class.active]="currentPresentationMode === 'advanced'" (click)="onChangePresentationMode('advanced')">Advanced</button>
+        </div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li class="dropdown-item">
+              <mat-slide-toggle [(ngModel)]="configMode" (change)="onChangeConfigMode($event)">
+                ConfigMode
+              </mat-slide-toggle>
+            </li>
+            <li class="dropdown-item">
+              <a class="nav-link" routerLink="/camera-settings">
+                Camera Settings
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>

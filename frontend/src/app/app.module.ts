@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { ParameterSettingsComponent } from './parameter-settings/parameter-settings.component';
 import { ControlpanelComponent } from './controlpanel/controlpanel.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ControlpanelComponent } from './controlpanel/controlpanel.component';
     CameraComponent,
     GroupByPipe,
     ParameterSettingsComponent,
-    ControlpanelComponent
+    ControlpanelComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
