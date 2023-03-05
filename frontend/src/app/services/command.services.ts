@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Command } from '../models/command-model';
+import { Parameter } from '../models/parameter-model';
+import { Camera } from '../models/camera-model';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +12,20 @@ import { Command } from '../models/command-model';
 export class CommandService {
     constructor(private http: HttpClient) {
     }
-    sendCommand_for_value(command: Command) {
+
+    public sendCommand(camera: Camera, parameter: Parameter) {
+      if (this.isValidParameterValue(parameter)) {
+
+        const command = new Command(camera.id, parameter);
+        this.sendCommand_for_value(command);
+      }
+    }
+
+    public isValidParameterValue(parameter: Parameter) {
+      return parameter.value !== undefined || parameter.type === "void";
+    }
+
+    private sendCommand_for_value(command: Command) {
         let headers = new HttpHeaders({
             'Content-Type': 'application/json',
           });

@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   constructor(
     private protocolService: ProtocolService, 
     private configService: ConfigService,
-    private commandService: CommandService,
+    private commandService: CommandService
     
     ) { }
 
@@ -76,12 +76,6 @@ export class AppComponent implements OnInit {
 
 
 
-  newDiscreteValue: DiscreteParameter = new DiscreteParameter({});
-
-  isDiscreteParameter(parameter: Parameter): boolean {
-    return parameter.discrete !== undefined;
-  }
-
   defineUniqueCameraStateId(camera: Camera, parameter: Parameter){
     return `${camera.id}_${parameter.group_id}_${parameter.id}`;
   }
@@ -90,30 +84,45 @@ export class AppComponent implements OnInit {
     const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
     this.cameraStates[uniqueIdentifier] = new CameraState({ cameraId: camera.id, parameterUniqueID: uniqueIdentifier, value: parameter.value });
   }
-  
+
   getCameraState(camera: Camera, parameter: Parameter) {
     const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
     return this.cameraStates[uniqueIdentifier]?.value;
   }
+
+
+  isCurrentDiscreteValueShown(camera: Camera, discreteParameter: DiscreteParameter) {
+    if (discreteParameter.cameraIdInactive?.includes(camera.id)) {
+      return true
+    }
+    return false
+  }
+
+  
+
   
   onChange(camera: Camera, event: MatSlideToggleChange) {
-    this.sendCommand(camera, { ...this.currentParameter, value: event.checked });
+    this.setCameraState(camera, this.currentParameter);
+    this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.checked });
   }
   
   onChange_radioGroup(camera: Camera, event: any) {
-    this.sendCommand(camera, { ...this.currentParameter, value: event.value });
+    this.setCameraState(camera, this.currentParameter);
+    this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.value });
   }
   
   onSend(camera: Camera, parameter: Parameter) {
-    if (this.isValidParameterValue(parameter)) {
-      this.sendCommand(camera, parameter);
+    if (this.commandService.isValidParameterValue(parameter)) {
+      this.setCameraState(camera, parameter);
+      this.commandService.sendCommand(camera, parameter);
     }
   }
   
   onSendAllCameras(parameter: Parameter) {
     this.configData.cameras.forEach((camera) => {
-      if (this.isValidParameterValue(parameter)) {
-        this.sendCommand(camera, parameter);
+      if (this.commandService.isValidParameterValue(parameter)) {
+        this.setCameraState(camera, parameter);
+        this.commandService.sendCommand(camera, parameter);
       }
     });
   }
@@ -121,7 +130,8 @@ export class AppComponent implements OnInit {
   onDiscreteValueSelect(camera: Camera, parameter: Parameter, value: DiscreteParameter) {
     if (value) {
       parameter.value = value.value;
-      this.sendCommand(camera, parameter);
+      this.setCameraState(camera, parameter);
+      this.commandService.sendCommand(camera, parameter);
     }
   }
   
@@ -129,42 +139,33 @@ export class AppComponent implements OnInit {
     if (value) {
       this.configData.cameras.forEach((camera) => {
         parameter.value = value.value;
-        this.sendCommand(camera, parameter);
+        this.setCameraState(camera, parameter);
+        this.commandService.sendCommand(camera, parameter);
       });
     }
   }
-  
 
-  
-  private isValidParameterValue(parameter: Parameter) {
-    return parameter.value !== undefined || parameter.type === "void";
-  }
-  
-  private sendCommand(camera: Camera, parameter: Parameter) {
-    if (this.isValidParameterValue(parameter)) {
+  checkAndSendPresetParameter(value: any, parameter: Parameter, camera: Camera){
+    if(value != undefined){
+      parameter.value = value;
       this.setCameraState(camera, parameter);
-      const command = new Command(camera.id, parameter);
-      this.commandService.sendCommand_for_value(command);
+      this.commandService.sendCommand(camera, parameter);
     }
-  }
+   }
   
 
-  onDefaultDiscreteValueChangeDay(valueIndex: number, parameter: Parameter): void {
-    parameter.presetValueDay = valueIndex;
-  }
+  
 
-  onDefaultDiscreteValueChangeNight(valueIndex: number, parameter: Parameter): void {
-    parameter.presetValueNight = valueIndex;
-  }
 
-  addDiscreteValue(parameter: Parameter): void {
-    parameter.discrete.push(new DiscreteParameter(this.newDiscreteValue));
-    this.newDiscreteValue = new DiscreteParameter({});
-  }
+  
 
-  onDeleteDiscreteValue(parameter: Parameter, index: number): void {
-    parameter.discrete.splice(index, 1);
-  }
+
+
+
+
+
+
+
 
   onChangeConfigMode($event: MatSlideToggleChange){
     if(!$event.checked){
@@ -200,41 +201,13 @@ export class AppComponent implements OnInit {
     this.currentGroup = id
   }
 
-  setPresentationMode(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const mode = target.value;
-    if (mode) {
-      this.currentParameter.presentationMode = mode;
-      console.log(mode);
-    }
-  }
 
-  onCaptionChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const caption = target.value;
-    if (caption) {
-      this.currentParameter.caption = caption;
-      console.log(caption);
-    }
-  }
+
+
   
-  onRowChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const row = parseInt(target.value);
-    if (!isNaN(row)) {
-      this.currentParameter.row = row;
-      console.log(row);
-    }
-  }
 
-  onColChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const col = parseInt(target.value);
-    if (!isNaN(col)) {
-      this.currentParameter.col = col;
-      console.log(col);
-    }
-  }
+
+
 
  
   changeCurrentParameter(parameter: Parameter){
@@ -290,12 +263,7 @@ export class AppComponent implements OnInit {
     .filter((parameter: {presetActive: boolean; }) => parameter.presetActive);
    }
 
-   checkAndSendPresetParameter(value: any, parameter: Parameter, camera: Camera){
-    if(value != undefined){
-      parameter.value = value;
-      this.sendCommand(camera, parameter);
-    }
-   }
+
 
    onSendPresetDay(camera: Camera){
     const presetParameters =  this.getPresetParameter();
@@ -333,24 +301,9 @@ export class AppComponent implements OnInit {
     return true;
    }
 
-   onShowCurrentDiscreteValueChange(camera: Camera, discreteParameter: DiscreteParameter) {
-    if (!discreteParameter.cameraIdInactive) {
-      discreteParameter.cameraIdInactive = []; // Initialize array if undefined
-    }
 
-    if (discreteParameter.cameraIdInactive?.includes(camera.id)) {
-      discreteParameter.cameraIdInactive = discreteParameter.cameraIdInactive.filter(id => id !== camera.id);
-    } else {
-      discreteParameter.cameraIdInactive.push(camera.id);
-    }
-  }
   
-  isCurrentDiscreteValueShown(camera: Camera, discreteParameter: DiscreteParameter) {
-    if (discreteParameter.cameraIdInactive?.includes(camera.id)) {
-      return true
-    }
-    return false
-  }
+
 
 
 
