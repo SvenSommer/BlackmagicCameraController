@@ -15,6 +15,7 @@ import { ParameterSettingsComponent } from './parameter-settings/parameter-setti
 import { ControlpanelComponent } from './controlpanel/controlpanel.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommandService } from './services/command.services';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { CommandService } from './services/command.services';
     GroupByPipe,
     ParameterSettingsComponent,
     ControlpanelComponent,
-    NavbarComponent
+    NavbarComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

@@ -228,12 +228,13 @@
                     "type": "boolean",
                     "index": [],
                     "interpretation": "true = enabled, false = disabled",
-                    "visible": false,
+                    "visible": true,
                     "row": 2,
                     "caption": "image stabilisation",
                     "presentationMode": "basic",
                     "value": false,
-                    "col": 1
+                    "col": 1,
+                    "cameraSpecific": "true"
                 },
                 {
                     "id": 7,
@@ -571,7 +572,7 @@
                     "minimum": 1,
                     "maximum": 42000,
                     "interpretation": "time in μs",
-                    "visible": true,
+                    "visible": false,
                     "caption": "Belichtungszeit",
                     "row": 40,
                     "presentationMode": "advanced",
@@ -828,7 +829,13 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "visible": false,
+                    "caption": "image stabilisation",
+                    "presentationMode": "basic",
+                    "cameraSpecific": "true",
+                    "row": 24,
+                    "col": 1
                 },
                 {
                     "id": 10,

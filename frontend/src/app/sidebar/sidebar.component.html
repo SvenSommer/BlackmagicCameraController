@@ -1,0 +1,28 @@
+<nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+          <div class="list-group list-group-flush mx-3 mt-4">
+            <ng-container *ngFor='let group of groupsData'>
+                <ng-container *ngIf="group.id == currentGroup">
+                  <ng-container *ngIf="group.id == currentGroup"></ng-container>
+                  <a href="#" class="list-group-item list-group-item-action py-2 active" (click)="changecurrentGroup(group.id)" aria-current="true">
+                    <span>{{group.name}}</span>
+                  </a>
+                  <ng-container *ngFor='let parameter of group.parameters'>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="hideParam{{parameter.id}}" [checked]="parameter.visible" (change)="toggleParameterVisibility(parameter)">
+                        <a href="#"  (click)="changeCurrentParameter(parameter)">
+                          <label class="form-check-label">{{parameter.parameter}}</label>
+                        </a>
+                      </div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="group.id != currentGroup">
+                  <a href="#" class="list-group-item list-group-item-action py-2 ripple" (click)="changecurrentGroup(group.id)" aria-current="true">
+                    <span>{{group.name}}</span>
+                  </a>
+                </ng-container>
+
+            </ng-container>
+          </div>
+        </div>
+      </nav>

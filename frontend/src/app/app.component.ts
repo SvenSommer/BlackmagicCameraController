@@ -40,22 +40,15 @@ export class AppComponent implements OnInit {
     this.currentPresentationMode = mode;
   }
 
-  toggleParameterVisibility(parameter: any) {
-    parameter.visible = !parameter.visible;
-  }
-
-  shouldDisplayGroup(group: any): boolean {
-    let hasParameters = group.parameters.some((p: { visible: boolean; }) => p.visible);
-    return hasParameters || this.configMode
-  }
-
-  changecurrentGroup(id: number) {
-    this.currentGroup = id
-  }
 
   changeCurrentParameter(parameter: Parameter) {
-    this.currentParameter = parameter
+    this.currentParameter = parameter;
   }
+
+
+
+
+
 
   bindData() {
     this.protocolService.getGroups().subscribe(
