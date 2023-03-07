@@ -5,9 +5,16 @@
       <div class="card">
         <h2 class="card-header  text-left">General Settings</h2>
         <div class="card-body">
-          <label class="label" *ngIf="currentParameter.interpretation">
-            Interpretation: {{currentParameter.interpretation}}
-          </label>
+          <div>
+            <label class="label" *ngIf="currentParameter.interpretation">
+              Interpretation: {{currentParameter.interpretation}}
+            </label>
+          </div>
+          <div>
+            <label class="label" *ngIf="currentParameter.type">
+              Type: {{currentParameter.type}}
+            </label>
+          </div>
           <div class="form-group">
             <label for="caption">Caption:</label>
             <input id="caption" class="form-control" type="text" [(ngModel)]="currentParameter.caption"
@@ -29,18 +36,12 @@
               <option [value]="false">No</option>
             </select>
           </div>
-
           <div class="form-group">
             <label for="row">Row:</label>
             <input id="row" class="form-control" type="number" [(ngModel)]="currentParameter.row"
               (change)="onRowChange($event)">
           </div>
-          <div class="form-group">
-            <label for="col">Col:</label>
-            <input id="col" class="form-control" type="number" [(ngModel)]="currentParameter.col"
-              (change)="onColChange($event)">
-          </div>
-          <div *ngIf="isDiscreteParameter(currentParameter)" class="form-group">
+          <div *ngIf="isPossibleDiscreteParameter(currentParameter)" class="form-group">
             <label for="presetActive">Preset Active</label>
             <select id="presetActive" class="form-control" [(ngModel)]="currentParameter.presetActive">
               <option [value]="true">Yes</option>
@@ -49,81 +50,11 @@
           </div>
         </div>
       </div>
-      <div class="card" *ngIf="isDiscreteParameter(currentParameter)">
-        <h2 class="card-header  text-left">Discrete Parameter</h2>
-        <div class="card-body">
-          <div *ngIf="isDiscreteParameter(currentParameter)">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Value</th>
-                  <th>Interpretation</th>
-                  <th>Default Value (Day)</th>
-                  <th>Default Value (Night)</th>
-                  <th *ngFor="let camera of configData.cameras">{{camera.name}}</th>
-
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let discreteParameter of currentParameter.discrete; let i = index;">
-                  <td>
-                    <div class="form-group">
-                      <input class="form-control" type="number" [(ngModel)]="discreteParameter.value"
-                        style="min-width: 80px;">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-group">
-                      <input class="form-control" type="text" [(ngModel)]="discreteParameter.interpretation"
-                        style="min-width: 80px;">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio"
-                        [name]="'defaultRadioDay' + currentParameter.unique_id" [value]="i"
-                        [checked]="discreteParameter.value === currentParameter.presetValueDay"
-                        (change)="onDefaultDiscreteValueChangeDay(discreteParameter.value, currentParameter)">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio"
-                        [name]="'defaultRadioNight' + currentParameter.unique_id" [value]="i"
-                        [checked]="discreteParameter.value === currentParameter.presetValueNight"
-                        (change)="onDefaultDiscreteValueChangeNight(discreteParameter.value, currentParameter)">
-                    </div>
-                  </td>
-                  <td *ngFor="let camera of configData.cameras">
-
-                    <button
-                      [ngClass]="{'btn-primary': (discreteParameter.value === getCameraState(camera, currentParameter)), 'btn-secondary': (discreteParameter.value !== getCameraState(camera, currentParameter)) }"
-                      class="btn m-1" (click)="onDiscreteValueSelect(camera, currentParameter, discreteParameter)">
-                      Test {{discreteParameter.interpretation}}/{{discreteParameter.value}}
-                    </button>
-                    <div class="form-check">
-                      <label for="'camera-' + camera.id" class="form-check-label"
-                        [for]="'camera-' + camera.id">invisible</label>
-                      <input class="form-check-input" type="checkbox" [id]="'camera-' + camera.id"
-                        [checked]="isCurrentDiscreteValueShown(camera, discreteParameter)"
-                        (change)="onShowCurrentDiscreteValueChange(camera,  discreteParameter)">
-                    </div>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-danger"
-                      (click)="onDeleteDiscreteValue(currentParameter, i)">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="form-group">
-              <button type="button" class="btn btn-primary" (click)="addDiscreteValue(currentParameter)">Add Discrete
-                Value</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ng-container *ngIf="isPossibleDiscreteParameter(currentParameter)">
+        <app-discrete-parameter [currentParameter]="currentParameter" [configData]="configData"
+          [cameraStates]="cameraStates">
+        </app-discrete-parameter>
+      </ng-container>
     </div>
   </div>
 </div>

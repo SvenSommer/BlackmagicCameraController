@@ -20,7 +20,7 @@ export class ControlpanelComponent {
   @Input() cameraStates: { [key: string]: CameraState } = {};
   @Input() currentParameter: Parameter;
 
-  public allowed_for_slider = ['int64', 'int32', 'int16', 'int8', 'fixed16']
+  private allowed_for_slider = ['int64', 'int32', 'int16', 'int8', 'fixed16']
   public allowed_for_switches = ['boolean']
 
   constructor(private commandService: CommandService) { }
@@ -207,6 +207,10 @@ export class ControlpanelComponent {
       this.setCameraState(camera, parameter);
       this.commandService.sendCommand(camera, parameter);
     }
+  }
+
+  hasValidDiscreteParameters(parameter: Parameter) {
+    return parameter.discrete.length > 0
   }
 
 

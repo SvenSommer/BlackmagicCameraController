@@ -83,7 +83,7 @@
                 <ng-container *ngIf="param_is_radiogroup(parameter)">
                   <div class="card" style="display: flex;">
                     <div>
-                      <h2 class="card-header text-left">
+                      <h2 class="card-header text-left" *ngIf="hasValidDiscreteParameters(parameter)">
                         {{parameter.caption}}</h2>
                       <div class="card-body" style="display: flex; flex-wrap: wrap;">
                         <div *ngFor="let discreteParameter of parameter.discrete">

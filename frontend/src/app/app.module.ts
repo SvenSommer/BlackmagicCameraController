@@ -17,6 +17,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CommandService } from './services/command.services';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProtocolService } from './services/protocol.services';
+import { DiscreteParameterComponent } from './parameter-settings/discrete-parameter/discrete-parameter.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ProtocolService } from './services/protocol.services';
     ParameterSettingsComponent,
     ControlpanelComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    DiscreteParameterComponent
   ],
   imports: [
     BrowserModule,
