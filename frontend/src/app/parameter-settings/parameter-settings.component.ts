@@ -16,7 +16,7 @@ export class ParameterSettingsComponent {
   @Input() configData: ConfigFile;
   @Input() cameraStates: { [key: string]: CameraState } = {};
 
-  private commandService: CommandService
+  constructor(private commandService: CommandService) { }
 
   onCaptionChange(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -71,7 +71,7 @@ export class ParameterSettingsComponent {
     return this.cameraStates[uniqueIdentifier]?.value;
   }
 
-  defineUniqueCameraStateId(camera: Camera, parameter: Parameter){
+  defineUniqueCameraStateId(camera: Camera, parameter: Parameter) {
     return `${camera.id}_${parameter.group_id}_${parameter.id}`;
   }
 
@@ -87,7 +87,7 @@ export class ParameterSettingsComponent {
       this.commandService.sendCommand(camera, parameter);
     }
   }
-  
+
   onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
     if (value) {
       this.configData.cameras.forEach((camera) => {
@@ -127,10 +127,5 @@ export class ParameterSettingsComponent {
     parameter.discrete.push(new DiscreteParameter(this.newDiscreteValue));
     this.newDiscreteValue = new DiscreteParameter({});
   }
-
-
-
-
-  
 
 }

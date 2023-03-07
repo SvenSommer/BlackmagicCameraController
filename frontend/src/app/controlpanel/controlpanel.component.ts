@@ -20,9 +20,10 @@ export class ControlpanelComponent {
   @Input() cameraStates: { [key: string]: CameraState } = {};
   @Input() currentParameter: Parameter;
 
-  private commandService: CommandService
-  public allowed_for_slider = ['int64','int32','int16','int8','fixed16']
+  public allowed_for_slider = ['int64', 'int32', 'int16', 'int8', 'fixed16']
   public allowed_for_switches = ['boolean']
+
+  constructor(private commandService: CommandService) { }
 
 
   getParemetersbyRows(isCameraSpecific: string): Parameter[] {
@@ -35,55 +36,56 @@ export class ControlpanelComponent {
     return flattened
   }
 
-  param_is_void(parameter:Parameter): boolean {
+  param_is_void(parameter: Parameter): boolean {
     return parameter.type == "void"
   }
 
   param_is_single(parameter: Parameter): boolean {
     return !(parameter.index && parameter.index.length > 0);
-   }
+  }
 
   param_is_input(parameter: Parameter): boolean {
-    return parameter.maximum == null && parameter.minimum == null && !parameter.discrete && parameter.type && !this.param_is_void(parameter) && !this.param_is_switch(parameter) 
-   }
+    return parameter.maximum == null && parameter.minimum == null && !parameter.discrete && parameter.type && !this.param_is_void(parameter) && !this.param_is_switch(parameter)
+  }
   param_is_slider(parameter: Parameter): boolean {
-    return this.allowed_for_slider.includes(parameter.type) &&  !this.param_is_input(parameter) && ((parameter.discrete && parameter.discrete.length < 1) || !parameter.discrete);
-   }
+    return this.allowed_for_slider.includes(parameter.type) && !this.param_is_input(parameter) && ((parameter.discrete && parameter.discrete.length < 1) || !parameter.discrete);
+  }
   param_is_switch(parameter: Parameter): boolean {
     return this.allowed_for_switches.includes(parameter.type);
-   }
-   param_is_radiogroup(parameter: Parameter): boolean {
-      return parameter.discrete && parameter.discrete.length > 0
-   }
+  }
 
-   index_is_input(index:Index): boolean {
+  param_is_radiogroup(parameter: Parameter): boolean {
+    return parameter.discrete && parameter.discrete.length > 0
+  }
+
+  index_is_input(index: Index): boolean {
     return index.maximum == null && index.minimum == null && !index.discrete
-   }
+  }
   index_is_slider(index: Index): boolean {
     return this.allowed_for_slider.includes(index.type) && index.maximum != null && index.minimum != null && ((index.discrete && index.discrete.length < 1) || !index.discrete);
-   }
+  }
 
-   index_is_radiogroup(index: Index): boolean {
+  index_is_radiogroup(index: Index): boolean {
     return index.discrete && index.discrete.length > 0;
-   }
+  }
 
-   onChange(camera: Camera, event: MatSlideToggleChange) {
+  onChange(camera: Camera, event: MatSlideToggleChange) {
     this.setCameraState(camera, this.currentParameter);
     this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.checked });
   }
-  
+
   onChange_radioGroup(camera: Camera, event: any) {
     this.setCameraState(camera, this.currentParameter);
     this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.value });
   }
-  
+
   onSend(camera: Camera, parameter: Parameter) {
     if (this.commandService.isValidParameterValue(parameter)) {
       this.setCameraState(camera, parameter);
       this.commandService.sendCommand(camera, parameter);
     }
   }
-  
+
   onSendAllCameras(parameter: Parameter) {
     this.configData.cameras.forEach((camera) => {
       if (this.commandService.isValidParameterValue(parameter)) {
@@ -93,22 +95,22 @@ export class ControlpanelComponent {
     });
   }
 
-  onSendPresetDay(camera: Camera){
-    const presetParameters =  this.getPresetParameter();
+  onSendPresetDay(camera: Camera) {
+    const presetParameters = this.getPresetParameter();
     presetParameters.forEach((parameter: Parameter) => {
       this.checkAndSendPresetParameter(parameter.presetValueDay, parameter, camera)
     });
-   }
+  }
 
-   onSendPresetNight(camera: Camera){
-    const presetParameters =  this.getPresetParameter();
+  onSendPresetNight(camera: Camera) {
+    const presetParameters = this.getPresetParameter();
     presetParameters.forEach((parameter: Parameter) => {
       this.checkAndSendPresetParameter(parameter.presetValueNight, parameter, camera)
     });
-   }
+  }
 
-   
-   isPresetDay(camera: Camera) : boolean{
+
+  isPresetDay(camera: Camera): boolean {
     for (const parameter of this.getPresetParameter()) {
       const cameraStateId = this.defineUniqueCameraStateId(camera, parameter);
       const cameraState = this.cameraStates[cameraStateId];
@@ -117,28 +119,28 @@ export class ControlpanelComponent {
       }
     }
     return true;
-   }
+  }
 
-   getPresetParameter(){
+  getPresetParameter() {
     return this.groupsData
-    .flatMap((group: { parameters: any }) => group.parameters)
-    .filter((parameter: {presetActive: boolean; }) => parameter.presetActive);
-   }
+      .flatMap((group: { parameters: any }) => group.parameters)
+      .filter((parameter: { presetActive: boolean; }) => parameter.presetActive);
+  }
 
 
-   
-  getVoidParameters(){
+
+  getVoidParameters() {
     const flattened = this.groupsData
-    .flatMap((group: { parameters: any }) => group.parameters)
-    .filter((parameter: { visible: boolean }) => parameter.visible)
-    .filter((p: { cameraSpecific: string }) => p.cameraSpecific === 'true')
-    .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
-    .filter((p: Parameter) => this.param_is_void(p))
-    .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
+      .flatMap((group: { parameters: any }) => group.parameters)
+      .filter((parameter: { visible: boolean }) => parameter.visible)
+      .filter((p: { cameraSpecific: string }) => p.cameraSpecific === 'true')
+      .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
+      .filter((p: Parameter) => this.param_is_void(p))
+      .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
     return flattened
   }
 
-   isPresetNight(camera: Camera){
+  isPresetNight(camera: Camera) {
     for (const parameter of this.getPresetParameter()) {
       const cameraStateId = this.defineUniqueCameraStateId(camera, parameter);
       const cameraState = this.cameraStates[cameraStateId];
@@ -147,16 +149,16 @@ export class ControlpanelComponent {
       }
     }
     return true;
-   }
+  }
 
-   public calculateCurrentSteps(minimum: Nullable<number>, maximum: Nullable<number>) {
+  public calculateCurrentSteps(minimum: Nullable<number>, maximum: Nullable<number>) {
     if (minimum != null && maximum != null)
       return (maximum - minimum) / 100;
-    else 
+    else
       return 0
   }
 
-  is_valid_parameter(parameter:Parameter): boolean {
+  is_valid_parameter(parameter: Parameter): boolean {
     return parameter.value != undefined
   }
 
@@ -172,7 +174,7 @@ export class ControlpanelComponent {
     return this.cameraStates[uniqueIdentifier]?.value;
   }
 
-  defineUniqueCameraStateId(camera: Camera, parameter: Parameter){
+  defineUniqueCameraStateId(camera: Camera, parameter: Parameter) {
     return `${camera.id}_${parameter.group_id}_${parameter.id}`;
   }
 
@@ -188,7 +190,7 @@ export class ControlpanelComponent {
       this.commandService.sendCommand(camera, parameter);
     }
   }
-  
+
   onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
     if (value) {
       this.configData.cameras.forEach((camera) => {
@@ -199,18 +201,18 @@ export class ControlpanelComponent {
     }
   }
 
-  checkAndSendPresetParameter(value: any, parameter: Parameter, camera: Camera){
-    if(value != undefined){
+  checkAndSendPresetParameter(value: any, parameter: Parameter, camera: Camera) {
+    if (value != undefined) {
       parameter.value = value;
       this.setCameraState(camera, parameter);
       this.commandService.sendCommand(camera, parameter);
     }
-   }
+  }
 
 
 
 
-  
+
 
 
 }

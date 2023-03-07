@@ -16,8 +16,8 @@ export class GroupByPipe implements PipeTransform {
       return prev;
     }, {});
 
-   let  returnvalue =  Object.keys(groupedObj).map(key => ({ key, value: groupedObj[key] }));
-   //console.log('returnvalue:',returnvalue)
-   return returnvalue;
+    let returnvalue = Object.keys(groupedObj).map(key => ({ key, value: groupedObj[key] }));
+    //console.log('returnvalue:',returnvalue)
+    return returnvalue;
   }
 }

@@ -6,7 +6,7 @@ export class Command {
     public parameterId: number;
     public parameterType: string;
     public parameterValue: any;
-   
+
     constructor(camera_id: number, parameter: Parameter) {
         if (parameter) {
             this.camera = camera_id;

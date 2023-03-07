@@ -69,6 +69,10 @@
                         {
                             "value": 0,
                             "interpretation": "F3,5",
+                            "cameraIdActive": [
+                                3,
+                                2
+                            ],
                             "cameraIdInactive": [
                                 2,
                                 3,
@@ -86,7 +90,8 @@
                         },
                         {
                             "value": 0.06,
-                            "interpretation": "F4"
+                            "interpretation": "F4",
+                            "cameraIdInactive": []
                         },
                         {
                             "value": 0.11,
@@ -178,7 +183,7 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.85,
+                    "value": 0.11,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.06,
@@ -297,7 +302,7 @@
                         }
                     ],
                     "visible": true,
-                    "value": 0,
+                    "value": 0.44,
                     "selectedValue": [
                         {
                             "value": 0,
@@ -492,7 +497,10 @@
                     "col": 1,
                     "presentationMode": "advanced",
                     "cameraSpecific": "false",
-                    "value": 800
+                    "value": 400,
+                    "presetActive": "true",
+                    "presetValueDay": 200,
+                    "presetValueNight": 1600
                 },
                 {
                     "id": 2,
@@ -519,7 +527,7 @@
                         }
                     ],
                     "visible": true,
-                    "caption": "Farbremperatur",
+                    "caption": "Farbtemperatur",
                     "presentationMode": "basic",
                     "cameraSpecific": "false",
                     "row": 20,

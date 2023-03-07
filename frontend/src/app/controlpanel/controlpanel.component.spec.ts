@@ -8,9 +8,9 @@ describe('ControlpanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ControlpanelComponent ]
+      declarations: [ControlpanelComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ControlpanelComponent);
     component = fixture.componentInstance;

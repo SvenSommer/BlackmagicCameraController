@@ -8,9 +8,9 @@ describe('ParameterSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParameterSettingsComponent ]
+      declarations: [ParameterSettingsComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ParameterSettingsComponent);
     component = fixture.componentInstance;

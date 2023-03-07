@@ -7,71 +7,56 @@ import { ConfigService } from './services/config.services';
 import { ProtocolService } from './services/protocol.services';
 import { CameraState } from './models/cameraState-model';
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
-
-  title = "CamerControler"
   constructor(
-    public protocolService: ProtocolService, 
+    public protocolService: ProtocolService,
     public configService: ConfigService,
+  ) { }
 
-    
-    ) { }
-
-  public userParameterConfig : any;
-  public maxRows: number;
+  public userParameterConfig: any;
   public configMode: boolean;
   public groupsData: any;
   public configData: ConfigFile;
   public currentGroup: number;
   public currentPresentationMode: string = "basic";
   public currentParameter: Parameter;
-  public currentSteps: number;
   public discreteParameterChoosen: DiscreteParameter;
-
-  public columnWidth: string;
   public cameraStates: { [key: string]: CameraState } = {};
 
-  ngOnInit() {      
+  ngOnInit() {
     this.bindData();
-    this.maxRows = Math.max(...this.groupsData.map((group: { parameters: any[]; }) => Math.max(...group.parameters.map(p => p.row))));
-    const numCameras = this.configData?.cameras?.length ?? 0;
-    this.columnWidth = numCameras > 0 ? `col-md-${12 / numCameras}` : '';
   }
 
   changeConfigMode($event: boolean) {
     this.configMode = ($event);
-    }
+  }
 
-    onPresentationModeChange(mode: string) {
-      this.currentPresentationMode = mode;
-    }
+  onPresentationModeChange(mode: string) {
+    this.currentPresentationMode = mode;
+  }
 
   toggleParameterVisibility(parameter: any) {
     parameter.visible = !parameter.visible;
   }
 
   shouldDisplayGroup(group: any): boolean {
-    let hasParameters =  group.parameters.some((p: { visible: boolean; }) => p.visible);
+    let hasParameters = group.parameters.some((p: { visible: boolean; }) => p.visible);
     return hasParameters || this.configMode
   }
 
-  changecurrentGroup(id: number){
+  changecurrentGroup(id: number) {
     this.currentGroup = id
   }
 
-  changeCurrentParameter(parameter: Parameter){
+  changeCurrentParameter(parameter: Parameter) {
     this.currentParameter = parameter
   }
 
-  
   bindData() {
     this.protocolService.getGroups().subscribe(
       (data) => {
@@ -90,7 +75,6 @@ export class AppComponent implements OnInit {
         if (data) {
           if (data.body && data.status == 200) {
             this.configData = data.body.config;
-            console.log(this.configData)
           }
         }
       },

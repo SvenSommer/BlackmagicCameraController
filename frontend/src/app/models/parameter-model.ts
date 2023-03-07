@@ -4,14 +4,14 @@ type Nullable<T> = T | null;
 export class Parameter {
     public id: number;
     public group: string;
-    public group_id : number;
+    public group_id: number;
     public unique_id: string;
-    public parameter : string;
-    public normalized_parameter : string;
-    public index : [Index];
+    public parameter: string;
+    public normalized_parameter: string;
+    public index: [Index];
     public minimum: Nullable<number>;
     public maximum: Nullable<number>;
-    public interpretation : string;
+    public interpretation: string;
     public type: string
     public discrete: [DiscreteParameter]
     public value: any;
@@ -24,7 +24,7 @@ export class Parameter {
     public caption: string;
     public row: number;
     public col: number;
-    
+
     constructor(data: any) {
         if (data) {
             this.id = data.id;
@@ -48,7 +48,7 @@ export class Parameter {
             this.presetValueDay = data.presetValueDay
             this.presetValueNight = data.presetValueNight
             this.cameraSpecific = data.cameraSpecific;
-           
+
         }
     }
 }

@@ -7,13 +7,14 @@ import { AppComponent } from './app.component';
 import { CameraComponent } from './camera/camera.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
-import { MatSlideToggleModule} from '@angular/material/slide-toggle'
-import { MatRadioModule} from '@angular/material/radio'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { MatRadioModule } from '@angular/material/radio'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupByPipe } from './pipes/group-by.pipe';
 import { ParameterSettingsComponent } from './parameter-settings/parameter-settings.component';
 import { ControlpanelComponent } from './controlpanel/controlpanel.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CommandService } from './services/command.services';
 
 @NgModule({
   declarations: [
@@ -33,9 +34,11 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatSlideToggleModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule // Add ReactiveFormsModule to imports
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    CommandService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
