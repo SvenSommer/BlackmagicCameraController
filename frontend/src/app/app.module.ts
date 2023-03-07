@@ -16,6 +16,7 @@ import { ControlpanelComponent } from './controlpanel/controlpanel.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CommandService } from './services/command.services';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ProtocolService } from './services/protocol.services';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     ReactiveFormsModule
   ],
   providers: [
-    CommandService
+    CommandService,
+    ProtocolService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,33 +1,25 @@
 <!doctype html>
 <html lang="en">
-  <!--Main Navigation-->
-  <header>
-    <!-- Sidebar -->
+<header>
+  <app-navbar (presentationModeChange)="onPresentationModeChange($event)" (configModeChange)="configMode = $event">
+  </app-navbar>
+  <ng-container *ngIf="configMode">
+    <app-sidebar (currentParameterChange)="changeCurrentParameter($event)" [groupsData]="groupsData"></app-sidebar>
+  </ng-container>
+</header>
+<main style="margin-top: 85px;">
+  <div class="container-fluid">
     <ng-container *ngIf="configMode">
-      <app-sidebar (currentParameterChange)="changeCurrentParameter($event)" [groupsData]="groupsData" ></app-sidebar>
+      <app-parameter-settings [currentParameter]="currentParameter" [configData]="configData"
+        [cameraStates]="cameraStates"></app-parameter-settings>
     </ng-container>
-    <!-- Sidebar -->
-    <!-- Navbar -->
-    <app-navbar (presentationModeChange)="onPresentationModeChange($event)" (configModeChange)="configMode = $event" [configData]="configData"   [groupsData]="groupsData" [protocolService]="protocolService" [configService]="configService"></app-navbar>
-    <!-- Navbar -->
-  </header>
-  <!--Main Navigation-->
+    <ng-container *ngIf="!configMode">
+      <app-controlpanel [groupsData]="groupsData" [currentPresentationMode]="currentPresentationMode"
+        [configData]="configData" [cameraStates]="cameraStates" [currentParameter]="currentParameter">
+      </app-controlpanel>
+    </ng-container>
+  </div>
+</main>
 
-  <!--Main layout-->
-  <main style="margin-top: 85px;">
-    <div class="container-fluid">
-      <ng-container *ngIf="configMode" >
-        <app-parameter-settings [currentParameter]="currentParameter"  [configData]="configData" [cameraStates]="cameraStates"></app-parameter-settings>
-      </ng-container>
-      
-      <ng-container *ngIf="!configMode">
-        <app-controlpanel [groupsData]="groupsData" [currentPresentationMode]="currentPresentationMode" [configData]="configData" [cameraStates]="cameraStates" [currentParameter]="currentParameter"></app-controlpanel>
-      </ng-container>
-    </div>
-  </main>
-  <!--Main layout-->
 </html>
-
-
 <router-outlet></router-outlet>
-  

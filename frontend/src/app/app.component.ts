@@ -34,6 +34,14 @@ export class AppComponent implements OnInit {
 
   changeConfigMode($event: boolean) {
     this.configMode = ($event);
+    this.protocolService.saveGroups(this.groupsData).subscribe(
+      (response) => {
+        // Handle the response from the server here
+      },
+      (error) => {
+        console.error(error);
+        // Handle any errors that occur here
+      });
   }
 
   onPresentationModeChange(mode: string) {

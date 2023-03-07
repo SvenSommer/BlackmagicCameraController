@@ -1,8 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ConfigFile } from '../models/config-model';
-import { ProtocolService } from '../services/protocol.services';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ConfigService } from '../services/config.services';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -11,10 +8,8 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  @Input() configData: ConfigFile;
-  @Input() groupsData: any;
-  @Input() protocolService: ProtocolService
-  @Input() configService: ConfigService
+
+  constructor() { }
   @Output() configModeChange = new EventEmitter<boolean>();
   @Output() presentationModeChange: EventEmitter<string> = new EventEmitter<string>();
 
@@ -22,24 +17,6 @@ export class NavbarComponent {
   currentPresentationMode: string = "basic";
 
   onChangeConfigMode(event: MatSlideToggleChange) {
-    if (!event.checked) {
-      this.protocolService.saveGroups(this.groupsData).subscribe(
-        (response) => {
-          // Handle the response from the server here
-        },
-        (error) => {
-          console.error(error);
-          // Handle any errors that occur here
-        });
-      this.configService.saveConfig(this.configData).subscribe(
-        (response) => {
-          // Handle the response from the server here
-        },
-        (error) => {
-          console.error(error);
-          // Handle any errors that occur here
-        });
-    }
     this.configMode = event.checked;
     this.configModeChange.emit(event.checked);
   }

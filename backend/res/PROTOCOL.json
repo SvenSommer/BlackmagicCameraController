@@ -678,7 +678,14 @@
                             "value": 2,
                             "interpretation": "extended video"
                         }
-                    ]
+                    ],
+                    "visible": false,
+                    "caption": "Dynamic Range Mode",
+                    "presentationMode": "basic",
+                    "cameraSpecific": "true",
+                    "row": 10,
+                    "col": 2,
+                    "presetActive": "false"
                 },
                 {
                     "id": 8,
