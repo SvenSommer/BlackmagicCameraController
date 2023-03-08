@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <header>
-  <app-navbar (presentationModeChange)="onPresentationModeChange($event)" (configModeChange)="configMode = $event">
+  <app-navbar (presentationModeChange)="onPresentationModeChange($event)" (configModeChange)="changeConfigMode($event)">
   </app-navbar>
   <ng-container *ngIf="configMode">
     <app-sidebar (currentParameterChange)="changeCurrentParameter($event)" [groupsData]="groupsData"></app-sidebar>

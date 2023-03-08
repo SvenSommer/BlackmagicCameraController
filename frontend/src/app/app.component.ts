@@ -34,9 +34,14 @@ export class AppComponent implements OnInit {
 
   changeConfigMode($event: boolean) {
     this.configMode = ($event);
+    this.saveConfiguration();
+  }
+
+  saveConfiguration() {
+    console.log("Saving config");
     this.protocolService.saveGroups(this.groupsData).subscribe(
       (response) => {
-        // Handle the response from the server here
+        console.log(response)
       },
       (error) => {
         console.error(error);
