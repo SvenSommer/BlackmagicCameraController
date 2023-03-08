@@ -17,7 +17,34 @@
                     "maximum": 1,
                     "interpretation": "0.0 = near, 1.0 = far",
                     "visible": false,
-                    "presentationMode": "basic"
+                    "presentationMode": "basic",
+                    "caption": "Fokus",
+                    "cameraSpecific": "true",
+                    "row": 12,
+                    "presetActive": "false",
+                    "discrete": [
+                        {
+                            "value": 0.03,
+                            "interpretation": "1"
+                        },
+                        {
+                            "value": 0.04,
+                            "interpretation": "2"
+                        },
+                        {
+                            "value": 0.05,
+                            "interpretation": "3"
+                        }
+                    ],
+                    "value": 0.05,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 1,
@@ -34,7 +61,12 @@
                     "row": 10,
                     "col": 1,
                     "value": 32323,
-                    "cameraSpecific": "true"
+                    "cameraSpecific": "true",
+                    "dataType": "void",
+                    "controlOptions": [
+                        "button"
+                    ],
+                    "controlOptionDecision": "button"
                 },
                 {
                     "id": 2,
@@ -47,7 +79,15 @@
                     "minimum": -1,
                     "maximum": 16,
                     "interpretation": "Aperture Value (where fnumber= sqrt(2^AV))",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 3,
@@ -183,12 +223,20 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.11,
+                    "value": 0.38,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.06,
                     "presetValueDay": 0.03,
-                    "presetActive": "true"
+                    "presetActive": "true",
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 4,
@@ -201,7 +249,14 @@
                     "minimum": 0,
                     "maximum": 1000,
                     "interpretation": "Steps through available aperture values from minimum (0) to maximum (n). Set n accordingly!",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 5,
@@ -217,7 +272,12 @@
                     "row": 10,
                     "presentationMode": "basic",
                     "col": 2,
-                    "cameraSpecific": "true"
+                    "cameraSpecific": "true",
+                    "dataType": "void",
+                    "controlOptions": [
+                        "button"
+                    ],
+                    "controlOptionDecision": "button"
                 },
                 {
                     "id": 6,
@@ -234,7 +294,14 @@
                     "presentationMode": "basic",
                     "value": false,
                     "col": 1,
-                    "cameraSpecific": "true"
+                    "cameraSpecific": "true",
+                    "dataType": "boolean",
+                    "controlOptions": [
+                        "toggle",
+                        "checkbox",
+                        "button with state coloring"
+                    ],
+                    "controlOptionDecision": "toggle"
                 },
                 {
                     "id": 7,
@@ -247,7 +314,14 @@
                     "minimum": 0,
                     "maximum": 4000,
                     "interpretation": "Move to specified focal length in mm, from minimum (0) to maximum (max). Set max accordingly!",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 8,
@@ -326,7 +400,15 @@
                     "presetValue": 0.44,
                     "presetActive": "true",
                     "presetValueDay": 0,
-                    "presetValueNight": 0
+                    "presetValueNight": 0,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 9,
@@ -338,7 +420,14 @@
                     "index": [],
                     "minimum": -1,
                     "maximum": 1,
-                    "interpretation": "Start/stop zooming at specified rate: -1.0 = zoom wider fast, 0.0 = stop, +1 = zoom tele fast"
+                    "interpretation": "Start/stop zooming at specified rate: -1.0 = zoom wider fast, 0.0 = stop, +1 = zoom tele fast",
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 }
             ]
         },
@@ -501,7 +590,15 @@
                     "value": 400,
                     "presetActive": "true",
                     "presetValueDay": 200,
-                    "presetValueNight": 1600
+                    "presetValueNight": 1600,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 2,
@@ -543,7 +640,11 @@
                     "type": "void",
                     "index": [],
                     "interpretation": "Calculate and set auto white balance",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "void",
+                    "controlOptions": [
+                        "button"
+                    ]
                 },
                 {
                     "id": 4,
@@ -559,7 +660,12 @@
                     "presentationMode": "basic",
                     "cameraSpecific": "true",
                     "row": 10,
-                    "col": 10
+                    "col": 10,
+                    "dataType": "void",
+                    "controlOptions": [
+                        "button"
+                    ],
+                    "controlOptionDecision": "button"
                 },
                 {
                     "id": 5,

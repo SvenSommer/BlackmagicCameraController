@@ -11,6 +11,11 @@
             </label>
           </div>
           <div>
+            <label class="label" *ngIf="currentParameter.interpretation">
+              dataType: {{currentParameter.dataType}}
+            </label>
+          </div>
+          <div>
             <label class="label" *ngIf="currentParameter.type">
               Type: {{currentParameter.type}}
             </label>
@@ -48,6 +53,14 @@
               <option [value]="false">No</option>
             </select>
           </div>
+          <label for="control-options-dropdown">Control Options:</label>
+          <select class="form-control" id="control-options-dropdown"
+            [(ngModel)]="currentParameter.controlOptionDecision" (ngModelChange)="onControlOptionsChanged($event)">
+            <option *ngFor="let option of currentParameter.controlOptions" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+
         </div>
       </div>
       <ng-container *ngIf="isPossibleDiscreteParameter(currentParameter)">

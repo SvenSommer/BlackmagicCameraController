@@ -38,10 +38,8 @@ export class AppComponent implements OnInit {
   }
 
   saveConfiguration() {
-    console.log("Saving config");
     this.protocolService.saveGroups(this.groupsData).subscribe(
       (response) => {
-        console.log(response)
       },
       (error) => {
         console.error(error);
@@ -59,10 +57,6 @@ export class AppComponent implements OnInit {
   }
 
 
-
-
-
-
   bindData() {
     this.protocolService.getGroups().subscribe(
       (data) => {
@@ -76,7 +70,7 @@ export class AppComponent implements OnInit {
         console.log(error.name + ' ' + error.message);
       }
     );
-    this.configService.getConfig().subscribe(
+    this.configService?.getConfig().subscribe(
       (data) => {
         if (data) {
           if (data.body && data.status == 200) {

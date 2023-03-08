@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Parameter } from '../models/parameter-model';
+import { ParameterService } from '../services/parameter.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,6 +10,8 @@ import { Parameter } from '../models/parameter-model';
 export class SidebarComponent {
   @Input() groupsData: any;
   @Output() currentParameterChange: EventEmitter<Parameter> = new EventEmitter<Parameter>();
+
+  constructor(private parameterService: ParameterService) { }
 
   configMode: boolean = true
   currentGroup: number;
@@ -23,7 +26,8 @@ export class SidebarComponent {
   }
 
   changeCurrentParameter(parameter: Parameter) {
-    this.currentParameter = parameter
+    this.parameterService.init(parameter);
+    this.currentParameter = parameter;
     this.currentParameterChange.emit(this.currentParameter);
   }
 

@@ -18,6 +18,7 @@ import { CommandService } from './services/command.services';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProtocolService } from './services/protocol.services';
 import { DiscreteParameterComponent } from './parameter-settings/discrete-parameter/discrete-parameter.component';
+import { ParameterService } from './services/parameter.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { DiscreteParameterComponent } from './parameter-settings/discrete-parame
   ],
   providers: [
     CommandService,
-    ProtocolService
+    ProtocolService,
+    ParameterService
   ],
   bootstrap: [AppComponent]
 })

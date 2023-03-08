@@ -45,6 +45,12 @@ export class ParameterSettingsComponent {
     }
   }
 
+  onControlOptionsChanged(selectedValue: string) {
+    console.log(selectedValue)
+    this.currentParameter.controlOptionDecision = selectedValue;
+  }
+
+
 
 
 

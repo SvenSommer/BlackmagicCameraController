@@ -27,13 +27,17 @@ export class ControlpanelComponent {
 
 
   getParemetersbyRows(isCameraSpecific: string): Parameter[] {
-    const flattened = this.groupsData
-      .flatMap((group: { parameters: any }) => group.parameters)
-      .filter((parameter: { visible: boolean }) => parameter.visible)
-      .filter((p: { cameraSpecific: string }) => p.cameraSpecific === isCameraSpecific)
-      .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
-      .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
-    return flattened
+    if (this.groupsData != undefined) {
+      const flattened = this.groupsData
+        .flatMap((group: { parameters: any }) => group?.parameters)
+        .filter((parameter: { visible: boolean }) => parameter.visible)
+        .filter((p: { cameraSpecific: string }) => p.cameraSpecific === isCameraSpecific)
+        .filter((p: { presentationMode: string; }) => p.presentationMode === this.currentPresentationMode)
+        .filter((p: { type: string; }) => p.type != 'void')
+        .sort((a: { row: number }, b: { row: number }) => a.row - b.row);
+      return flattened
+    }
+    return new Array;
   }
 
   param_is_void(parameter: Parameter): boolean {
@@ -47,12 +51,11 @@ export class ControlpanelComponent {
   param_is_input(parameter: Parameter): boolean {
     return parameter.maximum == null && parameter.minimum == null && !parameter.discrete && parameter.type && !this.param_is_void(parameter) && !this.param_is_switch(parameter)
   }
-  param_is_slider(parameter: Parameter): boolean {
-    return this.allowed_for_slider.includes(parameter.type) && !this.param_is_input(parameter) && ((parameter.discrete && parameter.discrete.length < 1) || !parameter.discrete);
-  }
+
   param_is_switch(parameter: Parameter): boolean {
     return this.allowed_for_switches.includes(parameter.type);
   }
+
 
   param_is_radiogroup(parameter: Parameter): boolean {
     return parameter.discrete && parameter.discrete.length > 0
@@ -71,12 +74,12 @@ export class ControlpanelComponent {
 
   onChange(camera: Camera, event: MatSlideToggleChange) {
     this.setCameraState(camera, this.currentParameter);
-    this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.checked });
+    this.commandService.sendCommand(camera, this.currentParameter);
   }
 
   onChange_radioGroup(camera: Camera, event: any) {
     this.setCameraState(camera, this.currentParameter);
-    this.commandService.sendCommand(camera, { ...this.currentParameter, value: event.value });
+    this.commandService.sendCommand(camera, this.currentParameter);
   }
 
   onSend(camera: Camera, parameter: Parameter) {
