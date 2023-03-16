@@ -15,7 +15,11 @@
                 <div class="btn-group" role="group">
                   <button *ngFor="let value of parameter.discrete"
                     [ngClass]="{'btn-primary': value.value === parameter.selectedValue, 'btn-secondary': value.value !== parameter.selectedValue}"
-                    class="btn" (click)="onDiscreteValueSelectAllCameras(parameter, value)">
+                    class="btn m-1" (click)="onDiscreteValueSelectAllCameras(parameter, value)">
+                    {{ value.interpretation }}
+                  </button>
+                  <button *ngFor="let value of parameter.discreteIndex" class="btn m-1 btn-secondary"
+                    (click)="onDiscreteIndexValueSelectAllCameras(parameter, value)">
                     {{ value.interpretation }}
                   </button>
                 </div>

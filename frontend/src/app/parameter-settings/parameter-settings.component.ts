@@ -24,7 +24,11 @@ export class ParameterSettingsComponent {
   }
 
   isPossibleDiscreteParameter(parameter: Parameter): boolean {
-    return this.possibleDiscreteValues.includes(parameter.type)
+    return this.possibleDiscreteValues.includes(parameter.type) || parameter.index.length > 0
+  }
+
+  isParameterWithIndex(parameter: Parameter): boolean {
+    return parameter.index.length > 0;
   }
 
   setPresentationMode(event: Event) {

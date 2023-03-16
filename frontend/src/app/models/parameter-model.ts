@@ -1,7 +1,7 @@
 import { DiscreteParameter } from "./discreteParameter-model";
 import { ParameterDataType } from "./parameterDataTypes-model";
 import { Index } from "./index-model";
-import { ParameterControlOptions } from "../interfaces/parameterControlOptions-interface";
+import { DiscreteIndexParameter } from "./discreteIndexParameter-model";
 type Nullable<T> = T | null;
 export class Parameter {
     public id: number;
@@ -19,6 +19,7 @@ export class Parameter {
     public controlOptions: string[];
     public controlOptionDecision: string;
     public discrete: [DiscreteParameter]
+    public discreteIndex: [DiscreteIndexParameter]
     public value: any;
     public presetActive: boolean;
     public presetValueDay: any;
@@ -28,7 +29,6 @@ export class Parameter {
     public cameraSpecific: boolean;
     public caption: string;
     public row: number;
-    public col: number;
 
     /*     constructor(data: any) {
             if (data) {

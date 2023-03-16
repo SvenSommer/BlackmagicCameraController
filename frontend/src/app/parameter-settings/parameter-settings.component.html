@@ -11,8 +11,8 @@
             </label>
           </div>
           <div>
-            <label class="label" *ngIf="currentParameter.interpretation">
-              dataType: {{currentParameter.dataType}}
+            <label class="label" *ngIf="currentParameter.dataType">
+              DataType: {{currentParameter.dataType}}
             </label>
           </div>
           <div>
@@ -25,7 +25,6 @@
             <input id="caption" class="form-control" type="text" [(ngModel)]="currentParameter.caption"
               (change)="onCaptionChange($event)">
           </div>
-
           <div class="form-group">
             <label for="presentationMode">Presentation Mode:</label>
             <select id="presentationMode" class="form-control" [(ngModel)]="currentParameter.presentationMode"
@@ -67,6 +66,11 @@
         <app-discrete-parameter [currentParameter]="currentParameter" [configData]="configData"
           [cameraStates]="cameraStates">
         </app-discrete-parameter>
+      </ng-container>
+      <ng-container *ngIf="isParameterWithIndex(currentParameter)">
+        <app-index-parameter [currentParameter]="currentParameter" [configData]="configData"
+          [cameraStates]="cameraStates">
+        </app-index-parameter>
       </ng-container>
     </div>
   </div>

@@ -27,17 +27,16 @@ export class DiscreteParameterComponent {
   }
 
   setCameraState(camera: Camera, parameter: Parameter) {
-    const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
+    const uniqueIdentifier = this.defineUniqueCameraParameterId(camera, parameter);
     this.cameraStates[uniqueIdentifier] = new CameraState({ cameraId: camera.id, parameterUniqueID: uniqueIdentifier, value: parameter.value });
   }
 
-
   getCameraState(camera: Camera, parameter: Parameter) {
-    const uniqueIdentifier = this.defineUniqueCameraStateId(camera, parameter);
+    const uniqueIdentifier = this.defineUniqueCameraParameterId(camera, parameter);
     return this.cameraStates[uniqueIdentifier]?.value;
   }
 
-  defineUniqueCameraStateId(camera: Camera, parameter: Parameter) {
+  defineUniqueCameraParameterId(camera: Camera, parameter: Parameter) {
     return `${camera.id}_${parameter.group_id}_${parameter.id}`;
   }
 

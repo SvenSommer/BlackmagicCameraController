@@ -223,11 +223,11 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.38,
+                    "value": 0.56,
                     "cameraSpecific": "true",
                     "presetValue": 0,
-                    "presetValueNight": 0.06,
-                    "presetValueDay": 0.03,
+                    "presetValueNight": 0.43,
+                    "presetValueDay": 0.56,
                     "presetActive": "true",
                     "dataType": "number",
                     "controlOptions": [
@@ -288,7 +288,7 @@
                     "type": "boolean",
                     "index": [],
                     "interpretation": "true = enabled, false = disabled",
-                    "visible": true,
+                    "visible": false,
                     "row": 2,
                     "caption": "image stabilisation",
                     "presentationMode": "basic",
@@ -377,7 +377,7 @@
                         }
                     ],
                     "visible": true,
-                    "value": 0.44,
+                    "value": 0,
                     "selectedValue": [
                         {
                             "value": 0,
@@ -547,11 +547,107 @@
                             ]
                         }
                     ],
-                    "visible": false,
-                    "caption": "Video mode",
-                    "presentationMode": "basic",
-                    "row": 4,
-                    "col": 2
+                    "visible": true,
+                    "caption": "Format",
+                    "presentationMode": "advanced",
+                    "row": 10,
+                    "col": 2,
+                    "dataType": "undefined",
+                    "controlOptions": [
+                        "discrete buttons"
+                    ],
+                    "discreteIndex": [
+                        {
+                            "interpretation": "1080p50",
+                            "isDefaultDay": true,
+                            "isDefaultNight": true,
+                            "cameraIdInactive": [],
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 50,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 2,
+                                    "value": 3,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 3,
+                                    "value": 0,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 4,
+                                    "value": 0,
+                                    "type": "int8"
+                                }
+                            ]
+                        },
+                        {
+                            "interpretation": "1080p25",
+                            "isDefaultNight": false,
+                            "cameraIdInactive": [],
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 25,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 2,
+                                    "value": 3,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 3,
+                                    "value": 0,
+                                    "type": "int8"
+                                },
+                                {
+                                    "position": 4,
+                                    "value": 0,
+                                    "type": "int8"
+                                }
+                            ]
+                        }
+                    ],
+                    "cameraSpecific": "false",
+                    "controlOptionDecision": "discrete buttons",
+                    "value": [
+                        {
+                            "position": 0,
+                            "value": 25
+                        },
+                        {
+                            "position": 1,
+                            "value": 0
+                        },
+                        {
+                            "position": 2,
+                            "value": 3
+                        },
+                        {
+                            "position": 3,
+                            "value": 0
+                        },
+                        {
+                            "position": 4,
+                            "value": 0
+                        }
+                    ],
+                    "presetActive": "true"
                 },
                 {
                     "id": 1,
@@ -587,7 +683,7 @@
                     "col": 1,
                     "presentationMode": "advanced",
                     "cameraSpecific": "false",
-                    "value": 400,
+                    "value": 200,
                     "presetActive": "true",
                     "presetValueDay": 200,
                     "presetValueNight": 1600,
@@ -613,7 +709,81 @@
                             "name": "color temp",
                             "minimum": 2500,
                             "maximum": 10000,
-                            "interpretation": "Color temperaruture in K"
+                            "interpretation": "Color temperaruture in K",
+                            "discrete": [
+                                {
+                                    "value": 2500,
+                                    "interpretation": "2500 K"
+                                },
+                                {
+                                    "value": 2800,
+                                    "interpretation": "2800 K"
+                                },
+                                {
+                                    "value": 3000,
+                                    "interpretation": "3000 K"
+                                },
+                                {
+                                    "value": 3200,
+                                    "interpretation": "3200 K"
+                                },
+                                {
+                                    "value": 3400,
+                                    "interpretation": "3400 K"
+                                },
+                                {
+                                    "value": 3600,
+                                    "interpretation": "3600 K"
+                                },
+                                {
+                                    "value": 4000,
+                                    "interpretation": "4000 K"
+                                },
+                                {
+                                    "value": 4500,
+                                    "interpretation": "4500 K"
+                                },
+                                {
+                                    "value": 4800,
+                                    "interpretation": "4800 K"
+                                },
+                                {
+                                    "value": 5000,
+                                    "interpretation": "5000 K"
+                                },
+                                {
+                                    "value": 5200,
+                                    "interpretation": "5200 K"
+                                },
+                                {
+                                    "value": 5400,
+                                    "interpretation": "5400 K"
+                                },
+                                {
+                                    "value": 5600,
+                                    "interpretation": "5600 K"
+                                },
+                                {
+                                    "value": 6000,
+                                    "interpretation": "6000 K"
+                                },
+                                {
+                                    "value": 6500,
+                                    "interpretation": "6500 K"
+                                },
+                                {
+                                    "value": 7000,
+                                    "interpretation": "7000 K"
+                                },
+                                {
+                                    "value": 7500,
+                                    "interpretation": "7500 K"
+                                },
+                                {
+                                    "value": 8000,
+                                    "interpretation": "8000 K"
+                                }
+                            ]
                         },
                         {
                             "position": 1,
@@ -621,15 +791,364 @@
                             "name": "tint",
                             "minimum": -50,
                             "maximum": 50,
-                            "interpretation": "tint"
+                            "interpretation": "tint",
+                            "discrete": [
+                                {
+                                    "value": -50,
+                                    "interpretation": "-50"
+                                },
+                                {
+                                    "value": -40,
+                                    "interpretation": "-40"
+                                },
+                                {
+                                    "value": -30,
+                                    "interpretation": "-30"
+                                },
+                                {
+                                    "value": -20,
+                                    "interpretation": "-20"
+                                },
+                                {
+                                    "value": -10,
+                                    "interpretation": "-10"
+                                },
+                                {
+                                    "value": 0,
+                                    "interpretation": "0"
+                                },
+                                {
+                                    "value": 10,
+                                    "interpretation": "10"
+                                },
+                                {
+                                    "value": 20,
+                                    "interpretation": "20"
+                                },
+                                {
+                                    "value": 30,
+                                    "interpretation": "30"
+                                },
+                                {
+                                    "value": 40,
+                                    "interpretation": "40"
+                                },
+                                {
+                                    "value": 50,
+                                    "interpretation": "50"
+                                }
+                            ]
                         }
                     ],
                     "visible": true,
                     "caption": "Farbtemperatur",
-                    "presentationMode": "basic",
+                    "presentationMode": "advanced",
                     "cameraSpecific": "false",
                     "row": 20,
-                    "col": 1
+                    "col": 1,
+                    "dataType": "undefined",
+                    "controlOptions": [
+                        "discrete buttons"
+                    ],
+                    "discreteIndex": [
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 2500,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "2500 K",
+                            "isDefaultNight": false,
+                            "isDefaultDay": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 2800,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "2800 K",
+                            "isDefaultNight": false,
+                            "isDefaultDay": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 3000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "3000 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 3200,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "3200 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 3400,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "3400 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 3600,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "3600 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 4000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "4000 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 4500,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "4500 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 4800,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "4800 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 5000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "5000 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 5200,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "5200 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": false
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 5400,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "5400 K",
+                            "isDefaultDay": false,
+                            "isDefaultNight": true
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 5600,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "5600 K",
+                            "isDefaultDay": true
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 6000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "6000 K"
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 6500,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "6500 K"
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 7000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "7000 K"
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 7500,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "7500 K"
+                        },
+                        {
+                            "values": [
+                                {
+                                    "position": 0,
+                                    "value": 8000,
+                                    "type": "int16"
+                                },
+                                {
+                                    "position": 1,
+                                    "value": 0,
+                                    "type": "int16"
+                                }
+                            ],
+                            "interpretation": "8000 K"
+                        }
+                    ],
+                    "controlOptionDecision": "discrete buttons",
+                    "presetActive": "true"
                 },
                 {
                     "id": 3,
@@ -678,7 +1197,7 @@
                     "minimum": 1,
                     "maximum": 42000,
                     "interpretation": "time in μs",
-                    "visible": false,
+                    "visible": true,
                     "caption": "Belichtungszeit",
                     "row": 40,
                     "presentationMode": "advanced",
@@ -745,9 +1264,19 @@
                             "interpretation": "1/2000"
                         }
                     ],
-                    "value": 2521,
+                    "value": 9241,
                     "cameraSpecific": "false",
-                    "presetValueDay": 9241
+                    "presetValueDay": 9241,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "presetActive": "true",
+                    "controlOptionDecision": "discrete buttons",
+                    "presetValueNight": 6301
                 },
                 {
                     "id": 6,
@@ -759,7 +1288,14 @@
                     "index": [],
                     "minimum": 0,
                     "maximum": 1,
-                    "interpretation": "Steps through available exposure values from minimum\n(0) to maximum (n). Set n accordingly!"
+                    "interpretation": "Steps through available exposure values from minimum\n(0) to maximum (n). Set n accordingly!",
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 7,
@@ -1060,7 +1596,14 @@
                     "presentationMode": "advanced",
                     "cameraSpecific": "true",
                     "row": null,
-                    "col": null
+                    "col": null,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 1,
@@ -1073,7 +1616,14 @@
                     "minimum": 0.1,
                     "maximum": 1,
                     "interpretation": "0.0 = minimum, 1.0 = maximum",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 2,
@@ -1086,7 +1636,14 @@
                     "minimum": 0.1,
                     "maximum": 1,
                     "interpretation": "0.0 = minimum, 1.0 = maximum",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ]
                 },
                 {
                     "id": 3,
@@ -1129,7 +1686,20 @@
                             "interpretation": "high mic level input"
                         }
                     ],
-                    "visible": false
+                    "visible": false,
+                    "dataType": "number",
+                    "controlOptions": [
+                        "slider",
+                        "input field",
+                        "discrete buttons",
+                        "increase or decrease buttons"
+                    ],
+                    "caption": "Audio Input",
+                    "presentationMode": "advanced",
+                    "cameraSpecific": "true",
+                    "row": 10,
+                    "presetActive": "false",
+                    "controlOptionDecision": "discrete buttons"
                 },
                 {
                     "id": 5,
@@ -1155,7 +1725,14 @@
                             "interpretation": "0.0 = minimum, 1.0 = maximum"
                         }
                     ],
-                    "visible": false
+                    "visible": false,
+                    "dataType": "undefined",
+                    "controlOptions": [
+                        "discrete buttons"
+                    ],
+                    "discreteIndex": [
+                        {}
+                    ]
                 },
                 {
                     "id": 6,
@@ -1166,7 +1743,18 @@
                     "type": "boolean",
                     "index": [],
                     "interpretation": "true = powered, false = not powered",
-                    "visible": false
+                    "visible": false,
+                    "dataType": "boolean",
+                    "controlOptions": [
+                        "toggle",
+                        "checkbox",
+                        "button with state coloring"
+                    ],
+                    "controlOptionDecision": "checkbox",
+                    "caption": "Phantomspeisung",
+                    "presentationMode": "advanced",
+                    "cameraSpecific": "true",
+                    "row": 60
                 }
             ]
         },

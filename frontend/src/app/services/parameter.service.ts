@@ -8,8 +8,14 @@ import { Parameter } from '../models/parameter-model';
 export class ParameterService {
 
     public init(parameter: Parameter) {
-        parameter.dataType = this.mapParameterDataType(parameter.type);
-        parameter.controlOptions = this.getControlOptions(parameter.dataType);
+        if (parameter.index.length > 0) {
+            parameter.dataType = ParameterDataType.undefined
+            parameter.controlOptions = ['discrete buttons']
+        } else {
+            parameter.dataType = this.mapParameterDataType(parameter.type);
+            parameter.controlOptions = this.getControlOptions(parameter.dataType);
+        }
+
     }
 
     private mapParameterDataType(parameterDataType: string): ParameterDataType {
@@ -21,6 +27,7 @@ export class ParameterService {
             case 'fixed16':
                 return ParameterDataType.Number;
             case 'boolean':
+            case 'uint16_bit_field':
                 return ParameterDataType.Boolean;
             case 'void':
                 return ParameterDataType.Void;

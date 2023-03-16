@@ -28,6 +28,7 @@ export class SidebarComponent {
   changeCurrentParameter(parameter: Parameter) {
     this.parameterService.init(parameter);
     this.currentParameter = parameter;
+    console.log('cuurent Param: ', parameter)
     this.currentParameterChange.emit(this.currentParameter);
   }
 

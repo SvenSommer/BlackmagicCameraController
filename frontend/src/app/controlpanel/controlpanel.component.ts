@@ -7,6 +7,7 @@ import { ConfigFile } from '../models/config-model';
 import { DiscreteParameter } from '../models/discreteParameter-model';
 import { CameraState } from '../models/cameraState-model';
 import { CommandService } from '../services/command.services';
+import { DiscreteIndexParameter } from '../models/discreteIndexParameter-model';
 type Nullable<T> = T | null;
 @Component({
   selector: 'app-controlpanel',
@@ -102,6 +103,7 @@ export class ControlpanelComponent {
     const presetParameters = this.getPresetParameter();
     presetParameters.forEach((parameter: Parameter) => {
       this.checkAndSendPresetParameter(parameter.presetValueDay, parameter, camera)
+      this.checkAndSendPresetIndexParameter(parameter, camera, 'day');
     });
   }
 
@@ -109,8 +111,10 @@ export class ControlpanelComponent {
     const presetParameters = this.getPresetParameter();
     presetParameters.forEach((parameter: Parameter) => {
       this.checkAndSendPresetParameter(parameter.presetValueNight, parameter, camera)
+      this.checkAndSendPresetIndexParameter(parameter, camera, 'night');
     });
   }
+
 
 
   isPresetDay(camera: Camera): boolean {
@@ -194,12 +198,19 @@ export class ControlpanelComponent {
     }
   }
 
-  onDiscreteValueSelectAllCameras(parameter: Parameter, value: DiscreteParameter) {
-    if (value) {
+  onDiscreteValueSelectAllCameras(parameter: Parameter, discreteParameter: DiscreteParameter) {
+    if (discreteParameter) {
       this.configData.cameras.forEach((camera) => {
-        parameter.value = value.value;
+        parameter.value = discreteParameter.value;
         this.setCameraState(camera, parameter);
         this.commandService.sendCommand(camera, parameter);
+      });
+    }
+  }
+  onDiscreteIndexValueSelectAllCameras(parameter: Parameter, discreteIndexParameter: DiscreteIndexParameter) {
+    if (discreteIndexParameter) {
+      this.configData.cameras.forEach((camera) => {
+        this.commandService.sendIndexedCommand(camera, parameter, discreteIndexParameter);
       });
     }
   }
@@ -210,6 +221,24 @@ export class ControlpanelComponent {
       this.setCameraState(camera, parameter);
       this.commandService.sendCommand(camera, parameter);
     }
+  }
+
+  checkAndSendPresetIndexParameter(parameter: Parameter, camera: Camera, dayOrNight: string) {
+    if (!parameter.discreteIndex) {
+      return
+    }
+    if (dayOrNight == 'day') {
+      const defaultDayParameters: DiscreteIndexParameter[] = parameter.discreteIndex.filter(param => param.isDefaultDay);
+      defaultDayParameters.forEach(discreteIndexParameter => {
+        this.commandService.sendIndexedCommand(camera, parameter, discreteIndexParameter);
+      });
+    } else {
+      const defaultNightParameters: DiscreteIndexParameter[] = parameter.discreteIndex.filter(param => param.isDefaultNight);
+      defaultNightParameters.forEach(discreteIndexParameter => {
+        this.commandService.sendIndexedCommand(camera, parameter, discreteIndexParameter);
+      });
+    }
+
   }
 
   hasValidDiscreteParameters(parameter: Parameter) {

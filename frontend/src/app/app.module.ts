@@ -19,6 +19,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProtocolService } from './services/protocol.services';
 import { DiscreteParameterComponent } from './parameter-settings/discrete-parameter/discrete-parameter.component';
 import { ParameterService } from './services/parameter.service';
+import { IndexParameterComponent } from './parameter-settings/index-parameter/index-parameter.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ParameterService } from './services/parameter.service';
     ControlpanelComponent,
     NavbarComponent,
     SidebarComponent,
-    DiscreteParameterComponent
+    DiscreteParameterComponent,
+    IndexParameterComponent
   ],
   imports: [
     BrowserModule,
