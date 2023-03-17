@@ -1,0 +1,20 @@
+ more startup.sh
+cd ~/dev/BlackmagicCameraController/
+cd backend
+uvicorn main:app --reload --host 0.0.0.0
+cd frontend
+ng serve --host 0.0.0.0 --disable-host-check
+cd tallylistener
+python3 main.py
+
+Aktualisierungsschritte:                                                 
+1. cd ~/dev/BlackmagicCameraController
+2. git status
+3. git reset --hard
+4. git fetch --all
+5. git pull
+6. git status
+
+überprüfe, ob  baseUrl = 192.168.0.53:8000
+~/dev/BlackmagicCameraController/frontend/src/app/environments
+more environment.ts    
