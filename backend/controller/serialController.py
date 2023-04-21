@@ -1,34 +1,28 @@
 import sys
 import glob
-import time
 from models.connectionresult import ConnectionResult
-import serial
 from models.connection import Connection
+import serial
+import logging
+
 
 class SerialController:
-    def __init__(self) -> None:
+    def __init__(self):
         self.connection = None
-    
-    def getSerialPorts(self) -> list[str]:
-        """ Lists serial port names
+        self.logger = logging.getLogger(__name__)
 
-            :raises EnvironmentError:
-                On unsupported or unknown platforms
-            :returns:
-                A list of the serial ports available on the system
-        """
-        result_ports = []
+    def get_serial_ports(self) -> list[str]:
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            # this excludes your current terminal "/dev/tty"
+            # This excludes your current terminal "/dev/tty".
             ports = glob.glob('/dev/tty[A-Za-z]*')
         elif sys.platform.startswith('darwin'):
             ports = glob.glob('/dev/tty.*')
         else:
             raise EnvironmentError('Unsupported platform')
 
-
+        result_ports = []
         for port in ports:
             try:
                 s = serial.Serial(port)
@@ -37,53 +31,60 @@ class SerialController:
             except (OSError, serial.SerialException):
                 pass
         return result_ports
-    
-    def try_connect(self, portid: int = 0):
-        print("INFO:\tSerialController.try_connect: Scanning for Devices connected to this PC....")
-        result = ConnectionResult(self.getSerialPorts())
-        print ("INFO:\tSerialController.try_connect: Found {0} open ports".format(len(result.ports)))
-        if len(result.ports) == 0:
-            result.set_failure("No connected devices found. Please connect the arduino with appended the blackmagic sdk board to this pc.")       
-        elif (portid+1) > len(result.ports) or portid < 0:
-            result.set_failure("ERROR: Device not available. Found {0} open ports".format(len(result.ports)))
+
+    def try_connect(self, port_id: int = 0) -> ConnectionResult:
+        self.logger.info("Scanning for devices connected to this PC....")
+        ports = self.get_serial_ports()
+        self.logger.info(f"Found {len(ports)} open ports")
+        result = ConnectionResult(ports)
+
+        if not ports:
+            result.set_failure(
+                "No connected devices found. Please connect the Arduino with the appended Blackmagic SDK board to this PC.")
+        elif (port_id+1) > len(ports) or port_id < 0:
+            result.set_failure(
+                f"Device not available. Found {len(ports)} open ports.")
         else:
-            print ("INFO:\tSerialController.try_connect: Connecting to portid {0}".format(portid))
-            connection = self.connect(result.ports[portid])
+            self.logger.info(f"Connecting to port ID {port_id}")
+            connection = self.connect(ports[port_id])
             result.set_connection(connection)
-            
+
         return result
 
-    def disconnect(self):
-        print("INFO:\tSerialController.disconnect: Disconnecting....")
+    def disconnect(self) -> dict[str, str]:
+        self.logger.info("Disconnecting....")
         self.connection.active_connection.close()
         self.connection = None
-        return {"connection":"disconnected"}
-            
-    def get_ports(self):
-        result = ConnectionResult(self.getSerialPorts())
-        if self.connection is not None:
+        return {"connection": "disconnected"}
+
+    def get_ports(self) -> ConnectionResult:
+        ports = self.get_serial_ports()
+        result = ConnectionResult(ports)
+
+        if self.connection:
             result.set_connection(self.connection)
+
         return result
-        
-    def connect(self, port:list[str]):
-        conncection = Connection(port)
-        conncection.setActiveConnection(serial.Serial(port, 115200, timeout=1))
-        #time.sleep(10) 
-        conncection.message = self.read()
-        self.connection = conncection
-        
-        return conncection
-    
-    def sendCommand(self, command:str):
+
+    def connect(self, port: str) -> Connection:
+        connection = Connection(port)
+        connection.set_active_connection(
+            serial.Serial(port, 115200, timeout=1))
+        connection.message = self.read()
+        self.connection = connection
+
+        return connection
+
+    def send_command(self, command: str):
         out = str(command).encode()
-        print("INFO:\tSerialController.sendCommand: Sending:{0}".format(out))
-        if(self.connection is not None):
+        self.logger.info(f"Sending: {out}")
+        if self.connection is not None:
             self.connection.active_connection.write(out)
-        
-    def read(self):
-        if(self.connection is not None):
-            return self.read_all(self.connection.active_connection,5)
-        
+
+    def read(self) -> str:
+        if self.connection is not None:
+            return self.read_all(self.connection.active_connection, 5)
+
     def read_all(self, connection, chunk_size=200) -> str:
         """Read all characters on the serial port and return them."""
         if not connection.timeout:
@@ -99,4 +100,4 @@ class SerialController:
             if not len(byte_chunk) == chunk_size:
                 break
 
-        return read_buffer
+        return read_buffer.decode()

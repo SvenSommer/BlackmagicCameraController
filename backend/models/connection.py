@@ -1,11 +1,11 @@
 class Connection:
-    def __init__(self, port:list[str]) -> None:
+    def __init__(self, port: list[str]) -> None:
         self.port = port
         self.active_connection = None
         self.message = None
-        
-    def setActiveConnection(self, activeConnection):
+
+    def set_active_connection(self, activeConnection):
         self.active_connection = activeConnection
-        
-    def getStatus(self):
+
+    def get_status(self):
         return "Connection established"

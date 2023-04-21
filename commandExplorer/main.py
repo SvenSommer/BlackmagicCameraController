@@ -10,7 +10,7 @@ from models.command import Command
 server_ip = "127.0.0.1"
 display = DisplayController()
 request_controller = RequestController(server_ip)
-protocol_json = request_controller.get("protocol")
+protocol_json = request_controller.get("groups")
 connection = ConnectionController(request_controller)
 input_controller = InputController(protocol_json['protocol'])
 

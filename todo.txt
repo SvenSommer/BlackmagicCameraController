@@ -1,0 +1,4 @@
+Tally listener autostart with vmix
+tally status in fromtend
+Blende für Camera 4 unter F8 um eines versetzt
+Gain geht nicht
