@@ -1,6 +1,5 @@
 
 
-
 from controller.connectionController import ConnectionController
 from controller.displayController import DisplayController
 from controller.requestController import RequestController
@@ -12,7 +11,7 @@ display = DisplayController()
 request_controller = RequestController(server_ip)
 protocol_json = request_controller.get("groups")
 connection = ConnectionController(request_controller)
-input_controller = InputController(protocol_json['protocol'])
+input_controller = InputController(protocol_json['groups'])
 
 if __name__ == '__main__':
     if connection.is_connected():
@@ -32,7 +31,8 @@ if __name__ == '__main__':
         elif menue_input == 4:
             input_controller.reset_value()
         elif menue_input == 5:
-            status = request_controller.send_command(input_controller.get_command()).status_code
+            status = request_controller.send_command(
+                input_controller.get_command()).status_code
             if status == 200:
                 input("Command was sent successfully")
             else:
