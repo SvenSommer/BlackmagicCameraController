@@ -52,6 +52,7 @@ def command_thread_func():
             command = command_queue.get()
             serial.send_command(command)
             logger.info(f"Sent command: {command}")
+            time.sleep(0.1)
         else:
             time.sleep(0.1)
 

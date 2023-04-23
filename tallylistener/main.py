@@ -2,15 +2,18 @@
 # C:\Users\robho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts\uvicorn.exe main:app --reload
 # python3.exe -m  uvicorn main:app --reload
 import asyncio
-import socket
-import requests
-import queue
 import logging
-import time
-from model.CommandTally import CommandTally
+import queue
+import socket
+from typing import List
+
+import requests
 import yaml
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from model.command_tally import CommandTally
+
 
 app = FastAPI(title="CameraController TallyListener",
               description="Rest Api to monitor tally information from vMix and send it to the backend.")
@@ -23,9 +26,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 # Read configuration from YAML file
 with open("config.yaml", "r") as f:
@@ -107,12 +110,9 @@ def process(data, queue):
             camera_no = i+1
             # 0 = off, 1 = program, 2 = preview
             camera_state = camera_string[i]
-            logger.info("Camera {0} is {1}".format(camera_no, camera_state))
-            # Add command to queue only if state has changed
-            if queue.empty() or queue.queue[-1].camera != camera_no or queue.queue[-1].active != (camera_state == '1') or queue.queue[-1].preview != (camera_state == '2'):
-                command = CommandTally(camera=camera_no, active=(
-                    camera_state == '1'), preview=(camera_state == '2'))
-                queue.put(command)
+            command = CommandTally(camera=camera_no, active=(
+                camera_state == '1'), preview=(camera_state == '2'))
+            queue.put(command)
     else:
         logger.error("Error: received {0}".format(data))
 
@@ -121,29 +121,31 @@ def process(data, queue):
 def get_status():
     global connected
     global subscribed
-    status_msg = "connecting"
-    if not connected:
-        status_msg = "connecting"
+    status_msg = "connecting..."
+    if not connected and not subscribed:
+        status_msg = "connecting..."
     elif connected and not subscribed:
         status_msg = "connected"
     elif connected and subscribed:
-        status_msg += ", Subscribed"
+        status_msg = "connected, subscribed"
     return {"status": status_msg}
 
 
-@app.get("/hello")
+@app.get("/")
 async def hello():
-    return {"message": "Hello World"}
+    return get_status()
 
 
 @app.on_event("startup")
 async def startup_event():
-    command_queue = queue.Queue()
     loop = asyncio.get_event_loop()
-    loop.create_task(process_tally_data(command_queue))
+    loop.create_task(process_tally_data())
+
+command_queue = queue.Queue()
 
 
-async def process_tally_data(command_queue):
+async def process_tally_data():
+    global command_queue
     try:
         while True:
             if not connected:
@@ -153,13 +155,9 @@ async def process_tally_data(command_queue):
             else:
                 try:
                     # Send queued tally commands
-                    if not command_queue.empty():
-                        logger.info(f"Queue size: {len(command_queue.queue)}")
-                        command = command_queue.get()
-                        logger.info(f"Sending tally command: {command}")
-                        send_tally_command(command)
-                        command_queue.task_done()
-                    data = sock.recv(4024)
+                    while not command_queue.empty():
+                        work_command(command_queue)
+                    data = sock.recv(1024)
                     if not data:
                         logger.info("Lost connection to vMix")
                         close_connection()
@@ -168,8 +166,12 @@ async def process_tally_data(command_queue):
                 except Exception as e:
                     logger.error(e)
                     close_connection()
+    except Exception as e:
+        logger.error(e)
+        close_connection()
 
-            logger.info(f"Current status: {get_status()}")
-            await asyncio.sleep(1)
-    except KeyboardInterrupt:
-        pass
+
+def work_command(command_queue):
+    command = command_queue.get()
+    logger.info(f"Sending tally command: {command}")
+    send_tally_command(command)

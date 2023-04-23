@@ -1,14 +1,36 @@
 #include <BMDSDIControl.h>
-#include "cppQueue.h"
 
 const int shieldAddress = 0x6E;
 BMD_SDITallyControl_I2C sdiTallyControl(shieldAddress);
 BMD_SDICameraControl_I2C sdiCameraControl(shieldAddress);
-
 const byte numChars = 128;
-const int queueSize = 10;
+char receivedChars[numChars];
+char tempChars[numChars];
 
-cppQueue messageQueue(sizeof(String), queueSize, FIFO, false);
+enum CommandType
+{
+  Tally = 1,
+  General = 2
+};
+
+struct CommandData
+{
+  int commandType;
+  int tallyCameraId;
+  int tallyCameraActive;
+  int tallyPreview;
+  int cameraId;
+  int groupId;
+  int paramId;
+  char paramType[numChars];
+  char stringValues[numChars];
+  int valuesLength;
+  float value;
+  float values[64];
+};
+
+CommandData cmdData;
+boolean newData = false;
 
 void setup()
 {
@@ -17,44 +39,24 @@ void setup()
   sdiCameraControl.begin();
 
   Wire.setClock(400000);
+
   sdiTallyControl.setOverride(true);
   sdiCameraControl.setOverride(true);
 }
 
 void loop()
 {
-  char receivedChars[numChars];
-  bool newData = recvWithStartEndMarkers(receivedChars, numChars);
-  if (newData)
+  recvWithStartEndMarkers();
+  if (newData == true)
   {
-    String message = String(receivedChars);
-    if (!messageQueue.push(&message)) {
-      // Handle the case where the queue is full and the message cannot be added
-    }
-  }
-
-  if (!messageQueue.isEmpty())
-  {
-    processNextMessage();
+    strcpy(tempChars, receivedChars);
+    parseData(tempChars, cmdData);
+    executeCommand(cmdData);
+    newData = false;
   }
 }
 
-void processNextMessage()
-{
-  if (messageQueue.isEmpty())
-  {
-    return;
-  }
-
-  String message;
-  if (messageQueue.pop(&message)) {
-    parseData(message.c_str());
-  } else {
-    // Handle the case where the queue is empty and there are no messages to process
-  }
-}
-
-bool recvWithStartEndMarkers(char *receivedChars, int maxChars)
+void recvWithStartEndMarkers()
 {
   static boolean recvInProgress = false;
   static byte ndx = 0;
@@ -62,19 +64,19 @@ bool recvWithStartEndMarkers(char *receivedChars, int maxChars)
   char endMarker = '}';
   char rc;
 
-  while (Serial.available() > 0)
+  while (Serial.available() > 0 && newData == false)
   {
     rc = Serial.read();
 
-    if (recvInProgress)
+    if (recvInProgress == true)
     {
       if (rc != endMarker)
       {
         receivedChars[ndx] = rc;
         ndx++;
-        if (ndx >= maxChars)
+        if (ndx >= numChars)
         {
-          ndx = maxChars - 1;
+          ndx = numChars - 1;
         }
       }
       else
@@ -82,7 +84,7 @@ bool recvWithStartEndMarkers(char *receivedChars, int maxChars)
         receivedChars[ndx] = '\0'; // terminate the string
         recvInProgress = false;
         ndx = 0;
-        return true;
+        newData = true;
       }
     }
     else if (rc == startMarker)
@@ -90,121 +92,170 @@ bool recvWithStartEndMarkers(char *receivedChars, int maxChars)
       recvInProgress = true;
     }
   }
-  return false;
 }
 
-void parseData(const char *receivedChars)
+void parseData(char *inputChars, CommandData &cmdData)
 {
-  char tempChars[numChars];
-  strcpy(tempChars, receivedChars);
+  char *token;
+  char *subToken;
 
-  int commandType = atoi(strtok(tempChars, ","));
+  token = strtok(inputChars, ",");
+  cmdData.commandType = atoi(token);
 
-  if (commandType == 1)
+  token = strtok(NULL, ",");
+  int cameraId = atoi(token);
+
+  if (cmdData.commandType == CommandType::Tally)
   {
-    parseTallyCommand();
+    cmdData.tallyCameraId = cameraId;
+
+    token = strtok(NULL, ",");
+    cmdData.tallyCameraActive = atoi(token);
+
+    token = strtok(NULL, ",");
+    cmdData.tallyPreview = atoi(token);
   }
-  else if (commandType == 2)
+  else if (cmdData.commandType == CommandType::General)
   {
-    parseGeneralCommand();
-  }
-}
+    cmdData.cameraId = cameraId;
 
-void parseTallyCommand()
-{
-  int tallyCameraId = atoi(strtok(NULL, ","));
-  int tallyCameraActive = atoi(strtok(NULL, ","));
-  int tallyPreview = atoi(strtok(NULL, ","));
-  sendTallyCommmand(tallyCameraId, tallyCameraActive, tallyPreview);
-}
+    token = strtok(NULL, ",");
+    cmdData.groupId = atoi(token);
 
-void parseGeneralCommand()
-{
-  int cameraId = atoi(strtok(NULL, ","));
-  int groupId = atoi(strtok(NULL, ","));
-  int paramId = atoi(strtok(NULL, ","));
-  char paramType[numChars];
-  strcpy(paramType, strtok(NULL, ","));
-  int valuesLength = atoi(strtok(NULL, ","));
+    token = strtok(NULL, ",");
+    cmdData.paramId = atoi(token);
 
-  if (strcmp(paramType, "string") == 0)
-  {
-    char stringValues[numChars];
-    strcpy(stringValues, strtok(NULL, ""));
-    sendGeneralCommmand(cameraId, groupId, paramId, paramType, valuesLength, NULL, stringValues);
-  }
-  else
-  {
-    float values[valuesLength];
-    if (valuesLength == 0)
+    token = strtok(NULL, ",");
+    strcpy(cmdData.paramType, token);
+
+    token = strtok(NULL, ",");
+    cmdData.valuesLength = atoi(token);
+
+    if (strcmp(cmdData.paramType, "string") == 0)
     {
-      values[0] = atof(strtok(NULL, ","));
+      token = strtok(NULL, "");
+      strcpy(cmdData.stringValues, token);
     }
     else
     {
-      char buffer[numChars];
-      strcpy(buffer, strtok(NULL, ""));
-      char *strtokIndx2 = strtok(buffer, ",");
-      int i = 0;
-      while (strtokIndx2 != NULL)
+      if (cmdData.valuesLength == 0)
       {
-        values[i++] = atof(strtokIndx2);
-        strtokIndx2 = strtok(NULL, ",");
+        token = strtok(NULL, ",");
+        cmdData.value = atof(token);
+      }
+      else
+      {
+        token = strtok(NULL, "");
+        strcpy(tempChars, token);
+        subToken = strtok(tempChars, ",");
+        int i = 0;
+        while (subToken != NULL)
+        {
+          cmdData.values[i++] = atof(subToken);
+          subToken = strtok(NULL, ",");
+        }
       }
     }
-    sendGeneralCommmand(cameraId, groupId, paramId, paramType, valuesLength, values, NULL);
   }
 }
 
-void sendTallyCommmand(int tallyCameraId, int tallyCameraActive, int tallyPreview)
+void executeCommand(CommandData &cmdData)
 {
-  bool preview = tallyPreview == 1;
-  bool active = tallyCameraActive == 1;
+  switch (cmdData.commandType)
+  {
+  case CommandType::Tally:
+    executeTallyCommand(cmdData);
+    break;
+  case CommandType::General:
+    executeGeneralCommand(cmdData);
+    break;
+  default:
+    // Handle unknown command type
+    break;
+  }
+}
+
+void executeTallyCommand(CommandData &cmdData)
+{
+  bool preview = cmdData.tallyPreview == 1;
+  bool active = cmdData.tallyCameraActive == 1;
 
   // Send new tally state to the camera
   sdiTallyControl.setCameraTally(
-      tallyCameraId, // Camera Number
-      active,        // Program Tally
-      preview        // Preview Tally
+      cmdData.tallyCameraId, // Camera Number
+      active,                // Program Tally
+      preview                // Preview Tally
   );
 }
 
-void sendGeneralCommmand(int cameraId, int groupId, int paramId, const char *paramType, int valuesLength, float *values, const char *stringValues)
+void executeGeneralCommand(CommandData &cmdData)
 {
-  if (strcmp(paramType, "string") == 0)
+  if (strcmp(cmdData.paramType, "void") == 0)
   {
-    sdiCameraControl.writeCommandUTF8(cameraId, groupId, paramId,0, stringValues);
-    return;
+    sdiCameraControl.writeCommandVoid(cmdData.cameraId, cmdData.groupId, cmdData.paramId);
   }
-
-  float value = (valuesLength == 0) ? values[0] : *values;
-
-  if (strcmp(paramType, "void") == 0)
+  else if (strcmp(cmdData.paramType, "boolean") == 0)
   {
-    sdiCameraControl.writeCommandVoid(cameraId, groupId, paramId);
+    bool bvalue = cmdData.value == 1;
+    sdiCameraControl.writeCommandBool(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, bvalue);
   }
-  else if (strcmp(paramType, "boolean") == 0)
+  else if (strcmp(cmdData.paramType, "int8") == 0)
   {
-    sdiCameraControl.writeCommandBool(cameraId, groupId, paramId,0, value == 1);
+    if (cmdData.valuesLength == 0)
+    {
+      sdiCameraControl.writeCommandInt8(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, cmdData.value);
+    }
+    else
+    {
+      sdiCameraControl.writeCommandInt8(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.values);
+    }
   }
-  else if (strcmp(paramType, "int8") == 0)
+  else if (strcmp(cmdData.paramType, "int16") == 0)
   {
-    sdiCameraControl.writeCommandInt8(cameraId, groupId, paramId,0, static_cast<int8_t>(value));
+    if (cmdData.valuesLength == 0)
+    {
+      sdiCameraControl.writeCommandInt16(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, cmdData.value);
+    }
+    else
+    {
+      sdiCameraControl.writeCommandInt16(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.values);
+    }
   }
-  else if (strcmp(paramType, "int16") == 0)
+  else if (strcmp(cmdData.paramType, "int32") == 0)
   {
-    sdiCameraControl.writeCommandInt16(cameraId, groupId, paramId,0, static_cast<int16_t>(value));
+    if (cmdData.valuesLength == 0)
+    {
+      sdiCameraControl.writeCommandInt32(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, cmdData.value);
+    }
+    else
+    {
+      sdiCameraControl.writeCommandInt32(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.values);
+    }
   }
-  else if (strcmp(paramType, "int32") == 0)
+  else if (strcmp(cmdData.paramType, "int64") == 0)
   {
-    sdiCameraControl.writeCommandInt32(cameraId, groupId, paramId,0, static_cast<int32_t>(value));
+    if (cmdData.valuesLength == 0)
+    {
+      sdiCameraControl.writeCommandInt64(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, cmdData.value);
+    }
+    else
+    {
+      sdiCameraControl.writeCommandInt64(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.values);
+    }
   }
-  else if (strcmp(paramType, "int64") == 0)
+  else if (strcmp(cmdData.paramType, "string") == 0)
   {
-    sdiCameraControl.writeCommandInt64(cameraId, groupId, paramId,0, static_cast<int64_t>(value));
+    sdiCameraControl.writeCommandUTF8(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.stringValues);
   }
-  else if (strcmp(paramType, "fixed16") == 0)
+  else if (strcmp(cmdData.paramType, "fixed16") == 0)
   {
-    sdiCameraControl.writeCommandFixed16(cameraId, groupId, paramId,0, value);
+    if (cmdData.valuesLength == 0)
+    {
+      sdiCameraControl.writeCommandFixed16(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, cmdData.value);
+    }
+    else
+    {
+      sdiCameraControl.writeCommandFixed16(cmdData.cameraId, cmdData.groupId, cmdData.paramId, 0, *cmdData.values);
+    }
   }
 }
