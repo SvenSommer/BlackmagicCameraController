@@ -196,7 +196,7 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.43,
+                    "value": 0.06,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.43,
@@ -334,23 +334,35 @@
                         },
                         {
                             "value": 1.32,
-                            "interpretation": "7"
+                            "interpretation": "7",
+                            "cameraIdInactive": [
+                                2
+                            ]
                         },
                         {
                             "value": 1.54,
-                            "interpretation": "8"
+                            "interpretation": "8",
+                            "cameraIdInactive": [
+                                2
+                            ]
                         },
                         {
                             "value": 1.76,
-                            "interpretation": "9"
+                            "interpretation": "9",
+                            "cameraIdInactive": [
+                                2
+                            ]
                         },
                         {
                             "value": 2,
-                            "interpretation": "10"
+                            "interpretation": "10",
+                            "cameraIdInactive": [
+                                2
+                            ]
                         }
                     ],
                     "visible": true,
-                    "value": 0,
+                    "value": 1.1,
                     "selectedValue": [
                         {
                             "value": 0,
@@ -656,7 +668,7 @@
                     "col": 1,
                     "presentationMode": "advanced",
                     "cameraSpecific": "false",
-                    "value": 1600,
+                    "value": 200,
                     "presetActive": "true",
                     "presetValueDay": 200,
                     "presetValueNight": 1600,
@@ -1237,7 +1249,7 @@
                             "interpretation": "1/2000"
                         }
                     ],
-                    "value": 6301,
+                    "value": 9241,
                     "cameraSpecific": "false",
                     "presetValueDay": 9241,
                     "dataType": "number",
