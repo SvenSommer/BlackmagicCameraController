@@ -196,7 +196,7 @@
                             "interpretation": "F22"
                         }
                     ],
-                    "value": 0.06,
+                    "value": 0.85,
                     "cameraSpecific": "true",
                     "presetValue": 0,
                     "presetValueNight": 0.43,
@@ -362,7 +362,7 @@
                         }
                     ],
                     "visible": true,
-                    "value": 1.1,
+                    "value": 0.44,
                     "selectedValue": [
                         {
                             "value": 0,

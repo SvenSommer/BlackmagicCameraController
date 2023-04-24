@@ -2,7 +2,7 @@
 
 This software allows you to control Blackmagic cameras using an Arduino Uno with the Blackmagic SDK board, a Fujitsu Futro S920 ThinClient, and a custom Angular frontend. It has been tested with Blackmagic Studio Cameras.
 
-![photo of the thinclient with the arduino and the sdk box included and connected](IMAGE_PLACEHOLDER)
+![photo of the thinclient with the arduino and the sdk box included and connected](images/thinclient_open.jpg)
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -22,7 +22,7 @@ This software allows you to control Blackmagic cameras using an Arduino Uno with
 ## Hardware Setup
 1. Mount the Blackmagic SDK board on the Arduino Uno.
 2. Connect the Arduino Uno to the Fujitsu Futro S920 ThinClient using a USB cable.
-3. Follow the hardware connections in the provided image: ![photo of the thinclient with the arduino and the sdk box included and connected](IMAGE_PLACEHOLDER)
+3. Follow the hardware connections in the provided image: ![photo of the arduino with the sdk board mounted in the open thin client case](images/thinclient_back_connections.jpg)
 
 ## Installation
 1. Clone the repository: `git clone https://github.com/SvenSommer/BlackmagicCameraController.git`
@@ -34,8 +34,8 @@ This software allows you to control Blackmagic cameras using an Arduino Uno with
 
 ## Usage
 1. Access the Angular frontend using a web browser.
-2. Use the "config mode" to structure the available commands supported by the Blackmagic SDK.
-3. Toggle the commands you want to see in the "command mode".
+2. Use the "config mode" to structure the available commands supported by the Blackmagic SDK. ![frontend in config mode](images/frontend_config_mode.png)
+3. Toggle the commands you want to see in the "command mode". ![frontend in command mode](images/frontend_command_mode.png)
 4. Define specific inputs (e.g., buttons with customizable captions and specific values) to trigger special commands for a specific or all cameras.
 
 ## Contributing
