@@ -108,99 +108,235 @@
                     "discrete": [
                         {
                             "value": 0,
-                            "interpretation": "F4,5",
-                            "cameraIdActive": [
-                                3,
-                                2
-                            ],
+                            "interpretation": "f3,5",
                             "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.03,
+                            "interpretation": "f3,7",
+                            "cameraIdInactive": [
+                                2,
                                 3,
                                 4
                             ]
                         },
                         {
                             "value": 0.06,
-                            "interpretation": "F4,8"
+                            "interpretation": "f4",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0,
+                            "interpretation": "f4",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.11,
-                            "interpretation": "F5,2"
+                            "interpretation": "f4,5",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.06,
+                            "interpretation": "f4,5",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.16,
-                            "interpretation": "F5,6",
-                            "cameraIdInactive": []
+                            "interpretation": "f4,8",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
                         },
                         {
-                            "value": 0.2,
-                            "interpretation": "F6,2"
+                            "value": 0.11,
+                            "interpretation": "f4,8",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.23,
-                            "interpretation": "F6,7"
+                            "interpretation": "f5,2",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.16,
+                            "interpretation": "f5,2",
+                            "cameraIdInactive": [
+                                1
+                            ]
+                        },
+                        {
+                            "value": 0.26,
+                            "interpretation": "f5,6",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.2,
+                            "interpretation": "f5,6",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.29,
-                            "interpretation": "F7,3"
+                            "interpretation": "f6,2",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.23,
+                            "interpretation": "f6,2",
+                            "cameraIdInactive": [
+                                1
+                            ]
+                        },
+                        {
+                            "value": 0.35,
+                            "interpretation": "f6,7",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.29,
+                            "interpretation": "f6,7",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.38,
-                            "interpretation": "F8"
+                            "interpretation": "f7,3",
+                            "cameraIdInactive": []
                         },
                         {
                             "value": 0.43,
-                            "interpretation": "F8,7"
+                            "interpretation": "f8",
+                            "cameraIdInactive": []
                         },
                         {
                             "value": 0.48,
-                            "interpretation": "F9,5"
+                            "interpretation": "f8,7",
+                            "cameraIdInactive": []
                         },
                         {
                             "value": 0.53,
-                            "interpretation": "F10"
+                            "interpretation": "f9,5",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.5,
+                            "interpretation": "f9,5",
+                            "cameraIdInactive": [
+                                1
+                            ]
+                        },
+                        {
+                            "value": 0.53,
+                            "interpretation": "f10",
+                            "cameraIdInactive": [
+                                1
+                            ]
                         },
                         {
                             "value": 0.56,
-                            "interpretation": "F11"
+                            "interpretation": "f10",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
+                        },
+                        {
+                            "value": 0.56,
+                            "interpretation": "f11",
+                            "cameraIdInactive": [
+                                1
+                            ]
+                        },
+                        {
+                            "value": 0.6,
+                            "interpretation": "f11",
+                            "cameraIdInactive": [
+                                2,
+                                3,
+                                4
+                            ]
                         },
                         {
                             "value": 0.65,
-                            "interpretation": "F12"
+                            "interpretation": "f12"
                         },
                         {
                             "value": 0.72,
-                            "interpretation": "F14"
+                            "interpretation": "f14"
                         },
                         {
                             "value": 0.78,
-                            "interpretation": "F15"
+                            "interpretation": "f15"
                         },
                         {
                             "value": 0.81,
-                            "interpretation": "F16"
+                            "interpretation": "f16"
                         },
                         {
                             "value": 0.85,
-                            "interpretation": "F17"
+                            "interpretation": "f17"
                         },
                         {
                             "value": 0.9,
-                            "interpretation": "F19"
+                            "interpretation": "f19"
                         },
                         {
                             "value": 0.95,
-                            "interpretation": "F21"
+                            "interpretation": "f21"
                         },
                         {
                             "value": 1,
-                            "interpretation": "F22"
+                            "interpretation": "f22"
                         }
                     ],
-                    "value": 0.85,
+                    "value": 0.11,
                     "cameraSpecific": "true",
                     "presetValue": 0,
-                    "presetValueNight": 0.43,
-                    "presetValueDay": 0.56,
+                    "presetValueNight": 0.11,
+                    "presetValueDay": 0.06,
                     "presetActive": "true",
                     "dataType": "number",
                     "controlOptions": [
@@ -362,7 +498,7 @@
                         }
                     ],
                     "visible": true,
-                    "value": 0.44,
+                    "value": 0,
                     "selectedValue": [
                         {
                             "value": 0,
@@ -668,7 +804,7 @@
                     "col": 1,
                     "presentationMode": "advanced",
                     "cameraSpecific": "false",
-                    "value": 200,
+                    "value": 1600,
                     "presetActive": "true",
                     "presetValueDay": 200,
                     "presetValueNight": 1600,
@@ -1249,7 +1385,7 @@
                             "interpretation": "1/2000"
                         }
                     ],
-                    "value": 9241,
+                    "value": 6301,
                     "cameraSpecific": "false",
                     "presetValueDay": 9241,
                     "dataType": "number",
