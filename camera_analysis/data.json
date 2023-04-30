@@ -1,0 +1,227 @@
+[
+    {
+        "value": 0,
+        "interpretation": "f3,5",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.03,
+        "interpretation": "f3,7",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.06,
+        "interpretation": "f4",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0,
+        "interpretation": "f4",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.11,
+        "interpretation": "f4,5",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.06,
+        "interpretation": "f4,5",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.16,
+        "interpretation": "f4,8",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.11,
+        "interpretation": "f4,8",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.23,
+        "interpretation": "f5,2",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.16,
+        "interpretation": "f5,2",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.26,
+        "interpretation": "f5,6",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.2,
+        "interpretation": "f5,6",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.29,
+        "interpretation": "f6,2",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.23,
+        "interpretation": "f6,2",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.35,
+        "interpretation": "f6,7",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.29,
+        "interpretation": "f6,7",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.38,
+        "interpretation": "f7,3",
+        "cameraIdInactive": []
+    },
+    {
+        "value": 0.43,
+        "interpretation": "f8",
+        "cameraIdInactive": []
+    },
+    {
+        "value": 0.48,
+        "interpretation": "f8,7",
+        "cameraIdInactive": []
+    },
+    {
+        "value": 0.53,
+        "interpretation": "f9,5",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.5,
+        "interpretation": "f9,5",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.53,
+        "interpretation": "f10",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.56,
+        "interpretation": "f10",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.56,
+        "interpretation": "f11",
+        "cameraIdInactive": [
+            1
+        ]
+    },
+    {
+        "value": 0.6,
+        "interpretation": "f11",
+        "cameraIdInactive": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "value": 0.65,
+        "interpretation": "f12"
+    },
+    {
+        "value": 0.72,
+        "interpretation": "f14"
+    },
+    {
+        "value": 0.78,
+        "interpretation": "f15"
+    },
+    {
+        "value": 0.81,
+        "interpretation": "f16"
+    },
+    {
+        "value": 0.85,
+        "interpretation": "f17"
+    },
+    {
+        "value": 0.9,
+        "interpretation": "f19"
+    },
+    {
+        "value": 0.95,
+        "interpretation": "f21"
+    },
+    {
+        "value": 1,
+        "interpretation": "f22"
+    }
+]
