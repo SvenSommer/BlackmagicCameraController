@@ -12,7 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatIconModule } from '@angular/material/icon';
 
 // Custom module imports
 import { AppRoutingModule } from './app-routing.module';
@@ -62,7 +62,8 @@ import { LogsModalComponent } from './logs-modal/logs-modal.component';
     MatRadioModule,
     MatSlideToggleModule,
     MatDialogModule,
-    MatTabsModule
+    MatTabsModule,
+    MatIconModule
   ],
   providers: [
     CommandService,

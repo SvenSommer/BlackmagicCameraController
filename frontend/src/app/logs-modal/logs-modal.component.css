@@ -14,3 +14,17 @@
     background-color: red;
   }
   
+  .refresh-countdown {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .mat-icon-button {
+    margin-left: 10px; /* Adjust spacing around the refresh icon */
+  }
+  

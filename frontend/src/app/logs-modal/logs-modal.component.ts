@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LogsService } from '../services/logs.service';
+import { interval, Subscription } from 'rxjs';
 
 interface ServiceData {
   name: string;
@@ -18,13 +19,43 @@ export class LogsModalComponent implements OnInit {
     { name: 'frontend', status: '', logData: '' },
     { name: 'tally_listener', status: '', logData: '' }
   ];
-
+  private refreshInterval$: Subscription;
+  refreshCountdown: number = 5;
   constructor(private logsService: LogsService) {}
 
   ngOnInit() {
     this.services.forEach(service => {
       this.loadServiceData(service);
     });
+
+    this.startAutoRefresh();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshInterval$) {
+      this.refreshInterval$.unsubscribe();
+    }
+  }
+
+  refreshLogs(service: ServiceData) {
+    this.loadServiceData(service);
+    this.resetAutoRefresh();
+  }
+
+  private startAutoRefresh() {
+    this.refreshInterval$ = interval(1000).subscribe(() => {
+      this.refreshCountdown -= 1;
+      if (this.refreshCountdown === 0) {
+        this.services.forEach(service => {
+          this.loadServiceData(service);
+        });
+        this.refreshCountdown = 5;
+      }
+    });
+  }
+
+  private resetAutoRefresh() {
+    this.refreshCountdown = 5;
   }
 
   private loadServiceData(service: ServiceData) {
