@@ -1,0 +1,13 @@
+[Unit]
+Description=Tally Listener Service
+
+[Service]
+WorkingDirectory=/home/robert/dev/BlackmagicCameraController/tallylistener
+ExecStart=/usr/bin/python3 -m uvicorn main:app --reload
+User=robert
+Restart=always
+StandardOutput=append:/home/robert/dev/BlackmagicCameraController/logs/tally_listener.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

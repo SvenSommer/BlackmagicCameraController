@@ -1,0 +1,13 @@
+[Unit]
+Description=Backend Service
+
+[Service]
+WorkingDirectory=/home/robert/dev/BlackmagicCameraController/backend
+ExecStart=python3 -m uvicorn main:app --reload --host 0.0.0.0
+User=robert
+Restart=always
+StandardOutput=append:/home/robert/dev/BlackmagicCameraController/logs/backend.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

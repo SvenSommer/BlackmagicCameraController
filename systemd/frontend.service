@@ -1,0 +1,13 @@
+[Unit]
+Description=Frontend Service
+
+[Service]
+WorkingDirectory=/home/robert/dev/BlackmagicCameraController/frontend
+ExecStart=ng serve --host 0.0.0.0 --disable-host-check
+User=robert
+Restart=always
+StandardOutput=append:/home/robert/dev/BlackmagicCameraController/logs/frontend.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

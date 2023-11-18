@@ -7,6 +7,7 @@ import time
 from typing import List, Dict, Any
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from controller.configurationController import ConfigurationController
@@ -18,6 +19,8 @@ from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
 
 import logging
+import subprocess
+import os
 
 app = FastAPI(title="CameraController Backend",
               description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
@@ -32,7 +35,11 @@ app.add_middleware(
 )
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 serial = SerialController()
 protocol = ProtokollController('res/PROTOCOL.json')
@@ -43,7 +50,7 @@ connection = connectionresult.getConnection()
 
 command_queue = Queue()
 command_thread_running = False
-
+logger.info("Backend Application started")
 
 def command_thread_func():
     global command_thread_running
@@ -158,6 +165,24 @@ async def send_command_tally(command: CommandTally):
 @app.get("/")
 async def status():
     return {"status": status}
+
+@app.get("/logs/{log_name}")
+async def get_log(log_name: str):
+    log_path = f"/home/robert/dev/BlackmagicCameraController/logs/{log_name}.log"
+    if not os.path.exists(log_path):
+        raise HTTPException(status_code=404, detail="Log file not found")
+
+    def log_file_generator():
+        with open(log_path, "rb") as log_file:
+            yield from log_file
+
+    return StreamingResponse(log_file_generator(), media_type="text/plain")
+
+
+@app.get("/service-status/{service_name}")
+async def get_service_status(service_name: str):
+    result = subprocess.run(["systemctl", "is-active", service_name], capture_output=True, text=True)
+    return {"service": service_name, "status": result.stdout.strip()}
 
 
 @app.get("/read")
