@@ -2,6 +2,7 @@
 # C:\Users\robho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts\uvicorn.exe main:app --reload
 # python3.exe -m  uvicorn main:app --reload
 from queue import Queue
+from collections import deque
 from threading import Thread
 import time
 from typing import List, Dict, Any
@@ -21,6 +22,7 @@ from models.command_values import CommandValues, ValuesFormatter
 import logging
 import subprocess
 import os
+from os import system
 
 app = FastAPI(title="CameraController Backend",
               description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
@@ -173,8 +175,13 @@ async def get_log(log_name: str):
         raise HTTPException(status_code=404, detail="Log file not found")
 
     def log_file_generator():
-        with open(log_path, "rb") as log_file:
-            yield from log_file
+        with open(log_path, "r") as log_file:
+            # Use deque to keep the last 50 lines
+            last_lines = deque(log_file, maxlen=50)
+
+        # Reverse the order of lines
+        for line in reversed(last_lines):
+            yield line
 
     return StreamingResponse(log_file_generator(), media_type="text/plain")
 
@@ -190,3 +197,11 @@ async def read():
     response = {"data": serial.read()}
     logger.info(f"Received data: {response['data']}")
     return response
+
+@app.post("/shutdown")
+async def shutdown_system():
+    try:
+        system("sudo /sbin/shutdown now")
+        return {"status": "success", "message": "System is shutting down"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
