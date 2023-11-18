@@ -1,0 +1,15 @@
+<mat-dialog-content>
+    <mat-tab-group>
+      <mat-tab *ngFor="let service of services">
+        <ng-template mat-tab-label>
+          {{ service.name }}
+          <span class="status-indicator" [ngClass]="{'online': service.status === 'active', 'offline': service.status !== 'active'}"></span>
+        </ng-template>
+        <pre>{{ service.logData }}</pre>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Schließen</button>
+  </mat-dialog-actions>
+  

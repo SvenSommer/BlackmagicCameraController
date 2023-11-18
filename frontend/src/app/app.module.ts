@@ -11,6 +11,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 // Custom module imports
 import { AppRoutingModule } from './app-routing.module';
@@ -33,6 +35,7 @@ import { CommandService } from './services/command.services';
 import { ProtocolService } from './services/protocol.services';
 import { ParameterService } from './services/parameter.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { LogsModalComponent } from './logs-modal/logs-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     DiscreteParameterComponent,
     IndexParameterComponent,
     GroupByPipe,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    LogsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatSliderModule,
     MatRadioModule,
     MatSlideToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ],
   providers: [
     CommandService,

@@ -19,6 +19,12 @@
             </mat-slide-toggle>
           </li>
           <li class="dropdown-item">
+            <button type="button" class="btn btn-info ms-2" (click)="onOpenLogsModal()">
+              Log Files
+            </button>
+          </li>
+          <li class="dropdown-divider"></li> <!-- Trennlinie hinzugefügt -->
+          <li class="dropdown-item">
             <button type="button" class="btn btn-danger ms-2" (click)="onShutdownServer()">
               Shutdown Server
             </button>

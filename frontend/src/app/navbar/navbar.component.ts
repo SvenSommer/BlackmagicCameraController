@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ShutdownService } from '../services/shutdown.service';
+import { LogsModalComponent } from '../logs-modal/logs-modal.component';
 
 @Component({
   selector: 'app-navbar',
@@ -30,6 +31,13 @@ export class NavbarComponent {
   onChangePresentationMode(mode: string) {
     this.currentPresentationMode = mode;
     this.presentationModeChange.emit(this.currentPresentationMode);
+  }
+
+  onOpenLogsModal() {
+    this.dialog.open(LogsModalComponent, {
+      width: '80%', // Breite des Dialogs anpassen
+      // Weitere Konfigurationen hier
+    });
   }
 
   onShutdownServer() {
