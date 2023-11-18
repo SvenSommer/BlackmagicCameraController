@@ -1,0 +1,8 @@
+/* Add styles specific to your dialog here */
+.mat-dialog-actions {
+    justify-content: flex-end;
+}
+
+.mat-dialog-content {
+    /* Styles for dialog content */
+}

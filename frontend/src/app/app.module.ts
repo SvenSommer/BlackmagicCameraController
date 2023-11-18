@@ -5,10 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 // Material imports
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Custom module imports
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +32,7 @@ import { GroupByPipe } from './pipes/group-by.pipe';
 import { CommandService } from './services/command.services';
 import { ProtocolService } from './services/protocol.services';
 import { ParameterService } from './services/parameter.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { ParameterService } from './services/parameter.service';
     ParameterSettingsComponent,
     DiscreteParameterComponent,
     IndexParameterComponent,
-    GroupByPipe
+    GroupByPipe,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,8 @@ import { ParameterService } from './services/parameter.service';
     ReactiveFormsModule,
     MatSliderModule,
     MatRadioModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatDialogModule
   ],
   providers: [
     CommandService,

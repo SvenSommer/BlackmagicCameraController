@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <h5 class="modal-title">Aktion bestätigen</h5>
+    <button type="button" class="btn-close" aria-label="Schließen" (click)="onDismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Sind Sie sicher, dass Sie den Server herunterfahren möchten?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onDismiss()">Abbrechen</button>
+    <button type="button" class="btn btn-danger" (click)="onConfirm()">Herunterfahren</button>
+  </div>
+  

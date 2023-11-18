@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Output, EventEmitter } from '@angular/core';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ShutdownService } from '../services/shutdown.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,12 +11,16 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class NavbarComponent {
 
-  constructor() { }
   @Output() configModeChange = new EventEmitter<boolean>();
-  @Output() presentationModeChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() presentationModeChange = new EventEmitter<string>();
 
   configMode: boolean = false;
   currentPresentationMode: string = "basic";
+
+  constructor(
+    public dialog: MatDialog,
+    private shutdownService: ShutdownService
+    ) {}
 
   onChangeConfigMode(event: MatSlideToggleChange) {
     this.configMode = event.checked;
@@ -26,4 +32,21 @@ export class NavbarComponent {
     this.presentationModeChange.emit(this.currentPresentationMode);
   }
 
+  onShutdownServer() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.shutdownService.shutdownSystem().subscribe(response => {
+          console.log('Shutdown response:', response);
+          // Handle response
+        }, error => {
+          console.error('Shutdown error:', error);
+          // Handle error
+        });
+      } else {
+        console.log('Shutdown cancelled');
+      }
+    });
+  }
 }
