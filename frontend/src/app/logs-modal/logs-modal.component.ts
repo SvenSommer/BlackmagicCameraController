@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LogsService } from '../services/logs.service';
 import { interval, Subscription } from 'rxjs';
+import { ShutdownService } from '../services/shutdown.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 interface ServiceData {
   name: string;
@@ -21,7 +24,10 @@ export class LogsModalComponent implements OnInit {
   ];
   private refreshInterval$: Subscription;
   refreshCountdown: number = 5;
-  constructor(private logsService: LogsService) {}
+  constructor(
+    public dialog: MatDialog,
+    private logsService: LogsService,
+    private shutdownService: ShutdownService) { }
 
   ngOnInit() {
     this.services.forEach(service => {
@@ -35,6 +41,24 @@ export class LogsModalComponent implements OnInit {
     if (this.refreshInterval$) {
       this.refreshInterval$.unsubscribe();
     }
+  }
+
+  restartService(service: any) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Sind Sie sicher, dass Sie den Service ' + service + ' neu starten möchten?',
+        confirmButtonText: 'Neu starten',
+        confirmAction: () => this.shutdownService.restartService(service)
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Service ' + service + 'restart confirmed');
+      } else {
+        console.log('Service ' + service + ' restart cancelled');
+      }
+    });
   }
 
   refreshLogs(service: ServiceData) {
@@ -60,7 +84,7 @@ export class LogsModalComponent implements OnInit {
 
   private loadServiceData(service: ServiceData) {
     // Laden des Service-Status
-    this.logsService.getServiceStatus(service.name).subscribe(
+    this.shutdownService.getServiceStatus(service.name).subscribe(
       response => {
         service.status = response.status;
       },

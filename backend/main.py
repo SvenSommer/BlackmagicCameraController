@@ -2,14 +2,13 @@
 # C:\Users\robho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts\uvicorn.exe main:app --reload
 # python3.exe -m  uvicorn main:app --reload
 from queue import Queue
-from collections import deque
+
 from threading import Thread
 import time
 from typing import List, Dict, Any
 import json
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from controller.configurationController import ConfigurationController
@@ -21,10 +20,6 @@ from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
 
 import logging
-from subprocess import Popen, PIPE, STDOUT
-import subprocess
-from os import system
-import os
 
 app = FastAPI(title="CameraController Backend",
               description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
@@ -170,30 +165,6 @@ async def send_command_tally(command: CommandTally):
 async def status():
     return {"status": status}
 
-@app.get("/logs/{log_name}")
-async def get_log(log_name: str):
-    log_path = f"/home/robert/dev/BlackmagicCameraController/logs/{log_name}.log"
-    if not os.path.exists(log_path):
-        raise HTTPException(status_code=404, detail="Log file not found")
-
-    def log_file_generator():
-        with open(log_path, "r") as log_file:
-            # Use deque to keep the last 50 lines
-            last_lines = deque(log_file, maxlen=50)
-
-        # Reverse the order of lines
-        for line in reversed(last_lines):
-            yield line
-
-    return StreamingResponse(log_file_generator(), media_type="text/plain")
-
-
-@app.get("/service-status/{service_name}")
-async def get_service_status(service_name: str):
-    result = subprocess.run(["systemctl", "is-active", service_name], capture_output=True, text=True)
-    return {"service": service_name, "status": result.stdout.strip()}
-
-
 @app.get("/read")
 async def read():
     raw_data = serial.read()
@@ -208,30 +179,3 @@ async def read():
     formatted_response = json.dumps(response, indent=4)  # Pretty print the response
     logger.info(f"Received data: {formatted_response}")
     return response
-
-@app.post("/update-code")
-async def update_code():
-    try:
-        commands = ["git reset --hard", "git pull origin main"]
-        for cmd in commands:
-            process = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
-            output, error = process.communicate()
-            if process.returncode != 0:
-                error_details = {
-                    "command": cmd,
-                    "error_message": output.decode(),
-                    "return_code": process.returncode
-                }
-                raise Exception(f"Command '{cmd}' failed: {error_details}")
-
-        return {"status": "success", "message": "Code updated successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/shutdown")
-async def shutdown_event():
-    try:
-        system("sudo /sbin/shutdown now")
-        return {"status": "success", "message": "System is shutting down"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))

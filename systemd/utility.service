@@ -1,0 +1,13 @@
+[Unit]
+Description=Utility Service
+
+[Service]
+WorkingDirectory=/home/robert/dev/BlackmagicCameraController/utility_service
+ExecStart=python3 -m uvicorn main:app --host 0.0.0.0 --port 8001
+User=robert
+Restart=always
+StandardOutput=append:/home/robert/dev/BlackmagicCameraController/logs/utility_service.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

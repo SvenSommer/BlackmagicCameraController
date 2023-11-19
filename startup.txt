@@ -15,6 +15,6 @@ Aktualisierungsschritte:
 5. git pull
 6. git status
 
-überprüfe, ob  baseUrl = 192.168.0.53:8000
+überprüfe, ob  backendBaseUrl = 192.168.0.53:8000
 ~/dev/BlackmagicCameraController/frontend/src/app/environments
 more environment.ts    

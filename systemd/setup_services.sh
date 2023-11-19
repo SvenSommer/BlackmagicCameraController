@@ -19,5 +19,8 @@ sudo systemctl start tally_listener.service
 sudo systemctl enable backend.service
 sudo systemctl start backend.service
 
+sudo systemctl enable utility_service.service
+sudo systemctl start utility_service.service
+
 sudo systemctl daemon-reload
 echo "Services have been configured and started."

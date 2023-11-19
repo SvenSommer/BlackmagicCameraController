@@ -10,11 +10,6 @@ export class LogsService {
   constructor(private http: HttpClient) {}
 
   getLog(logName: string): Observable<string> {
-    return this.http.get(`${environment.baseUrl}logs/${logName}`, { responseType: 'text' });
-  }
-
-   // Methode zum Abrufen des Status eines Dienstes
-  getServiceStatus(serviceName: string): Observable<any> {
-    return this.http.get<any>(`${environment.baseUrl}service-status/${serviceName}`);
+    return this.http.get(`${environment.utilityBaseUrl}logs/${logName}`, { responseType: 'text' });
   }
 }

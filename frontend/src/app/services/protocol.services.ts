@@ -12,7 +12,7 @@ export class ProtocolService {
   getGroups(): Observable<any> {
     let httpHeader = new HttpHeaders();
     httpHeader.set("Access-Control-Allow-Origin", "*");
-    return this.http.get<any>(`${environment.baseUrl}groups`, { withCredentials: false, headers: httpHeader, observe: 'response' });
+    return this.http.get<any>(`${environment.backendBaseUrl}groups`, { withCredentials: false, headers: httpHeader, observe: 'response' });
   }
 
   saveGroups(groupsData: any): Observable<any> {
@@ -20,6 +20,6 @@ export class ProtocolService {
     let httpHeader = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<any>(`${environment.baseUrl}groups`, dataWithGroups, { withCredentials: false, headers: httpHeader, observe: 'response' });
+    return this.http.post<any>(`${environment.backendBaseUrl}groups`, dataWithGroups, { withCredentials: false, headers: httpHeader, observe: 'response' });
   }
 }

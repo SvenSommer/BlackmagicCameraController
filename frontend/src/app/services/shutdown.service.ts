@@ -7,12 +7,20 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class ShutdownService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   shutdownSystem(): Observable<any> {
     let httpHeader = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<any>(`${environment.baseUrl}shutdown`, null, { headers: httpHeader });
+    return this.http.post<any>(`${environment.utilityBaseUrl}shutdown`, null, { headers: httpHeader });
+  }
+
+  getServiceStatus(serviceName: string): Observable<any> {
+    return this.http.get<any>(`${environment.utilityBaseUrl}service-status/${serviceName}`);
+  }
+
+  restartService(serviceName: string): Observable<any> {
+    return this.http.get<any>(`${environment.utilityBaseUrl}restart-service/${serviceName}`);
   }
 }

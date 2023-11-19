@@ -46,7 +46,7 @@ export class CommandService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<Command>(`${environment.baseUrl}command/value`, command, { withCredentials: false, headers: headers, observe: 'response' }).subscribe();
+    return this.http.post<Command>(`${environment.backendBaseUrl}command/value`, command, { withCredentials: false, headers: headers, observe: 'response' }).subscribe();
   }
 
   private sendCommand_for_values(command: IndexCommand) {
@@ -54,6 +54,6 @@ export class CommandService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<Command>(`${environment.baseUrl}command/values`, command, { withCredentials: false, headers: headers, observe: 'response' }).subscribe();
+    return this.http.post<Command>(`${environment.backendBaseUrl}command/values`, command, { withCredentials: false, headers: headers, observe: 'response' }).subscribe();
   }
 }

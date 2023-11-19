@@ -10,6 +10,6 @@ export class UpdateCodeService {
   constructor(private http: HttpClient) {}
 
   updateCode(): Observable<any> {
-    return this.http.post<any>(`${environment.baseUrl}update-code`, {});
+    return this.http.post<any>(`${environment.utilityBaseUrl}update-code`, {});
   }
 }

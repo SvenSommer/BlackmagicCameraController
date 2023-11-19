@@ -1,5 +1,7 @@
 export const environment = {
-  production: true,
-  //baseUrl: 'http://localhost:8000/' //Base Url for Backend
-baseUrl: 'http://192.168.0.53:8000/' //Base Url for Backend
+  production: false,
+  // backendBaseUrl: 'http://192.168.0.53:8000/',
+  // utilityBaseUrl: 'http://192.168.0.53:8001/'
+  backendBaseUrl: 'http://localhost:8000/',
+  utilityBaseUrl: 'http://localhost:8001/'
 };

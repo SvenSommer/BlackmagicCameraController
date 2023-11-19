@@ -30,7 +30,7 @@ This software allows you to control Blackmagic cameras using an Arduino Uno with
     - **Arduino Sketch**: Upload the sketch from `sketches/Commandparser/Commandparser.ino` to the Arduino Uno.
     - **Backend**: Run the backend by executing `python main.py` in the `backend` directory. Configure the cameras and tally listener in their respective `config.yaml` files.
     - **Tally Listener**: Run the tally listener by executing `python main.py` in the `tallylistener` directory. Configure the vMix and backend settings in the `config.yaml` file.
-    - **Frontend**: Navigate to the `frontend` directory, and update the `baseUrl` in `src/app/environments/environment.ts` to point to the backend URL. Then, run `ng start`.
+    - **Frontend**: Navigate to the `frontend` directory, and update the `backendBaseUrl` in `src/app/environments/environment.ts` to point to the backend URL. Then, run `ng start`.
 
 ## Usage
 1. Access the Angular frontend using a web browser.
