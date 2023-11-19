@@ -17,8 +17,8 @@ class ValueFormatter(CommandFormatter):
 
 
     def format(self) -> str:
-        # Placeholder for checksum is added at the end within the brackets
-        notation = "{{{0},{1},{2},{3},{4},{5},{6},{7}}}"
+        # Define the message without the checksum placeholder
+        notation = "{{{0},{1},{2},{3},{4},{5},{6}}}"
         formatted_message = notation.format(
             "2",
             self.command.camera,
@@ -26,9 +26,7 @@ class ValueFormatter(CommandFormatter):
             self.command.parameterId,
             self.command.parameterType,
             "0",
-            self.command.parameterValue,
-            "",
+            self.command.parameterValue
         )
-        checksum = self.calculate_checksum(formatted_message)
-        # Insert the checksum before the last two closing brackets
-        return formatted_message[:-3] + str(checksum) + "}}"
+        # Use the base class method to format the message with the checksum
+        return self.format_message(formatted_message)
