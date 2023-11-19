@@ -50,8 +50,11 @@ void loop()
   if (newData == true)
   {
     strcpy(tempChars, receivedChars);
-    parseData(tempChars, cmdData);
-    executeCommand(cmdData);
+    if (validateChecksum(receivedChars))
+    {
+      parseData(tempChars, cmdData);
+      executeCommand(cmdData);
+    }
     newData = false;
   }
 }
@@ -93,8 +96,9 @@ void recvWithStartEndMarkers()
     }
   }
 }
+
 static bool verboseMode = false;
-void parseData(char *inputChars, CommandData &cmdData)
+bool validateChecksum(char *inputChars)
 {
   if (verboseMode)
   {
@@ -110,7 +114,7 @@ void parseData(char *inputChars, CommandData &cmdData)
     {
       Serial.println("Error: Checksum not found");
     }
-    return;
+    return false;
   }
 
   *checksum_ptr = '\0';
@@ -132,14 +136,18 @@ void parseData(char *inputChars, CommandData &cmdData)
       Serial.print(", calculated ");
       Serial.println(calculated_checksum);
     }
-    return;
+    return false;
   }
 
   if (verboseMode)
   {
     Serial.println("Checksum validated");
   }
+  return true;
+}
 
+void parseData(char *inputChars, CommandData &cmdData)
+{
   char *token;
   char *subToken;
 
