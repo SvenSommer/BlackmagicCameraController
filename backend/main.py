@@ -20,9 +20,8 @@ from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
 
 import logging
-import subprocess
-import os
-from os import system
+from subprocess import subprocess, Popen, PIPE, STDOUT
+from os import os, system
 
 app = FastAPI(title="CameraController Backend",
               description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
@@ -197,6 +196,24 @@ async def read():
     response = {"data": serial.read()}
     logger.info(f"Received data: {response['data']}")
     return response
+
+@app.post("/update-code")
+async def update_code():
+    try:
+        # Reset and pull the latest code from the main branch
+        commands = [
+            "git reset --hard",
+            "git pull origin main"
+        ]
+        for cmd in commands:
+            process = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+            output, error = process.communicate()
+            if process.returncode != 0:
+                raise Exception(f"Command '{cmd}' failed with error: {output.decode()}")
+
+        return {"status": "success", "message": "Code updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/shutdown")
 async def shutdown_system():
