@@ -93,9 +93,52 @@ void recvWithStartEndMarkers()
     }
   }
 }
-
+static bool verboseMode = false;
 void parseData(char *inputChars, CommandData &cmdData)
 {
+  if (verboseMode)
+  {
+    Serial.println("Parsing data...");
+  }
+
+  // Extract and validate checksum
+  char *checksum_ptr = strrchr(inputChars, '*');
+  if (checksum_ptr == NULL)
+  {
+    if (verboseMode)
+    {
+      Serial.println("Error: Checksum not found");
+    }
+    return;
+  }
+
+  *checksum_ptr = '\0';
+  int received_checksum = atoi(checksum_ptr + 1);
+
+  int calculated_checksum = 0;
+  for (char *p = inputChars; *p != '\0'; p++)
+  {
+    calculated_checksum += *p;
+  }
+  calculated_checksum %= 256;
+
+  if (calculated_checksum != received_checksum)
+  {
+    if (verboseMode)
+    {
+      Serial.print("Checksum mismatch: received ");
+      Serial.print(received_checksum);
+      Serial.print(", calculated ");
+      Serial.println(calculated_checksum);
+    }
+    return;
+  }
+
+  if (verboseMode)
+  {
+    Serial.println("Checksum validated");
+  }
+
   char *token;
   char *subToken;
 
