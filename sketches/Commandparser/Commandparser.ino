@@ -100,13 +100,7 @@ void recvWithStartEndMarkers()
 static bool verboseMode = true;
 bool validateChecksum(char *inputChars)
 {
-  if (verboseMode)
-  {
-    Serial.print("validateChecksum received data: ");
-    Serial.println(inputChars);
-  }
 
-  // Find the position of the checksum separator '*'
   char *checksum_ptr = strrchr(inputChars, '*');
   if (checksum_ptr == NULL)
   {
@@ -117,7 +111,6 @@ bool validateChecksum(char *inputChars)
     return false;
   }
 
-  // Temporarily terminate the string at the position of the '*'
   *checksum_ptr = '\0';
   int received_checksum = atoi(checksum_ptr + 1);
 
@@ -140,11 +133,6 @@ bool validateChecksum(char *inputChars)
     return false;
   }
 
-  if (verboseMode)
-  {
-    Serial.println("Checksum validated");
-  }
-
   // Remove the checksum part from the string
   *checksum_ptr = '\0';
 
@@ -155,7 +143,7 @@ void parseData(char *inputChars, CommandData &cmdData)
 {
   if (verboseMode)
   {
-    Serial.print("parseData received data: ");
+    Serial.print("Received data for parsing: ");
     Serial.println(inputChars);
   }
   char *token;
@@ -163,9 +151,19 @@ void parseData(char *inputChars, CommandData &cmdData)
 
   token = strtok(inputChars, ",");
   cmdData.commandType = atoi(token);
+  if (verboseMode)
+  {
+    Serial.print("Command Type: ");
+    Serial.println(cmdData.commandType);
+  }
 
   token = strtok(NULL, ",");
   int cameraId = atoi(token);
+  if (verboseMode)
+  {
+    Serial.print("Camera ID: ");
+    Serial.println(cameraId);
+  }
 
   if (cmdData.commandType == CommandType::Tally)
   {
@@ -173,9 +171,19 @@ void parseData(char *inputChars, CommandData &cmdData)
 
     token = strtok(NULL, ",");
     cmdData.tallyCameraActive = atoi(token);
+    if (verboseMode)
+    {
+      Serial.print("Tally Camera Active: ");
+      Serial.println(cmdData.tallyCameraActive);
+    }
 
     token = strtok(NULL, ",");
     cmdData.tallyPreview = atoi(token);
+    if (verboseMode)
+    {
+      Serial.print("Tally Preview: ");
+      Serial.println(cmdData.tallyPreview);
+    }
   }
   else if (cmdData.commandType == CommandType::General)
   {
@@ -183,20 +191,46 @@ void parseData(char *inputChars, CommandData &cmdData)
 
     token = strtok(NULL, ",");
     cmdData.groupId = atoi(token);
+    if (verboseMode)
+    {
+      Serial.print("Group ID: ");
+      Serial.println(cmdData.groupId);
+    }
 
     token = strtok(NULL, ",");
     cmdData.paramId = atoi(token);
+    if (verboseMode)
+    {
+      Serial.print("Parameter ID: ");
+      Serial.println(cmdData.paramId);
+    }
 
     token = strtok(NULL, ",");
     strcpy(cmdData.paramType, token);
+    if (verboseMode)
+    {
+      Serial.print("Parameter Type: ");
+      Serial.println(cmdData.paramType);
+    }
 
     token = strtok(NULL, ",");
     cmdData.valuesLength = atoi(token);
+    if (verboseMode)
+    {
+      Serial.print("Values Length: ");
+      Serial.println(cmdData.valuesLength);
+    }
 
+    // Additional logging for different parameter types
     if (strcmp(cmdData.paramType, "string") == 0)
     {
       token = strtok(NULL, "");
       strcpy(cmdData.stringValues, token);
+      if (verboseMode)
+      {
+        Serial.print("String Value: ");
+        Serial.println(cmdData.stringValues);
+      }
     }
     else
     {
@@ -204,6 +238,11 @@ void parseData(char *inputChars, CommandData &cmdData)
       {
         token = strtok(NULL, ",");
         cmdData.value = atof(token);
+        if (verboseMode)
+        {
+          Serial.print("Single Value: ");
+          Serial.println(cmdData.value);
+        }
       }
       else
       {
@@ -213,11 +252,24 @@ void parseData(char *inputChars, CommandData &cmdData)
         int i = 0;
         while (subToken != NULL)
         {
-          cmdData.values[i++] = atof(subToken);
+          cmdData.values[i] = atof(subToken);
+          if (verboseMode)
+          {
+            Serial.print("Value[");
+            Serial.print(i);
+            Serial.print("]: ");
+            Serial.println(cmdData.values[i]);
+          }
+          i++;
           subToken = strtok(NULL, ",");
         }
       }
     }
+  }
+
+  if (verboseMode)
+  {
+    Serial.println("Data parsing completed.");
   }
 }
 
@@ -252,6 +304,36 @@ void executeTallyCommand(CommandData &cmdData)
 
 void executeGeneralCommand(CommandData &cmdData)
 {
+  if (verboseMode)
+  {
+    Serial.print("Executing Command - Camera ID: ");
+    Serial.print(cmdData.cameraId);
+    Serial.print(", Group ID: ");
+    Serial.print(cmdData.groupId);
+    Serial.print(", Param ID: ");
+    Serial.print(cmdData.paramId);
+    Serial.print(", Param Type: ");
+    Serial.print(cmdData.paramType);
+    Serial.print(", Values Length: ");
+    Serial.print(cmdData.valuesLength);
+    Serial.print(", Value: ");
+    if (cmdData.valuesLength == 0)
+    {
+      Serial.println(cmdData.value);
+    }
+    else
+    {
+      Serial.print("{");
+      for (int i = 0; i < cmdData.valuesLength; i++)
+      {
+        Serial.print(cmdData.values[i]);
+        if (i < cmdData.valuesLength - 1)
+          Serial.print(", ");
+      }
+      Serial.println("}");
+    }
+  }
+
   if (strcmp(cmdData.paramType, "void") == 0)
   {
     sdiCameraControl.writeCommandVoid(cmdData.cameraId, cmdData.groupId, cmdData.paramId);

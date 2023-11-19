@@ -6,6 +6,7 @@ from collections import deque
 from threading import Thread
 import time
 from typing import List, Dict, Any
+import json
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
@@ -195,8 +196,17 @@ async def get_service_status(service_name: str):
 
 @app.get("/read")
 async def read():
-    response = {"data": serial.read()}
-    logger.info(f"Received data: {response['data']}")
+    raw_data = serial.read()
+    try:
+        # Attempt to parse the data as JSON for structured output
+        parsed_data = json.loads(raw_data)
+    except json.JSONDecodeError:
+        # If data is not JSON, use raw data
+        parsed_data = raw_data
+
+    response = {"data": parsed_data}
+    formatted_response = json.dumps(response, indent=4)  # Pretty print the response
+    logger.info(f"Received data: {formatted_response}")
     return response
 
 @app.post("/update-code")
