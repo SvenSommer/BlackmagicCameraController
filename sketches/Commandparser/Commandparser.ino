@@ -102,11 +102,11 @@ bool validateChecksum(char *inputChars)
 {
   if (verboseMode)
   {
-    Serial.print("validateChecksum: Received data: ");
+    Serial.print("validateChecksum received data: ");
     Serial.println(inputChars);
   }
 
-  // Extract and validate checksum
+  // Find the position of the checksum separator '*'
   char *checksum_ptr = strrchr(inputChars, '*');
   if (checksum_ptr == NULL)
   {
@@ -117,6 +117,7 @@ bool validateChecksum(char *inputChars)
     return false;
   }
 
+  // Temporarily terminate the string at the position of the '*'
   *checksum_ptr = '\0';
   int received_checksum = atoi(checksum_ptr + 1);
 
@@ -143,11 +144,20 @@ bool validateChecksum(char *inputChars)
   {
     Serial.println("Checksum validated");
   }
+
+  // Remove the checksum part from the string
+  *checksum_ptr = '\0';
+
   return true;
 }
 
 void parseData(char *inputChars, CommandData &cmdData)
 {
+  if (verboseMode)
+  {
+    Serial.print("parseData received data: ");
+    Serial.println(inputChars);
+  }
   char *token;
   char *subToken;
 
