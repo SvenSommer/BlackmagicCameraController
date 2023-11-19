@@ -1,7 +1,7 @@
 cameras:
-- id: 10
+- id: 5
   name: Kamera 1
-  'no': 10
+  'no': 5
 - id: 2
   name: Kamera 2
   'no': 2
