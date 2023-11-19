@@ -8,6 +8,7 @@ import time
 from typing import List, Dict, Any
 import json
 
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -16,8 +17,8 @@ from controller.protokolController import ProtokollController
 from controller.serialController import SerialController
 
 from models.command_tally import CommandTally, TallyFormatter
-from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
+from models.command_value import CommandValue, ValueFormatter
 
 import logging
 
