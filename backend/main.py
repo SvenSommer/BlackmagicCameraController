@@ -169,13 +169,11 @@ async def status():
 async def read():
     raw_data = serial.read()
     try:
-        # Attempt to parse the data as JSON for structured output
         parsed_data = json.loads(raw_data)
     except json.JSONDecodeError:
-        # If data is not JSON, use raw data
         parsed_data = raw_data
 
     response = {"data": parsed_data}
-    formatted_response = json.dumps(response, indent=4)  # Pretty print the response
+    formatted_response = json.dumps(response, indent=4)
     logger.info(f"Received data: {formatted_response}")
     return response
