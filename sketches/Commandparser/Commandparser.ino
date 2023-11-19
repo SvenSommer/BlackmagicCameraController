@@ -50,7 +50,7 @@ void loop()
   if (newData == true)
   {
     strcpy(tempChars, receivedChars);
-    if (validateChecksum(receivedChars))
+    if (validateChecksum(tempChars))
     {
       parseData(tempChars, cmdData);
       executeCommand(cmdData);
@@ -97,12 +97,12 @@ void recvWithStartEndMarkers()
   }
 }
 
-static bool verboseMode = false;
+static bool verboseMode = true;
 bool validateChecksum(char *inputChars)
 {
   if (verboseMode)
   {
-    Serial.print("Received data: ");
+    Serial.print("validateChecksum: Received data: ");
     Serial.println(inputChars);
   }
 
