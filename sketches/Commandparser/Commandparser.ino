@@ -98,7 +98,8 @@ void parseData(char *inputChars, CommandData &cmdData)
 {
   if (verboseMode)
   {
-    Serial.println("Parsing data...");
+    Serial.print("Received data: ");
+    Serial.println(inputChars);
   }
 
   // Extract and validate checksum
