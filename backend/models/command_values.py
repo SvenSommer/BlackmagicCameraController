@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from models.command_formatter import CommandFormatter
+
 class CommandValues(BaseModel):
         camera: int
         groupId: int
@@ -8,13 +10,13 @@ class CommandValues(BaseModel):
         parameterValues: list[object]
         
         
-class ValuesFormatter():
+class ValuesFormatter(CommandFormatter):
     def __init__(self, command: CommandValues) -> None:
         self.command = command
                 
     def format(self) -> str:
-
         notation= "{{{0},{1},{2},{3},{4},{5},{6}}}"
-        print(self.command.parameterValues)
         values = str(self.command.parameterValues)[1:-1].replace(' ','')
-        return notation.format("2", self.command.camera,  self.command.groupId,  self.command.parameterId,  self.command.parameterType,len( self.command.parameterValues), values)
+        formatted_message =  notation.format("2", self.command.camera,  self.command.groupId,  self.command.parameterId,  self.command.parameterType,len( self.command.parameterValues), values)
+        checksum = self.calculate_checksum(formatted_message)
+        return f"{formatted_message}*{checksum}"
