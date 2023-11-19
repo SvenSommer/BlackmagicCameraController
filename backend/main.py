@@ -20,8 +20,10 @@ from models.command_value import CommandValue, ValueFormatter
 from models.command_values import CommandValues, ValuesFormatter
 
 import logging
-from subprocess import subprocess, Popen, PIPE, STDOUT
-from os import os, system
+from subprocess import Popen, PIPE, STDOUT
+import subprocess
+from os import system
+import os
 
 app = FastAPI(title="CameraController Backend",
               description="Rest Api to control Black Magic cameras connected to the sdi interface of a shield on a arduino board")
@@ -216,7 +218,7 @@ async def update_code():
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/shutdown")
-async def shutdown_system():
+async def shutdown_event():
     try:
         system("sudo /sbin/shutdown now")
         return {"status": "success", "message": "System is shutting down"}
