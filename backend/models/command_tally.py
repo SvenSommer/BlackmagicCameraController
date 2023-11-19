@@ -11,7 +11,7 @@ class TallyFormatter(CommandFormatter):
     def __init__(self, command) -> None:
          self.command = command
      
-    def create_value_string(self) -> str:
+    def create_command_string(self) -> str:
         active = self.command.active*1
         preview = self.command.preview*1
         return f"1,{self.command.camera},{active},{preview}"
