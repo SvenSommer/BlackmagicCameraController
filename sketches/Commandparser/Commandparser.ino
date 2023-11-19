@@ -6,6 +6,8 @@ BMD_SDICameraControl_I2C sdiCameraControl(shieldAddress);
 const byte numChars = 128;
 char receivedChars[numChars];
 char tempChars[numChars];
+static bool verboseMode = false;
+
 
 enum CommandType
 {
@@ -97,7 +99,6 @@ void recvWithStartEndMarkers()
   }
 }
 
-static bool verboseMode = true;
 bool validateChecksum(char *inputChars)
 {
 
@@ -235,13 +236,14 @@ void executeTallyCommand(CommandData &cmdData)
 
 void executeGeneralCommand(CommandData &cmdData)
 {
-  // Start a new bundle for this set of commands
-  sdiCameraControl.startBundle();
-
   // Check if the system is ready for a new command
-  if (!sdiCameraControl.availableForWrite()) {
-    // Log or handle the situation when the system is not ready
-    Serial.println("System not ready for new command");
+  if (!sdiCameraControl.availableForWrite())
+  {
+    if (verboseMode)
+    {
+      // Log or handle the situation when the system is not ready
+      Serial.println("System not ready for new command");
+    }
     return;
   }
 
@@ -314,14 +316,14 @@ void executeGeneralCommand(CommandData &cmdData)
     }
   }
 
-  sdiCameraControl.endBundle();
-
-  // Log the command sent
-  Serial.print("Command sent to camera ");
-  Serial.print(cmdData.cameraId);
-  Serial.print(" with parameter type ");
-  Serial.println(cmdData.paramType);
-
+  if (verboseMode)
+  {
+    // Log the command sent
+    Serial.print("Command sent to camera ");
+    Serial.print(cmdData.cameraId);
+    Serial.print(" with parameter type ");
+    Serial.println(cmdData.paramType);
+  }
   // Introduce a small delay to ensure commands don't overlap
   delay(100); // Adjust the delay as needed
 }
