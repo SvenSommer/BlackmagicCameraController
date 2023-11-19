@@ -202,16 +202,17 @@ async def read():
 @app.post("/update-code")
 async def update_code():
     try:
-        # Reset and pull the latest code from the main branch
-        commands = [
-            "git reset --hard",
-            "git pull origin main"
-        ]
+        commands = ["git reset --hard", "git pull origin main"]
         for cmd in commands:
             process = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
             output, error = process.communicate()
             if process.returncode != 0:
-                raise Exception(f"Command '{cmd}' failed with error: {output.decode()}")
+                error_details = {
+                    "command": cmd,
+                    "error_message": output.decode(),
+                    "return_code": process.returncode
+                }
+                raise Exception(f"Command '{cmd}' failed: {error_details}")
 
         return {"status": "success", "message": "Code updated successfully"}
     except Exception as e:

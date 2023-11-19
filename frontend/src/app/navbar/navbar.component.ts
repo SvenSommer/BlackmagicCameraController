@@ -4,6 +4,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ShutdownService } from '../services/shutdown.service';
 import { LogsModalComponent } from '../logs-modal/logs-modal.component';
+import { UpdateCodeService } from '../services/update-code.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,8 +21,9 @@ export class NavbarComponent {
 
   constructor(
     public dialog: MatDialog,
-    private shutdownService: ShutdownService
-    ) {}
+    private shutdownService: ShutdownService,
+    private updateService: UpdateCodeService
+  ) { }
 
   onChangeConfigMode(event: MatSlideToggleChange) {
     this.configMode = event.checked;
@@ -40,21 +42,40 @@ export class NavbarComponent {
     });
   }
 
-  onShutdownServer() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-
+  onUpdate() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Sind Sie sicher, dass Sie updaten wollen?',
+        confirmButtonText: 'Update',
+        confirmAction: () => this.updateService.updateCode()
+      }
+    });
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.shutdownService.shutdownSystem().subscribe(response => {
-          console.log('Shutdown response:', response);
-          // Handle response
-        }, error => {
-          console.error('Shutdown error:', error);
-          // Handle error
-        });
+        console.log('Update confirmed');
+      } else {
+        console.log('Update cancelled');
+      }
+    });
+  }
+
+  onShutdownServer() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Sind Sie sicher, dass Sie den Server herunterfahren möchten?',
+        confirmButtonText: 'Herunterfahren',
+        confirmAction: () => this.shutdownService.shutdownSystem()
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Shutdown initiated');
       } else {
         console.log('Shutdown cancelled');
       }
     });
   }
-}
+
+  }

@@ -3,10 +3,18 @@
     <button type="button" class="btn-close" aria-label="Schließen" (click)="onDismiss()"></button>
   </div>
   <div class="modal-body">
-    <p>Sind Sie sicher, dass Sie den Server herunterfahren möchten?</p>
+    <p *ngIf="!backendResponse">{{ data.message }}</p>
+    <div *ngIf="parsedResponse">
+      <p>Status: {{ parsedResponse.status }}</p>
+      <p>Message: {{ parsedResponse.message }}</p>
+    </div>
+    <div *ngIf="backendResponse && !parsedResponse">
+      <pre>{{ backendResponse }}</pre>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="onDismiss()">Abbrechen</button>
-    <button type="button" class="btn btn-danger" (click)="onConfirm()">Herunterfahren</button>
+    <button type="button" class="btn btn-danger" (click)="onConfirm()">{{ data.confirmButtonText }}</button>
   </div>
+  
   

@@ -15,19 +15,25 @@
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <li class="dropdown-item">
             <mat-slide-toggle [(ngModel)]="configMode" (change)="onChangeConfigMode($event)">
-              ConfigMode
+              Konfigurationsmodus
             </mat-slide-toggle>
           </li>
           <li class="dropdown-divider"></li>
           <li class="dropdown-item">
             <button type="button" class="btn btn-info ms-2" (click)="onOpenLogsModal()">
-              Log Files
+              Log Dateien einsehen
+            </button>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li class="dropdown-item">
+            <button type="button" class="btn btn-danger ms-2" (click)="onUpdate()">
+              Update
             </button>
           </li>
           <li class="dropdown-divider"></li>
           <li class="dropdown-item">
             <button type="button" class="btn btn-danger ms-2" (click)="onShutdownServer()">
-              Shutdown Server
+              Herunterfahren
             </button>
           </li>
         </ul>

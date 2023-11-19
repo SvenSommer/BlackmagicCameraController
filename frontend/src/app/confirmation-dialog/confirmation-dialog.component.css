@@ -1,8 +1,45 @@
-/* Add styles specific to your dialog here */
-.mat-dialog-actions {
-    justify-content: flex-end;
+/* confirmation-dialog.component.css */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-.mat-dialog-content {
-    /* Styles for dialog content */
+.modal-title {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 10px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.btn {
+    margin-right: 10px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-close {
+    color: white;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
 }
